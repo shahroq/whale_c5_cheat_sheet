@@ -17,6 +17,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 8+ source code.
 * [Helpers](#helpers)
 
 ## Pages (Collections)
+
 ### A page
 
 #### Get Current page
@@ -28,7 +29,7 @@ $page = \Page::getCurrentPage();
 $page = \Page::getByID(1); //by ID
 $page = \Page::getByPath('/path/to/page'); //by path
 ```
-#### Get page data
+#### Get a page data
 ```PHP
 echo $page->getCollectionName();
 echo $page->getCollectionDescription();
@@ -37,7 +38,7 @@ echo $page->getCollectionDatePublic();
 echo $page->getCollectionUserID();
 ```
 
-#### Get page type/template
+#### Get apage type/template
 ```PHP
 //Page Template
 $pt = $page->getPageTemplateObject();
@@ -93,6 +94,22 @@ if ($attr) {
 
 
 ## Files
+### A Files
+
+#### Get a file by a unique identifier
+```PHP
+```
+#### Get a file data
+```PHP
+```
+#### Get a file attributes
+```PHP
+```
+#### Get list of attributes of a file
+```PHP
+
+```
+
 
 ## Users
 
@@ -107,7 +124,6 @@ $attrID = $attr->getAttributeKeyID(); //print($attrID);
 $attrHandle = $attr->getAttributeKeyHandle(); //print($attrHandle);
 $attrName = $attr->getAttributeKeyName(); //print($attrName);
 ```
-
 ### Get options of an 'Option List' attribute
 ```PHP
 $attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
@@ -120,31 +136,59 @@ foreach ((object)$attrOptions as $attrOption) {
 ```
 
 ### Attrubute Set
+
 #### Get a set
 ```PHP
 $attrSet = AttributeSet::getByID('attribute_set_id'); //by ID
 $attrSet = AttributeSet::getByHandle('attribute_set_handle'); //by handle
 ```
-
 #### Get attributes in a set
 ```PHP
 $attrs = $attrSet->getAttributeKeys();
 foreach($attrs as $attr) {
-  	$attrID = $attr->getAttributeKeyID(); //print($attrID);
-	$attrHandle = $attr->getAttributeKeyHandle(); //print($attrHandle);
-	$attrName = $attr->getAttributeKeyName(); //print($attrName);
+    $attrID = $attr->getAttributeKeyID(); //print($attrID);
+    $attrHandle = $attr->getAttributeKeyHandle(); //print($attrHandle);
+    $attrName = $attr->getAttributeKeyName(); //print($attrName);
 }
 ```
+
+
 ## Single Pages
+
 
 ## Blocks
 
+
 ## Stacks
+
 
 ## Language
 
+
 ## Constants
+
 
 ## Configs
 
+
 ## Helpers
+
+### Number helper
+```PHP
+$im = Core::make('helper/number');
+```
+
+### Text helper
+```PHP
+$im = Core::make('helper/text');
+```
+
+### URL helper
+```PHP
+$im = Core::make('helper/url');
+```
+
+### Image helper
+```PHP
+$im = Core::make('helper/image');
+```
