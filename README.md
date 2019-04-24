@@ -115,7 +115,7 @@ if ($attr) {
 
 ## Attributes
 
-### Get a Collection/Page attribute
+#### Get a Collection/Page attribute
 ```PHP
 $attr = CollectionAttributeKey::getByID(1); //by ID
 $attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
@@ -124,7 +124,7 @@ $attrID = $attr->getAttributeKeyID(); //print($attrID);
 $attrHandle = $attr->getAttributeKeyHandle(); //print($attrHandle);
 $attrName = $attr->getAttributeKeyName(); //print($attrName);
 ```
-### Get options of an 'Option List' attribute
+#### Get options of an 'Option List' attribute
 ```PHP
 $attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
 $controller = $attr->getController();
@@ -173,22 +173,22 @@ foreach($attrs as $attr) {
 
 ## Helpers
 
-### Number helper
+#### Number helper
 ```PHP
 $im = Core::make('helper/number');
 ```
 
-### Text helper
+#### Text helper
 ```PHP
 $im = Core::make('helper/text');
 ```
 
-### URL helper
+#### URL helper
 ```PHP
 $im = Core::make('helper/url');
 ```
 
-### Image helper
+#### Image helper
 ```PHP
 $im = Core::make('helper/image');
 ```
