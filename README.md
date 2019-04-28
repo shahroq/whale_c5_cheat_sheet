@@ -124,7 +124,7 @@ foreach ((array)$pages as $page) {
     echo $page->getCollectionID();
 }
 ```
-For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
+For custom markup check <a href='https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7' target="_blank">`here`</a>
 
 #### Filter a page list
 ```PHP
