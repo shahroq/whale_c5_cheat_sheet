@@ -97,10 +97,34 @@ if ($attr) {
 ```PHP
 $pageList = new PageList();
 $pages = $pageList->getResults();
-foreach ($pages as $page) {
+
+//echo count($pages);
+foreach ((array)$pages as $page) {
     echo $page->getCollectionID();
 }
 ```
+#### Get list of pages with pagination
+```PHP
+$pageList = new PageList();
+
+$pagination = $pageList->getPagination();
+$pagination->setMaxPerPage(10);
+$pagination->setCurrentPage(1);
+$pages = $pagination->getCurrentPageResults();
+
+//Pagination functions
+echo $pagination->getTotalResults(); //total number of results
+echo $pagination->getTotalPages(); //total number of pages
+echo $pagination->hasNextPage(); //To determine whether paging is necessary
+echo $pagination->hasPreviousPage(); //"
+echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
+
+//echo count($pages);
+foreach ((array)$pages as $page) {
+    echo $page->getCollectionID();
+}
+```
+#### For custom markup check [here](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a page list
 ```PHP
@@ -158,19 +182,52 @@ $file = \File::getByID(1); // by ID
 
 #### Get a file data
 ```PHP
-echo $file->getFileID();
-echo $file->getURL();
+echo $file->getFileID(); //file ID
+echo $file->getFileName(); //file name
+
+echo $file->getURL(); //direct url
+echo $file->getDownloadURL(); //tracked url
+echo $file->getRelativePath();echo "<br><br>";
+echo $_SERVER['DOCUMENT_ROOT'].$file->getRelativePath();echo "<br><br>";
+
+echo $file->getTitle();
+echo $file->getDescription();
+echo $file->getTags(); //string
+print_r($file->getTagsList()); //array
+
+echo $file->getSize();
+echo $file->getFullSize();
+echo $file->getExtension();
+echo $file->getType();
+echo $file->getMimeType();
+echo $file->getDisplayType();
+echo $file->getGenericTypeText();
+
+echo $file->getAttribute('width');
+echo $file->getAttribute('height');
+echo $file->getAttribute('duration');
 
 //file version
 $fileVersion = $file->getApprovedVersion();
 ```
 #### Get a file attributes
 ```PHP
-
+echo $file->getAttribute('width');
 ```
 #### Get list of attributes of a file
 ```PHP
 
+```
+
+#### Get list of files
+```PHP
+$FileList = new FileList();
+$files = $FileList->getResults();
+
+//echo count($files);
+foreach ((array)$files as $file) {
+    echo $file->getFileID();
+}
 ```
 
 
