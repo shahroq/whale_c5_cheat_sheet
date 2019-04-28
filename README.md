@@ -32,6 +32,7 @@ $page = \Page::getByPath('/path/to/page'); //by path
 ```
 #### Get a page data
 ```PHP
+echo $page->getCollectionID();
 echo $page->getCollectionName();
 echo $page->getCollectionDescription();
 echo $page->getCollectionDateAdded();
@@ -92,6 +93,60 @@ if ($attr) {
 
 ### List of pages
 
+#### Get list of pages
+```PHP
+$pageList = new PageList();
+$pages = $pageList->getResults();
+foreach ($pages as $page) {
+    echo $page->getCollectionID();
+}
+```
+
+#### Filter a page list
+```PHP
+$pageList->filterByParentID($cParentID); //by parent ID
+
+$pageList->filterByKeywords('foobar'); //by keyword
+$pageList->filterByFulltextKeywords('foobar'); //more advanced search by keyword
+
+$pageList->filterByPageTypeID($ctID); //by a page type ID
+$pageList->filterByPageTypeHandle('blog_entry'); //by a page type handle
+
+$pageList->filterByPageTypeHandle(['blog_entry', 'press_release']); //by page typeS
+$pageList->filterByExcludeNav(true); //by an attribute
+
+$topicNode = \Concrete\Core\Tree\Node::getByID(24); 
+$pageList->filterByBlogEntryTopic($topicNode); //by a topic
+
+$pageList->filterBySelectAttribute($akHandle, $value); // select attribute
+
+$pageList->filterByUserID($uID); //by user ID
+$pageList->filterByIsApproved($cvIsApproved); //by is approved
+$pageList->filterByIsAlias($ia); // by alias
+
+$pageList->filterByDateAdded($date, $comparison = '='); //by date added
+$pageList->filterByPublicDate($date, $comparison = '='); // by public date
+$pageList->filterByDateLastModified($date, $comparison = '='); //by last modified date
+$pageList->filterByNumberOfChildren($num, $comparison = '>'); // by number of children
+```
+
+#### Sort a page list
+```PHP
+$pageList->sortByRelevance()
+
+$pageList->sortByDisplayOrder();
+$pageList->sortByDisplayOrderDescending()
+
+$pageList->sortByCollectionIDAscending()
+
+$pageList->sortByPublicDate();
+$pageList->sortByPublicDateDescending();
+
+$pageList->sortByName();
+$pageList->sortByNameDescending();
+
+$pageList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + attrbute_handle
+```
 
 
 ## Files
@@ -166,8 +221,8 @@ $uiAvatar = $ui->getUserAvatar(); //echo $uiAvatar->getPath();
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
 $categories = AttributeKeyCategory::getList();		
 foreach ((array)$categories as $category) {
-	$categoryID = $category->getAttributeKeyCategoryID(); //echo $categoryID;
-	$categoryHandle = $category->getAttributeKeyCategoryHandle(); //echo $categoryHandle;
+    $categoryID = $category->getAttributeKeyCategoryID(); //echo $categoryID;
+    $categoryHandle = $category->getAttributeKeyCategoryHandle(); //echo $categoryHandle;
 }
 ```
 
@@ -236,6 +291,8 @@ foreach($attrs as $attr) {
 
 
 ## Stacks
+
+## Express Entries
 
 
 ## Language
