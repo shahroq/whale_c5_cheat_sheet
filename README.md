@@ -125,7 +125,6 @@ foreach ((array)$pages as $page) {
 }
 ```
 For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7){:target="_blank"}
-<a href='https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7' target="_blank">`here`</a>
 
 #### Filter a page list
 ```PHP
@@ -222,15 +221,81 @@ echo $file->getAttribute('width');
 
 #### Get list of files
 ```PHP
-$FileList = new FileList();
-$files = $FileList->getResults();
+$fileList = new FileList();
+$files = $fileList->getResults();
 
 //echo count($files);
 foreach ((array)$files as $file) {
     echo $file->getFileID();
 }
 ```
+#### Get list of files with pagination
+```PHP
+$fileList = new FileList();
 
+$pagination = $fileList->getPagination();
+$pagination->setMaxPerPage(10);
+$pagination->setCurrentPage(1);
+$files = $pagination->getCurrentPageResults();
+
+//Pagination functions
+echo $pagination->getTotalResults(); //total number of results
+echo $pagination->getTotalPages(); //total number of files
+echo $pagination->hasNextPage(); //To determine whether paging is necessary
+echo $pagination->hasPreviousPage(); //"
+echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
+
+//echo count($files);
+foreach ((array)$files as $file) {
+    echo $file->getFileID();
+}
+```
+For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7){:target="_blank"}
+
+
+#### Filter a file list
+```PHP
+$FileList->filterByType(\Concrete\Core\File\Type\Type::T_IMAGE); //by type (T_IMAGE, T_TEXT, T_AUDIO, T_DOCUMENT, T_APPLICATION, T_UNKNOWN)
+$FileList->filterByExtension('png'); //by extension
+$FileList->filterByKeywords('foobar'); //by keywords
+if ($fileSet) $FileList->filterBySet($fileSet); //by set (check 'Get a file set' for how to get a set)
+$FileList->filterByNoSet(); //files in No Sets
+$FileList->filterBySize(1024, 2048); // Only includes files that are between 1MB and 2MB in Size
+$FileList->filterByAttribute('width', 200, '>='); // Only include files where "width" is 200 or greater.
+$FileList->filterByDateAdded($date, $comparison = '='); //by date added
+$FileList->filterByTags($tags); //by tags
+```
+
+#### Sort a file list
+```PHP
+$FileList->sortByFilenameAscending();
+$FileList->sortByFileSetDisplayOrder();
+```
+
+#### Get a file set
+```PHP
+$fileSet = FileSet::getByID(1); //by ID
+$fileSet = FileSet::getByName('File Set Name'); // name
+```
+
+#### Get files inside a folder
+```PHP
+//use Concrete\Core\Tree\Node\Type\FileFolder;
+//use Concrete\Core\File\FolderItemList;
+
+$fileFolder = FileFolder::getNodeByName('Folder Name');
+$fileList = new FolderItemList();
+if ($fileFolder) { 
+    $fileList->filterByParentFolder($fileFolder);
+    $files = $fileList->getResults();
+}	
+
+//echo count($files);
+foreach ((array)$files as $file) {
+    $file = $file->getTreeNodeFileObject();
+    echo $file->getFileID();
+}
+```
 
 ## Users
 
