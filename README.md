@@ -18,6 +18,13 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get list of pages with pagination](#get-list-of-pages-with-pagination)
     - [Filter a page list](#filter-a-page-list)
     - [Sort a page list](#sort-a-page-list)
+  - [Page operations](#page-operations)
+    - [Add a page](#add-a-page)
+    - [Update a page](#update-a-page)
+    - [Delete a page](#delete-a-page)
+    - [Move a page](#move-a-page)
+    - [Copy a Page](#copy-a-page)
+    - [add an extra location URL](#add-an-extra-location-url)
 - [Files](#files)
   - [A Files](#a-files)
     - [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
@@ -86,6 +93,10 @@ echo $page->getCollectionDescription();
 echo $page->getCollectionDateAdded();
 echo $page->getCollectionDatePublic();
 echo $page->getCollectionUserID();
+echo $page->getCollectionPath();
+echo $page->getCollectionLink();
+echo $page->getCollectionParentID();
+echo $page->isSystemPage();
 ```
 
 #### Get a page type/template
@@ -221,6 +232,66 @@ $pageList->sortByNameDescending();
 $pageList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + attrbute_handle
 ```
 
+### Page operations
+#### Add a page
+```PHP
+//$parentPage = \Page::getByID(1);
+$parentPage = \Page::getByPath('/blog');
+$pageType = \PageType::getByHandle('blog_entry'); //dashboard/pages/types 
+$pageTemplate = \PageTemplate::getByHandle('blog_entry');//dashboard/pages/templates
+$page = $parentPage->add(
+    $pageType, 
+    array(
+        'cName' => 'Hello All!',
+        'cDescription' => 'Just a quick blog post.',
+    	'cHandle ' => 'hello-all',
+    	//'cDatePublic' => '2019-01-02 20:21:22',
+    	//'cDateCreated' => date('Y-m-d H:i:s'),
+    	//'pkgID ' => 1,
+    	//'uID ' => 1,
+    ),
+    $pageTemplate
+);
+```
+#### Update a page
+```PHP
+$page->update(
+    array(
+        'cName' => 'My new page name',
+        'cDescription' => 'My new page description', 
+    	//'cDatePublic' => '2019-01-02 20:21:22',
+    	//'cDateCreated' => date('Y-m-d H:i:s'),
+    	//'pkgID' => 1,
+        //'uID' => 1,
+        
+        //'pTemplateID' => 1,
+        //'cHandle' => 'new-handle',
+        //'cCacheFullPageContent' => FALSE,
+        //'cCacheFullPageContentOverrideLifetime' => FALSE,
+        //'cCacheFullPageContentLifetimeCustom' => FALSE,
+));
+```
+#### Delete a page
+```PHP
+$page->delete(); //delete it immediately
+$page->moveToTrash(); //move to trash
+```
+#### Move a page
+```PHP
+$moveTo = \Page::getByPath('/archives');
+$page->move($moveTo);
+```
+#### Copy a Page
+```PHP
+$copyTo = \Page::getByPath('/archives');
+$page->duplicate($copyTo);
+```
+#### add an extra location URL
+```PHP
+//$page = \Page::getByID(1);
+$page = \Page::getByPath('/blog');
+$page->addAdditionalPagePath('/blog-path-for-others');
+```
 
 ## Files
 ### A Files
