@@ -5,9 +5,22 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
 **Contributions are welcome via [issues](https://github.com/shahroq/whale_c5_cheat_sheet/issues) and [pull requests](https://github.com/shahroq/whale_c5_cheat_sheet/pulls).**
 
 ## Table of Contents
-* [Pages (Collections)](#pages)
+* [Pages (Collections)](#pages-collections)
+	* [A page]
+		* [Get Current page]()
+		* [Get a page by a unique identifier]()
+		* [Get a page data]()
+		* [Get a page type/template]()
+		* [Get page attributes]()
+		* [Get list of attributes of a page]()
+	* [List of pages]()
+		* [Get list of pages]()
+		* [Get list of pages with pagination]()
+		* [Filter a page list]()
+		* [Sort a page list]()
 * [Files](#files)
 * [Users](#users)
+* [Attributes](#attributes)
 * [Single Pages](#single-pages)
 * [Blocks](#blocks)
 * [Stacks](#stacks)
@@ -15,6 +28,10 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
 * [Constants](#constants)
 * [Configs](#configs)
 * [Helpers](#helpers)
+    * [Number helper](#number-helper)
+	* [Text helper](#text-helper)
+	* [URL helper](#url-helper) 
+	* [Image helper](#image-helper)
 * [Contributors](#contributors)
 
 ## Pages (Collections)
@@ -96,6 +113,7 @@ if ($attr) {
 #### Get list of pages
 ```PHP
 $pageList = new PageList();
+
 $pages = $pageList->getResults();
 
 //echo count($pages);
@@ -219,9 +237,12 @@ echo $file->getAttribute('width');
 
 ```
 
+### List of files
+
 #### Get list of files
 ```PHP
 $fileList = new FileList();
+
 $files = $fileList->getResults();
 
 //echo count($files);
@@ -299,6 +320,8 @@ foreach ((array)$files as $file) {
 
 ## Users
 
+### A User
+
 #### Get a user by a unique identifier
 ```PHP
 $user = \File::getByID(1); // by ID
@@ -335,6 +358,72 @@ $uiPreviousLogin = $ui->getPreviousLogin(); //echo date('Y-m-d H:i:s', $uiPrevio
 $uiPublicProfileUrl = $ui->getUserPublicProfileUrl(); //echo $uiPublicProfileUrl;
 $uiHasAvatar = $ui->hasAvatar(); //echo $uiHasAvatar;
 $uiAvatar = $ui->getUserAvatar(); //echo $uiAvatar->getPath();
+```
+
+### List of users
+
+#### Get list of users
+```PHP
+$userList = new UserList();
+
+$users = $userList->getResults();
+
+//echo count($users);
+foreach ((array)$users as $user) {
+    echo $user->getUserID();
+}
+```
+#### Get list of users with pagination
+```PHP
+$userList = new UserList();
+
+$pagination = $userList->getPagination();
+$pagination->setMaxPerPage(10);
+$pagination->setCurrentPage(1);
+$users = $pagination->getCurrentPageResults();
+
+//Pagination functions
+echo $pagination->getTotalResults(); //total number of results
+echo $pagination->getTotalPages(); //total number of pages
+echo $pagination->hasNextPage(); //To determine whether paging is necessary
+echo $pagination->hasPreviousPage(); //"
+echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
+
+//echo count($users);
+foreach ((array)$users as $user) {
+    echo $user->getUserID();
+}
+```
+#### Filter a user list
+```PHP
+$userList->filterByKeywords('andrew'); //by keywords (simple)
+$userList->filterByFulltextKeywords('foobar'); //by keywords (advanced)
+$userList->filterByUsername('foobar'); //by username
+$userList->filterByFuzzyUsername('foobar'); //by username(fuzzy)
+$userList->filterByDateAdded($date, $comparison = '='); //by date added
+$userList->includeInactiveUsers();
+$userList->includeUnvalidatedUsers();
+$userList->filterByIsActive($isActive);
+$userList->filterByIsValidated($isValidated);
+
+$userList->filterByGroup('Administrators'); //by group
+//OR send the group object
+$group = \Group::getByName('Administrators');
+$userList->filterByGroup($group);
+
+$group = \Group::getByName('Administrators');
+$userList->filterByGroup($group, false); // Return all non-admins
+
+$userList->filterByProfilePrivateMessagesEnabled(true); //by attribute
+
+$userList->filterByInAnyGroup($groups, $inGroups = true) //multiple group
+```
+#### Sort a user list
+```PHP
+$userList->sortByDateAdded();
+$userList->sortByUserName();
+
+$userList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + attrbute_handle
 ```
 
 ## Attributes
