@@ -11,7 +11,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get a page by a unique identifier](#get-a-page-by-a-unique-identifier)
     - [Get a page data](#get-a-page-data)
     - [Get a page type/template](#get-a-page-typetemplate)
-    - [Get page attributes](#get-page-attributes)
+    - [Get a page attribute](#get-a-page-attribute)
     - [Get list of attributes of a page](#get-list-of-attributes-of-a-page)
   - [List of pages](#list-of-pages)
     - [Get list of pages](#get-list-of-pages)
@@ -25,35 +25,51 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Move a page](#move-a-page)
     - [Copy a Page](#copy-a-page)
     - [Add an extra location URL](#add-an-extra-location-url)
+    - [Set/Update an attribute of a page](#setupdate-an-attribute-of-a-page)
+    - [Clear an attribute of a page](#clear-an-attribute-of-a-page)
 - [Files](#files)
   - [A Files](#a-files)
     - [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
     - [Get a file data](#get-a-file-data)
-    - [Get a file attributes](#get-a-file-attributes)
+    - [Get a file attribute](#get-a-file-attribute)
     - [Get list of attributes of a file](#get-list-of-attributes-of-a-file)
   - [List of files](#list-of-files)
     - [Get list of files](#get-list-of-files)
     - [Get list of files with pagination](#get-list-of-files-with-pagination)
     - [Filter a file list](#filter-a-file-list)
+    - [Get files inside a folder](#get-files-inside-a-folder)
     - [Sort a file list](#sort-a-file-list)
     - [Get a file set](#get-a-file-set)
     - [Get a file folder](#get-a-file-folder)
-    - [Get files inside a folder](#get-files-inside-a-folder)
-    - [create a file set](#create-a-file-set)
-    - [add a file to a set](#add-a-file-to-a-set)
-    - [create a file folder](#create-a-file-folder)
-    - [add a file to a folder](#add-a-file-to-a-folder)
+  - [File Operation](#file-operation)
+    - [importing a file](#importing-a-file)
+    - [Delete a file](#delete-a-file)
+    - [Set/Update an attribute to a file](#setupdate-an-attribute-to-a-file)
+    - [Clear an attribute of a file](#clear-an-attribute-of-a-file)
+    - [Create a file set](#create-a-file-set)
+    - [Add a file to a set](#add-a-file-to-a-set)
+    - [Create a file folder](#create-a-file-folder)
+    - [Add a file to a folder](#add-a-file-to-a-folder)
 - [Users](#users)
   - [A User](#a-user)
+    - [Get/Check current user](#getcheck-current-user)
     - [Get a user by a unique identifier](#get-a-user-by-a-unique-identifier)
     - [Get a user data](#get-a-user-data)
     - [Get user info object](#get-user-info-object)
     - [Get user info data](#get-user-info-data)
+    - [Get a user (info) attributes](#get-a-user-info-attributes)
   - [List of users](#list-of-users)
     - [Get list of users](#get-list-of-users)
     - [Get list of users with pagination](#get-list-of-users-with-pagination)
     - [Filter a user list](#filter-a-user-list)
     - [Sort a user list](#sort-a-user-list)
+  - [User operation](#user-operation)
+    - [Add a user](#add-a-user)
+    - [Update a user](#update-a-user)
+    - [Activate/Deactivate a user](#activatedeactivate-a-user)
+    - [Delete a user](#delete-a-user)
+    - [Set/Update an attribute to a user](#setupdate-an-attribute-to-a-user)
+    - [Clear an attribute of a user](#clear-an-attribute-of-a-user)
 - [Attributes](#attributes)
   - [Attribute operations](#attribute-operations)
     - [Add an attribute](#add-an-attribute)
@@ -137,7 +153,7 @@ if (is_object($pt)) {
 }        
 ```
 
-#### Get page attributes
+#### Get a page attribute
 ```PHP
 //attribute
 $attr = $page->getAttribute('attribute_handle');
@@ -319,6 +335,18 @@ $page = \Page::getByPath('/blog');
 $page->addAdditionalPagePath('/blog-path-for-others');
 ```
 
+#### Set/Update an attribute of a page
+```PHP
+$page = \Page::getByID(1); //by ID
+$page->setAttribute('attribute_handle', 'value');
+```
+#### Clear an attribute of a page
+```PHP
+$page = \Page::getByID(1); //by ID
+$page->clearAttribute('attribute_handle');
+```
+
+
 ## Files
 
 
@@ -362,7 +390,7 @@ echo $file->getAttribute('duration');
 $fileVersion = $file->getApprovedVersion();
 ```
 
-#### Get a file attributes
+#### Get a file attribute
 ```PHP
 echo $file->getAttribute('width');
 ```
@@ -415,32 +443,15 @@ For custom markup check [`here`](https://documentation.concrete5.org/tutorials/s
 $FileList->filterByType(\Concrete\Core\File\Type\Type::T_IMAGE); //by type (T_IMAGE, T_TEXT, T_AUDIO, T_DOCUMENT, T_APPLICATION, T_UNKNOWN)
 $FileList->filterByExtension('png'); //by extension
 $FileList->filterByKeywords('foobar'); //by keywords
-if ($fileSet) $FileList->filterBySet($fileSet); //by set (check 'Get a file set' for how to get a set)
-$FileList->filterByNoSet(); //files in No Sets
 $FileList->filterBySize(1024, 2048); //Only includes files that are between 1MB and 2MB in Size
 $FileList->filterByAttribute('width', 200, '>='); //Only include files where "width" is 200 or greater.
 $FileList->filterByDateAdded($date, $comparison = '='); //by date added
 $FileList->filterByTags($tags); //by tags
-```
 
-#### Sort a file list
-```PHP
-$FileList->sortByFilenameAscending();
-$FileList->sortByFileSetDisplayOrder();
+//SET
+if ($fileSet) $FileList->filterBySet($fileSet); //by set (check 'Get a file set' for how to get a set)
+$FileList->filterByNoSet(); //files in No Sets
 ```
-
-#### Get a file set
-```PHP
-$fileSet = FileSet::getByID(1); //by ID
-$fileSet = FileSet::getByName('File Set Name'); //name
-```
-
-#### Get a file folder
-```PHP
-$folder = Node::getByID($folderID); //by ID
-$folder = Node::getNodeByName('My Folder'); //by name, not working
-```
-
 
 #### Get files inside a folder
 ```PHP
@@ -461,18 +472,68 @@ foreach ((array)$files as $file) {
 }
 ```
 
-#### create a file set
+#### Sort a file list
+```PHP
+$FileList->sortByFilenameAscending();
+$FileList->sortByFileSetDisplayOrder();
+```
+
+#### Get a file set
+```PHP
+$fileSet = FileSet::getByID(1); //by ID
+$fileSet = FileSet::getByName('File Set Name'); //name
+```
+
+#### Get a file folder
+```PHP
+$folder = Node::getByID($folderID); //by ID
+$folder = Node::getNodeByName('My Folder'); //by name, not working
+```
+
+### File Operation
+
+
+#### importing a file
+```PHP
+$filePath = 'path/to/file/filename.jpg';
+if (file_exists($filePath)) {
+	$importer = new \Concrete\Core\File\Importer();
+	$fileVersion = $importer->import($filePath, false); //echo get_class($fileVersion); //file version object
+    $file = $fileVersion->getFile(); //echo get_class($file); //file object
+}	
+```
+
+#### Delete a file
+```PHP
+$file = File::getByID(1);
+$file->delete();
+```
+
+#### Set/Update an attribute to a file
+```PHP
+$file = File::getByID(1);
+$file->setAttribute('attribute_handle', 'value');
+```
+
+#### Clear an attribute of a file
+```PHP
+$file = File::getByID(1);
+$file->clearAttribute('attribute_handle');
+```
+
+
+#### Create a file set
 ```PHP
 $fileSet = Set::createAndGetSet('My File Set', Set::TYPE_PUBLIC);
 ```
 
-#### add a file to a set
+#### Add a file to a set
 ```PHP    
 $file = \File::getByID(1); // by ID
 $fileSet->addFileToSet($file);
 ```
 
-#### create a file folder
+#### Create a file folder
 ```PHP
 //use Concrete\Core\File\Filesystem;
 
@@ -482,13 +543,12 @@ $folderName = 'My Folder - '.time();
 $folder = $filesystem->addFolder($folder, $folderName);	
 ```
 
-#### add a file to a folder
+#### Add a file to a folder
 ```PHP    
 $file = \File::getByID(1); // by ID
 $fileNode = $file->getFileNodeObject();
 if (is_object($fileNode)) $fileNode->move($folder);    
 ```
-
 
 ## Users
 
@@ -496,11 +556,34 @@ if (is_object($fileNode)) $fileNode->move($folder);
 
 ### A User
 
+#### Get/Check current user
+```PHP
+$u = new User();
+
+if ($u->isRegistered()) {
+    print 'User is logged in.';
+}
+
+if ($u->isSuperUser()) {
+    print 'Yes, they are!';
+}
+
+print $u->getUserID();
+
+$groups = $u->getUserGroups();
+foreach($groups as $groupID) {
+    $group = \Concrete\Core\User\Group\Group::getByID($groupID);
+    print $group->getGroupName();
+}
+```
 
 #### Get a user by a unique identifier
 ```PHP
-$user = \File::getByID(1); //by ID
+$user = User::getByUserID(1); //by ID
+//User::getByUserID(3, true); // Now user 3 is logged in.
 ```
+
+
 
 #### Get a user data
 ```PHP
@@ -533,6 +616,11 @@ $uiPreviousLogin = $ui->getPreviousLogin(); //echo date('Y-m-d H:i:s', $uiPrevio
 $uiPublicProfileUrl = $ui->getUserPublicProfileUrl(); //echo $uiPublicProfileUrl;
 $uiHasAvatar = $ui->hasAvatar(); //echo $uiHasAvatar;
 $uiAvatar = $ui->getUserAvatar(); //echo $uiAvatar->getPath();
+```
+
+#### Get a user (info) attributes
+```PHP
+$uiAttr = $ui->getAttribute('attribute_handle'); //echo $uiAttr;
 ```
 
 ### List of users
@@ -603,6 +691,79 @@ $userList->sortByDateAdded();
 $userList->sortByUserName();
 
 $userList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attrbute_handle
+```
+
+### User operation
+
+
+#### Add a user
+```PHP
+$ui = \UserInfo::add(array(
+    'uName' => 'andrew',
+    'uEmail' => 'andrew@concrete5.org', 
+    'uPassword' => 'kittens',
+    //'uDefaultLanguage' => '', //an ISO language code for the user's default language
+    //'uIsValidated' => '', //whether the user is validated. 1 for validated, 0 for definitely unvalidated, and -1 for unknown (which is the default on sites that don't employ user validation
+));
+```
+
+#### Update a user
+```PHP
+$ui = \UserInfo::getByID(10);
+if ($ui) {
+    $ui->update(array(
+        //'uName' => 'andrew',
+        //'uEmail' => 'new@email.com',
+        //'uPassword' => 'kittens',
+        //'uDefaultLanguage' => ''
+        //'uIsValidated' => '',
+        //'uTimezone' => 'America/Los_Angeles'
+        //'uHasAvatar' => '',
+        //'uPasswordConfirm' => '',
+    ));
+}
+
+//change password
+$ui = \UserInfo::getByID(10);
+if ($ui) {
+    $ui->update(array(
+        'uPassword' => 'newpass', 
+        'uPasswordConfirm' => 'newpass']
+    ));
+}
+```
+
+#### Activate/Deactivate a user
+```PHP
+$ui = \UserInfo::getByID(20);
+if ($ui) {
+    $ui->deactivate();
+    $ui->activate();
+}    
+```
+
+#### Delete a user
+```PHP
+$ui = \UserInfo::getByID(10);
+if ($ui) {
+    $ui->delete();
+}
+```
+
+#### Set/Update an attribute to a user
+```PHP
+$ui = UserInfo::getByID(1); //by ID
+if ($ui) {
+    $ui->setAttribute('attribute_handle', 'value');
+}    
+```
+
+#### Clear an attribute of a user
+```PHP
+$ui = UserInfo::getByID(1); //by ID
+if ($ui) {
+    $ui->clearAttribute('attribute_handle');
+}    
 ```
 
 ## Attributes
