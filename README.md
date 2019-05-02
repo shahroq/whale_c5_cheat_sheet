@@ -24,7 +24,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Delete a page](#delete-a-page)
     - [Move a page](#move-a-page)
     - [Copy a Page](#copy-a-page)
-    - [add an extra location URL](#add-an-extra-location-url)
+    - [Add an extra location URL](#add-an-extra-location-url)
 - [Files](#files)
   - [A Files](#a-files)
     - [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
@@ -37,7 +37,12 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Filter a file list](#filter-a-file-list)
     - [Sort a file list](#sort-a-file-list)
     - [Get a file set](#get-a-file-set)
+    - [Get a file folder](#get-a-file-folder)
     - [Get files inside a folder](#get-files-inside-a-folder)
+    - [create a file set](#create-a-file-set)
+    - [add a file to a set](#add-a-file-to-a-set)
+    - [create a file folder](#create-a-file-folder)
+    - [add a file to a folder](#add-a-file-to-a-folder)
 - [Users](#users)
   - [A User](#a-user)
     - [Get a user by a unique identifier](#get-a-user-by-a-unique-identifier)
@@ -50,6 +55,9 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Filter a user list](#filter-a-user-list)
     - [Sort a user list](#sort-a-user-list)
 - [Attributes](#attributes)
+  - [Attribute operations](#attribute-operations)
+    - [Add an attribute](#add-an-attribute)
+    - [Delete an attribute](#delete-an-attribute)
     - [List of attribute set categories (collection/user/file/site/event)](#list-of-attribute-set-categories-collectionuserfilesiteevent)
     - [List of sets in a category](#list-of-sets-in-a-category)
     - [Get a Collection/Page attribute](#get-a-collectionpage-attribute)
@@ -57,10 +65,13 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
   - [Attrubute Set](#attrubute-set)
     - [A set](#a-set)
     - [Attributes in a set](#attributes-in-a-set)
+    - [Add a Collection/Page set](#add-a-collectionpage-set)
+    - [Add a File set](#add-a-file-set)
     - [List of sets](#list-of-sets)
 - [Single Pages](#single-pages)
 - [Blocks](#blocks)
 - [Stacks](#stacks)
+- [Packages](#packages)
 - [Express Entries](#express-entries)
 - [Language](#language)
 - [Constants](#constants)
@@ -70,21 +81,29 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Text helper](#text-helper)
     - [URL helper](#url-helper)
     - [Image helper](#image-helper)
+- [Databse Operations](#databse-operations)
 - [Contributors](#contributors)
+
+
 
 ## Pages (Collections)
 
+
+
 ### A page
+
 
 #### Get Current page
 ```PHP
 $page = \Page::getCurrentPage();
 ```
+
 #### Get a page by a unique identifier
 ```PHP
 $page = \Page::getByID(1); //by ID
 $page = \Page::getByPath('/path/to/page'); //by path
 ```
+
 #### Get a page data
 ```PHP
 echo $page->getCollectionID();
@@ -148,9 +167,8 @@ if ($attr) {
 
 ```
 
-
-
 ### List of pages
+
 
 #### Get list of pages
 ```PHP
@@ -163,6 +181,7 @@ foreach ((array)$pages as $page) {
     echo $page->getCollectionID();
 }
 ```
+
 #### Get list of pages with pagination
 ```PHP
 $pageList = new PageList();
@@ -202,16 +221,16 @@ $pageList->filterByExcludeNav(true); //by an attribute
 $topicNode = \Concrete\Core\Tree\Node::getByID(24); 
 $pageList->filterByBlogEntryTopic($topicNode); //by a topic
 
-$pageList->filterBySelectAttribute($akHandle, $value); // select attribute
+$pageList->filterBySelectAttribute($akHandle, $value); //select attribute
 
 $pageList->filterByUserID($uID); //by user ID
 $pageList->filterByIsApproved($cvIsApproved); //by is approved
-$pageList->filterByIsAlias($ia); // by alias
+$pageList->filterByIsAlias($ia); //by alias
 
 $pageList->filterByDateAdded($date, $comparison = '='); //by date added
-$pageList->filterByPublicDate($date, $comparison = '='); // by public date
+$pageList->filterByPublicDate($date, $comparison = '='); //by public date
 $pageList->filterByDateLastModified($date, $comparison = '='); //by last modified date
-$pageList->filterByNumberOfChildren($num, $comparison = '>'); // by number of children
+$pageList->filterByNumberOfChildren($num, $comparison = '>'); //by number of children
 ```
 
 #### Sort a page list
@@ -229,10 +248,12 @@ $pageList->sortByPublicDateDescending();
 $pageList->sortByName();
 $pageList->sortByNameDescending();
 
-$pageList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + attrbute_handle
+$pageList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attrbute_handle
 ```
 
 ### Page operations
+
+
 #### Add a page
 ```PHP
 //$parentPage = \Page::getByID(1);
@@ -253,6 +274,7 @@ $page = $parentPage->add(
     $pageTemplate
 );
 ```
+
 #### Update a page
 ```PHP
 $page->update(
@@ -271,22 +293,26 @@ $page->update(
         //'cCacheFullPageContentLifetimeCustom' => FALSE,
 ));
 ```
+
 #### Delete a page
 ```PHP
 $page->delete(); //delete it immediately
 $page->moveToTrash(); //move to trash
 ```
+
 #### Move a page
 ```PHP
 $moveTo = \Page::getByPath('/archives');
 $page->move($moveTo);
 ```
+
 #### Copy a Page
 ```PHP
 $copyTo = \Page::getByPath('/archives');
 $page->duplicate($copyTo);
 ```
-#### add an extra location URL
+
+#### Add an extra location URL
 ```PHP
 //$page = \Page::getByID(1);
 $page = \Page::getByPath('/blog');
@@ -294,10 +320,15 @@ $page->addAdditionalPagePath('/blog-path-for-others');
 ```
 
 ## Files
+
+
+
 ### A Files
+
+
 #### Get a file by a unique identifier
 ```PHP
-$file = \File::getByID(1); // by ID
+$file = \File::getByID(1); //by ID
 ```
 
 #### Get a file data
@@ -330,16 +361,19 @@ echo $file->getAttribute('duration');
 //file version
 $fileVersion = $file->getApprovedVersion();
 ```
+
 #### Get a file attributes
 ```PHP
 echo $file->getAttribute('width');
 ```
+
 #### Get list of attributes of a file
 ```PHP
 
 ```
 
 ### List of files
+
 
 #### Get list of files
 ```PHP
@@ -352,6 +386,7 @@ foreach ((array)$files as $file) {
     echo $file->getFileID();
 }
 ```
+
 #### Get list of files with pagination
 ```PHP
 $fileList = new FileList();
@@ -375,7 +410,6 @@ foreach ((array)$files as $file) {
 ```
 For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7){:target="_blank"}
 
-
 #### Filter a file list
 ```PHP
 $FileList->filterByType(\Concrete\Core\File\Type\Type::T_IMAGE); //by type (T_IMAGE, T_TEXT, T_AUDIO, T_DOCUMENT, T_APPLICATION, T_UNKNOWN)
@@ -383,8 +417,8 @@ $FileList->filterByExtension('png'); //by extension
 $FileList->filterByKeywords('foobar'); //by keywords
 if ($fileSet) $FileList->filterBySet($fileSet); //by set (check 'Get a file set' for how to get a set)
 $FileList->filterByNoSet(); //files in No Sets
-$FileList->filterBySize(1024, 2048); // Only includes files that are between 1MB and 2MB in Size
-$FileList->filterByAttribute('width', 200, '>='); // Only include files where "width" is 200 or greater.
+$FileList->filterBySize(1024, 2048); //Only includes files that are between 1MB and 2MB in Size
+$FileList->filterByAttribute('width', 200, '>='); //Only include files where "width" is 200 or greater.
 $FileList->filterByDateAdded($date, $comparison = '='); //by date added
 $FileList->filterByTags($tags); //by tags
 ```
@@ -398,8 +432,15 @@ $FileList->sortByFileSetDisplayOrder();
 #### Get a file set
 ```PHP
 $fileSet = FileSet::getByID(1); //by ID
-$fileSet = FileSet::getByName('File Set Name'); // name
+$fileSet = FileSet::getByName('File Set Name'); //name
 ```
+
+#### Get a file folder
+```PHP
+$folder = Node::getByID($folderID); //by ID
+$folder = Node::getNodeByName('My Folder'); //by name, not working
+```
+
 
 #### Get files inside a folder
 ```PHP
@@ -420,13 +461,45 @@ foreach ((array)$files as $file) {
 }
 ```
 
+#### create a file set
+```PHP
+$fileSet = Set::createAndGetSet('My File Set', Set::TYPE_PUBLIC);
+```
+
+#### add a file to a set
+```PHP    
+$file = \File::getByID(1); // by ID
+$fileSet->addFileToSet($file);
+```
+
+#### create a file folder
+```PHP
+//use Concrete\Core\File\Filesystem;
+
+$filesystem = new Filesystem();
+$folder = $filesystem->getRootFolder();
+$folderName = 'My Folder - '.time();
+$folder = $filesystem->addFolder($folder, $folderName);	
+```
+
+#### add a file to a folder
+```PHP    
+$file = \File::getByID(1); // by ID
+$fileNode = $file->getFileNodeObject();
+if (is_object($fileNode)) $fileNode->move($folder);    
+```
+
+
 ## Users
+
+
 
 ### A User
 
+
 #### Get a user by a unique identifier
 ```PHP
-$user = \File::getByID(1); // by ID
+$user = \File::getByID(1); //by ID
 ```
 
 #### Get a user data
@@ -464,6 +537,7 @@ $uiAvatar = $ui->getUserAvatar(); //echo $uiAvatar->getPath();
 
 ### List of users
 
+
 #### Get list of users
 ```PHP
 $userList = new UserList();
@@ -475,6 +549,7 @@ foreach ((array)$users as $user) {
     echo $user->getUserID();
 }
 ```
+
 #### Get list of users with pagination
 ```PHP
 $userList = new UserList();
@@ -496,6 +571,7 @@ foreach ((array)$users as $user) {
     echo $user->getUserID();
 }
 ```
+
 #### Filter a user list
 ```PHP
 $userList->filterByKeywords('andrew'); //by keywords (simple)
@@ -514,21 +590,71 @@ $group = \Group::getByName('Administrators');
 $userList->filterByGroup($group);
 
 $group = \Group::getByName('Administrators');
-$userList->filterByGroup($group, false); // Return all non-admins
+$userList->filterByGroup($group, false); //return all non-admins
 
 $userList->filterByProfilePrivateMessagesEnabled(true); //by attribute
 
 $userList->filterByInAnyGroup($groups, $inGroups = true) //multiple group
 ```
+
 #### Sort a user list
 ```PHP
 $userList->sortByDateAdded();
 $userList->sortByUserName();
 
-$userList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + attrbute_handle
+$userList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attrbute_handle
 ```
 
 ## Attributes
+
+
+
+### Attribute operations
+
+
+#### Add an attribute
+```PHP
+//use CollectionAttributeKey;
+//use Concrete\Core\Attribute\Type as AttributeType;
+
+$key = CollectionAttributeKey::getByHandle('attr_handle');
+if (!is_object($key)) {
+    $attr_type = AttributeType::getByHandle('text'); 
+    //$attr_type = AttributeType::getByHandle('number'); 
+    //$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
+    //$attr_type = AttributeType::getByHandle('textarea'); 
+    //$attr_type = AttributeType::getByHandle('image_file');
+    //$attr_type = AttributeType::getByHandle('date_time'); 
+    //$attr_type = AttributeType::getByHandle('url'); 
+
+    $desc = array ( 
+        'akHandle' => 'attr_handle',
+        'akName'=> t('Attribute Name'),
+        //'asID' => $attrSetID, //attribute set ID: check 'Get a set/Create a set' on how to get $attrSetID
+        //'akIsSearchableIndexed' => TRUE, //Content included in search index
+        //'akIsSearchable' => TRUE, //Field available in advanced search
+        
+        //textarea attribute
+        //'akTextareaDisplayMode' => 'rich_text', //ONLY FOR 'textarea': Input Format/ values: text,rich_text
+
+        //date_time attribute
+        //'akUseNowIfEmpty' => TRUE, //ONLY FOR 'date_time': Suggest the current date/time if empty/ values: TRUE, FALSE
+        //'akDateDisplayMode' => 'date_time', //ONLY FOR 'date_time': Ask User For/ values: date_time, date, date_text, text
+        //'akTextCustomFormat' => 'Y-m-d H:i:s', //ONLY FOR 'date_time': Custom format/ values: PHP date function values
+        //'akTimeResolution' => 60, //ONLY FOR 'date_time': Time Resolution/ values: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
+    );
+    $key = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
+
+    //option list attrbute
+    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 1'); //add options
+    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 2'); //"
+}
+```
+
+#### Delete an attribute
+```PHP
+
+```
 
 #### List of attribute set categories (collection/user/file/site/event)
 ```PHP
@@ -564,6 +690,7 @@ $attrID = $attr->getAttributeKeyID(); //echo $attrID;
 $attrHandle = $attr->getAttributeKeyHandle(); //echo $attrHandle;
 $attrName = $attr->getAttributeKeyName(); //echo $attrName;
 ```
+
 #### Get options of an 'Option List' attribute
 ```PHP
 $attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
@@ -577,11 +704,13 @@ foreach ((object)$attrOptions as $attrOption) {
 
 ### Attrubute Set
 
+
 #### A set
 ```PHP
 $attrSet = AttributeSet::getByID('attribute_set_id'); //by ID
 $attrSet = AttributeSet::getByHandle('attribute_set_handle'); //by handle
 ```
+
 #### Attributes in a set
 ```PHP
 $attrs = $attrSet->getAttributeKeys();
@@ -592,33 +721,66 @@ foreach($attrs as $attr) {
 }
 ```
 
-#### List of sets
+#### Add a Collection/Page set
+```PHP
+//use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
+
+$akc = AttributeKeyCategory::getByHandle('collection');
+$akc->setAllowAttributeSets(AttributeKeyCategory::ASET_ALLOW_SINGLE);
+$attrSet = $akc->addSet('my_set', t('My Set'), $pkg = null, $locked = null); 
+    
+$attrSetID = $attrSet->getAttributeSetID(); //echo $attrSetID;
+$attrSetHandle = $attrSet->getAttributeSetHandle(); //echo $attrSetHandle;
+$attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
+```
+
+#### Add a File set
 ```PHP
 
 ```
 
 
+
+#### List of sets
+```PHP
+
+```
+
 ## Single Pages
+
 
 
 ## Blocks
 
 
+
 ## Stacks
 
+
+
+## Packages
+
+
+
 ## Express Entries
+
 
 
 ## Language
 
 
+
 ## Constants
+
 
 
 ## Configs
 
 
+
 ## Helpers
+
+
 
 #### Number helper
 ```PHP
@@ -640,5 +802,10 @@ $im = Core::make('helper/url');
 $im = Core::make('helper/image');
 ```
 
+## Databse Operations
+
+
 
 ## Contributors
+
+
