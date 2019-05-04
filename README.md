@@ -104,7 +104,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Another database](#another-database)
   - [Misc.](#misc)
     - [Get environment](#get-environment)
-    - [Clear cache](#clear-cache)
+    - [Clear site cache](#clear-site-cache)
 - [Contributors](#contributors)
 
 
@@ -1057,7 +1057,7 @@ $dbPricing = Database::connection('pricing');
 $environment = Core::make('app')->environment(); //echo $environment;
 ```
 
-#### Clear cache
+#### Clear site cache
 ```PHP
 Core::make('app')->clearCaches();
 //OR
