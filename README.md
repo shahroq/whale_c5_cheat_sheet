@@ -992,7 +992,7 @@ $statement = $db->executeQuery('SELECT * FROM `myTable` WHERE `id`>?;', array(0)
 //echo $statement->rowCount(); //number of rows
 //echo $statement->getSqlQuery(); //prepared SQL //not working
 
-
+//iterate through rows
 $rows = $statement->fetchAll(); //print_r($rows);
 foreach ($rows as $row) {
     print_r($row);
