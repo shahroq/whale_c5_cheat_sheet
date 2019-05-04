@@ -1052,6 +1052,7 @@ $environment = Core::make('app')->environment(); //echo $environment;
 #### Clear Cache
 ```PHP
 Core::make('app')->clearCaches();
+//OR
 //$this->app->clearCaches();
 ```
 
