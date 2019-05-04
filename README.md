@@ -1,4 +1,4 @@
-# Whale Concrete5 Cheat Sheet V8+
+# Whale [Concrete5](https://www.concrete5.org) Cheat Sheet V8+
 
 This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code. 
 
@@ -27,6 +27,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Add an extra location URL](#add-an-extra-location-url)
     - [Set/Update an attribute of a page](#setupdate-an-attribute-of-a-page)
     - [Clear an attribute of a page](#clear-an-attribute-of-a-page)
+    - [Refresh page cache](#refresh-page-cache)
 - [Files](#files)
   - [A Files](#a-files)
     - [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
@@ -42,7 +43,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get a file set](#get-a-file-set)
     - [Get a file folder](#get-a-file-folder)
   - [File Operation](#file-operation)
-    - [importing a file](#importing-a-file)
+    - [Importing a file](#importing-a-file)
     - [Delete a file](#delete-a-file)
     - [Set/Update an attribute to a file](#setupdate-an-attribute-to-a-file)
     - [Clear an attribute of a file](#clear-an-attribute-of-a-file)
@@ -97,7 +98,13 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Text helper](#text-helper)
     - [URL helper](#url-helper)
     - [Image helper](#image-helper)
-- [Databse Operations](#databse-operations)
+- [System Operations](#system-operations)
+  - [Database](#database)
+    - [Current database](#current-database)
+    - [Another database](#another-database)
+  - [Misc.](#misc)
+    - [Get environment](#get-environment)
+    - [Clear Cache](#clear-cache)
 - [Contributors](#contributors)
 
 
@@ -219,7 +226,7 @@ foreach ((array)$pages as $page) {
     echo $page->getCollectionID();
 }
 ```
-For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7){:target="_blank"}
+For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a page list
 ```PHP
@@ -340,10 +347,17 @@ $page->addAdditionalPagePath('/blog-path-for-others');
 $page = \Page::getByID(1); //by ID
 $page->setAttribute('attribute_handle', 'value');
 ```
+
 #### Clear an attribute of a page
 ```PHP
 $page = \Page::getByID(1); //by ID
 $page->clearAttribute('attribute_handle');
+```
+
+#### Refresh page cache
+```PHP
+$page = \Page::getByID(1); //by ID
+$page->refreshCache();
 ```
 
 
@@ -436,7 +450,7 @@ foreach ((array)$files as $file) {
     echo $file->getFileID();
 }
 ```
-For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7){:target="_blank"}
+For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a file list
 ```PHP
@@ -493,12 +507,12 @@ $folder = Node::getNodeByName('My Folder'); //by name, not working
 ### File Operation
 
 
-#### importing a file
+#### Importing a file
 ```PHP
 $filePath = 'path/to/file/filename.jpg';
 if (file_exists($filePath)) {
-	$importer = new \Concrete\Core\File\Importer();
-	$fileVersion = $importer->import($filePath, false); //echo get_class($fileVersion); //file version object
+    $importer = new \Concrete\Core\File\Importer();
+    $fileVersion = $importer->import($filePath, false); //echo get_class($fileVersion); //file version object
     $file = $fileVersion->getFile(); //echo get_class($file); //file object
 }	
 ```
@@ -520,7 +534,6 @@ $file->setAttribute('attribute_handle', 'value');
 $file = File::getByID(1);
 $file->clearAttribute('attribute_handle');
 ```
-
 
 #### Create a file set
 ```PHP
@@ -897,14 +910,12 @@ $attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
 
 #### Add a File set
 ```PHP
-
 ```
 
 
 
 #### List of sets
 ```PHP
-
 ```
 
 ## Single Pages
@@ -963,8 +974,86 @@ $im = Core::make('helper/url');
 $im = Core::make('helper/image');
 ```
 
-## Databse Operations
+## System Operations
 
+
+
+### Database
+
+
+#### Current database
+```PHP
+//database connection
+$db = Database::connection();
+
+//prepare any query
+$statement = $db->executeQuery('SELECT * FROM `myTable` WHERE `id`>?;', array(0)); 
+	
+//echo $statement->rowCount(); //number of rows
+//echo $statement->getSqlQuery(); //prepared SQL //not working
+
+
+$rows = $statement->fetchAll(); //print_r($rows);
+foreach ($rows as $row) {
+    print_r($row);
+}
+//OR:
+while ($row = $statement->fetch()) {
+    //print_r($row);
+}	
+
+//get associated rows
+$row = $db->fetchAssoc('SELECT * FROM `myTable` WHERE `id`=?;', array(1)); //print_r($row);
+
+//get rows diretly
+$rows = $db->fetchAll('SELECT `name` FROM `myTable`;'); //print_r($rows);
+
+//get a column
+$column = $db->fetchColumn('SELECT `name` FROM `myTable` WHERE id = ?;', array($id)); //echo $column;
+
+```
+For more check [`here`](https://www.doctrine-project.org/api/dbal/2.5/Doctrine/DBAL/Connection.html)
+
+#### Another database
+```PHP
+//new database connection info in /appilication/config/database.php
+return array(
+    'default-connection' => 'concrete',
+    'connections' => array(
+        'concrete' => array(
+            'driver' => 'c5_pdo_mysql',
+            'server' => 'localhost',
+            'database' => 'database',
+            'username' => 'username',
+            'password' => 'password',
+            'charset' => 'utf8',
+        ),
+        'pricing' => array(
+            'driver' => 'c5_pdo_mysql',
+            'server' => 'secure-pricing.wherever.com',
+            'database' => 'pricing_db',
+            'username' => 'username',
+            'password' => 'password',
+            'charset' => 'utf8',
+        ),
+    ),
+);
+
+$dbPricing = Database::connection('pricing');
+```
+
+### Misc.
+
+#### Get environment
+```PHP
+$environment = Core::make('app')->environment(); //echo $environment;
+```
+
+#### Clear Cache
+```PHP
+Core::make('app')->clearCaches();
+//$this->app->clearCaches();
+```
 
 
 ## Contributors
