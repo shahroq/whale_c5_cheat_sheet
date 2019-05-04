@@ -104,7 +104,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Another database](#another-database)
   - [Misc.](#misc)
     - [Get environment](#get-environment)
-    - [Clear Cache](#clear-cache)
+    - [Clear cache](#clear-cache)
 - [Contributors](#contributors)
 
 
@@ -989,7 +989,7 @@ $db = Database::connection();
 //prepare any query
 $statement = $db->executeQuery('SELECT * FROM `myTable` WHERE `id`>?;', array(0)); 
 	
-//echo $statement->rowCount(); //number of rows
+//echo $statement->rowCount(); //number of SELECTed/UPDATEd/DELETEd rows
 //echo $statement->getSqlQuery(); //prepared SQL //not working
 
 //iterate through rows
@@ -1003,7 +1003,7 @@ while ($row = $statement->fetch()) {
 }	
 
 //get associated rows
-$row = $db->fetchAssoc('SELECT * FROM `myTable` WHERE `id`=?;', array(1)); //print_r($row);
+$row = $db->fetchAssoc('SELECT * FROM `myTable` WHERE `id` = ?;', array(1)); //print_r($row);
 
 //get rows diretly
 $rows = $db->fetchAll('SELECT `name` FROM `myTable`;'); //print_r($rows);
@@ -1011,6 +1011,14 @@ $rows = $db->fetchAll('SELECT `name` FROM `myTable`;'); //print_r($rows);
 //get a column
 $column = $db->fetchColumn('SELECT `name` FROM `myTable` WHERE id = ?;', array($id)); //echo $column;
 
+
+//UPDATE
+$statement = $db->executeQuery('UPDATE `myTable` SET name = ? WHERE `id` = ?;', array('new name', 1)); 
+//echo $statement->rowCount(); //number of affected rows
+
+//DELETE
+$statement = $db->executeQuery('DELETE FROM `myTable` WHERE `id` = ?;', array(1)); 
+//echo $statement->rowCount(); //number of affected rows
 ```
 For more check [`here`](https://www.doctrine-project.org/api/dbal/2.5/Doctrine/DBAL/Connection.html)
 
@@ -1049,7 +1057,7 @@ $dbPricing = Database::connection('pricing');
 $environment = Core::make('app')->environment(); //echo $environment;
 ```
 
-#### Clear Cache
+#### Clear cache
 ```PHP
 Core::make('app')->clearCaches();
 //OR
