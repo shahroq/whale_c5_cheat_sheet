@@ -102,6 +102,14 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Number helper](#number-helper)
     - [Text helper](#text-helper)
     - [URL helper](#url-helper)
+    - [Array helper](#array-helper)
+    - [Arrays validation helper](#arrays-validation-helper)
+    - [Numbers validation helper](#numbers-validation-helper)
+    - [Strings validation helper](#strings-validation-helper)
+    - [JSON helper](#json-helper)
+    - [Ajax helper](#ajax-helper)
+    - [HTML helper](#html-helper)
+    - [Date helper](#date-helper)
     - [Image helper](#image-helper)
 - [System Operations](#system-operations)
   - [Database](#database)
@@ -1024,23 +1032,215 @@ output_vars(array $get_defined_vars, $valueOfThis = null, $return = false);
 
 #### Number helper
 ```PHP
-$im = Core::make('helper/number');
+$in = Core::make('helper/number');
+
+$im->flexround($value); //Rounds the value only out to its most significant digit.
+$im->trim($value); //Remove superfluous zeroes from a string containing a number.
+$im->isNumber($string); //Checks if a given string is valid representation of a number in the current locale.
+$im->isInteger($string); //Checks if a given string is valid representation of an integer in the current locale.
+$im->format($number, $precision = null); //Format a number with grouped thousands and localized decimal point/thousands separator.
+$im->unformat($string, $trim = true, $precision = null); //Parses a localized number representation and returns the number (or null if $string is not a valid number representation).
+$im->formatSize($size, $forceUnit = ''); //Formats a size (measured in bytes, KB, MB, ...).
+$im->getBytes($val); //Nice and elegant function for converting memory. Thanks to @lightness races in orbit on Stackoverflow.
+
+//\concrete\src\Utility\Service\Number.php
 ```
 
 #### Text helper
 ```PHP
-$im = Core::make('helper/text');
+$th = Core::make('helper/text');
+
+$th->encodePath($path); //URL-encodes collection path.
+$th->match($pattern, $value); //Determine if a given string matches a given pattern.
+$th->lugSafeString($handle, $maxlength = 128); //Remove unsafe characters for URL slug.
+$th->sanitize($string, $max_length = 0, $allowed = ''); //Strips tags and optionally reduces string to specified length.
+$th->email($email); //Leaves only characters that are valid in email addresses (RFC).
+$th->alphanum($string); //Leaves only characters that are alpha-numeric.
+$th->entities($v); //always use in place of htmlentites(), so it works with different languages.
+$th->decodeEntities($v); //Decodes html-encoded entities (for instance: from '&gt;' to '>').
+$th->specialchars($v); //A concrete5 specific version of htmlspecialchars(). Double encoding is OFF, and the character set is set to your site's.
+$th->shorten($textStr, $numChars = 255, $tail = '…'); //An alias for shorten().
+$th->shortText($textStr, $numChars = 255, $tail = '…'); //Like sanitize, but requiring a certain number characters, and assuming a tail.
+$th->camelcase($string); //Takes a string and turns it into the CamelCase or StudlyCaps version.
+$th->twitterAutolink($input, $newWindow = 0, $withSearch = 0); //automatically add hyperlinks to any twitter style @usernames in a string.
+$th->makenice($input); //Runs a number of text functions, including autolink, nl2br, strip_tags. Assumes that you want simple text comments but with a few niceties.
+$th->prettyStripTags($input, $allowedTags = null); //Runs strip_tags but ensures that spaces are kept between the stripped tags.
+$th->autolink($input, $newWindow = false, $defaultProtocol = 'http://'); //Scans passed text and automatically hyperlinks any URL inside it.
+$th->fnmatch($pattern, $string); //A wrapper for PHP's fnmatch() function, which some installations don't have.
+$th->uncamelcase($string); //Takes a CamelCase string and turns it into camel_case.
+$th->unhandle($string); //Takes a handle-based string like "blah_blah" or "blah-blah" or "blah/blah" and turns it into "Blah Blah".
+$th->handle($handle, $leaveSlashes = false); //Takes a string and turns it into a handle.
+$th->sanitizeFileSystem($handle); //Determines whether a string matches a particular pattern.
+$th->urlify($handle, $max_length = null, $locale = '', $removeExcludedWords = true); //Takes text and returns it in the "lowercase-and-dashed-with-no-punctuation" format.
+$th->asciify($text, $locale = ''); //Takes text and converts it to an ASCII-only string (characters with code between 32 and 127, plus \t, \n and \r).
+$th->wordSafeShortText($textStr, $numChars = 255, $tail = '…'); //alias of shortenTextWord().
+$th->shortenTextWord($textStr, $numChars = 255, $tail = '…'); //Shortens and sanitizes a string but only cuts at word boundaries.
+$th->filterNonAlphaNum($val); //Strips out non-alpha-numeric characters.
+$th->highlightSearch($value, $searchString); //Highlights a string within a string with the class ccm-highlight-search.
+$th->formatXML($xml); //Formats a passed XML string nicely.
+$th->appendXML(\SimpleXMLElement $root, \SimpleXMLElement $new); //Appends a SimpleXMLElement to a SimpleXMLElement.
+
+//\concrete\src\Utility\Service\Text.php
 ```
 
 #### URL helper
 ```PHP
-$im = Core::make('helper/url');
+$uh = Core::make('helper/url');
+
+$uh->setVariable($variable, $value = false, $url = false); //
+$uh->unsetVariable($variable, $url = false); //
+$uh->buildQuery($url, $params); //
+$uh->shortenURL($strURL); //Shortens a given url with the tiny url api.
+
+//\concrete\src\Utility\Service\Url.php
+```
+
+#### Array helper
+```PHP
+$ah = Core::make('helper/array');
+
+$ah->get(array $array, $keys, $default = null); //Fetches a value from an (multidimensional) array.
+$ah->set(array $array, $keys, $value); //Sets a value in an (multidimensional) array, creating the arrays recursivly.
+$ah->parseKeys($keys); //Turns the string keys into an array of keys.
+$ah->flatten(array $array); //Takes a multidimensional array and flattens it.
+$ah->subset($a, $b); //Returns whether $a is a proper subset of $b.
+
+//\concrete\src\Utility\Service\Array.php
+```
+
+#### Arrays validation helper
+```PHP
+$avh = Core::make('helper/validation/arrays');
+
+$avh->containsString($needle, $haystack = array(), $recurse = true); //Returns true if any string in the "haystack" contains the "needle".
+
+//\concrete\src\Utility\Service\Validation\Arrays.php
+```
+
+#### Numbers validation helper
+```PHP
+$nvh = Core::make('helper/validation/numbers');
+
+$nvh->integer($data, $min = null, $max = null); //Tests whether the passed item is an integer.
+$nvh->number($data, $min = null, $max = null); //Tests whether the passed item is an integer or a floating point number.
+
+//\concrete\src\Utility\Service\Validation\Numbers.php
+```
+
+#### Strings validation helper
+```PHP
+$nvh = Core::make('helper/validation/strings');
+
+$svh->email($em, $testMXRecord = false, $strict = false); //@deprecated Use Concrete\Core\Validator\String\EmailValidator
+$svh->alphanum($value, $allowSpaces = false, $allowDashes = false); //Returns true on whether the passed string is completely alpha-numeric, if the value is not a string or is an empty string false will be returned.
+$svh->handle($handle); //Returns true if the passed string is a valid "handle" (e.g. only letters, numbers, or a _ symbol).
+$svh->notempty($field); //Returns false if the string is empty (including trim()).
+$svh->min($str, $length); //Returns true on whether the passed string is larger or equal to the passed length.
+$svh->max($str, $length); //Returns true on whether the passed is smaller or equal to the passed length.
+$svh->containsNumber($str); //Returns 0 if there are no numbers in the string, or returns the number of numbers in the string.
+$svh->containsUpperCase($str); //Returns 0 if there are no upper case letters in the string, or returns the number of upper case letters in the string.
+$svh->containsLowerCase($str); //Returns 0 if there are no lower case letters in the string, or returns the number of lower case letters in the string.
+$svh->containsSymbol($str); //Returns 0 if there are no symbols in the string, or returns the number of symbols in the string.
+
+//\concrete\src\Utility\Service\Validation\Strings.php
+```
+
+#### JSON helper
+```PHP
+$jh = Core::make('helper/json');
+
+$jh->decode($string, $assoc = false); //Decodes a JSON string into a php variable.
+$jh->encode($mixed); //Encodes a data structure into a JSON string.
+
+//\concrete\src\Http\Service\Json.php
+```
+
+#### Ajax helper
+```PHP
+$ah = Core::make('helper/json');
+
+$ah->isAjaxRequest(Request $request); //Check if a request is an Ajax call.
+$ah->sendResult($result); //Sends a result to the client and ends the execution.
+$ah->sendError($error); //Sends an error to the client and ends the execution.
+
+//\concrete\src\Http\Service\Ajax.php
+```
+
+
+#### HTML helper
+```PHP
+$hh = Core::make('helper/html');
+
+$hh->css($file, $pkgHandle = null); //
+$hh->javascript($file, $pkgHandle = null); //
+$hh->noFollowHref($input); //Takes in a string, and adds rel="nofollow" to any a tags that contain an href attribute.
+
+//\concrete\src\Html\Service\Html.php
+```
+
+#### Date helper
+```PHP
+$dh = Core::make('helper/date'); 
+//$dh = Core::make('date');
+
+$dh->toDB($value = 'now', $fromTimezone = 'system'); //Convert any date/time representation to a string that can be used in DB queries.
+$dh->getOverridableNow($asTimestamp = false); //Return the date/time representation for now, that can be overridden by a custom request when viewing pages in a moment specified by administrators (custom request date/time).
+$dh->date($mask, $timestamp = false, $toTimezone = 'system'); //Subsitute for the native date() function that adds localized date support.
+$dh->getTimezoneName($timezoneID); //Retrieve the display name (localized) of a time zone given its PHP identifier.
+$dh->getTimezones(); //Returns a keyed array of timezone identifiers (keys are the standard PHP timezone names, values are the localized timezone names).
+$dh->getGroupedTimezones(); //Returns the list of timezones with translated names, grouped by region.
+$dh->getTimezoneDisplayName($timezone); //Returns the display name of a timezone.
+$dh->timeSince($posttime, $precise = false); //Describe the difference in time between now and a date/time in the past.
+$dh->describeInterval($diff, $precise = false); //Returns the localized representation of a time interval specified as seconds.
+$dh->getTimezoneID($timezone); //Returns the normalized timezone identifier.
+$dh->getUserTimeZoneID(); //
+$dh->getTimezone($timezone); //Returns a \DateTimeZone instance for a specified timezone identifier.
+$dh->toDateTime($value = 'now', $toTimezone = 'system', $fromTimezone = 'system'); //Convert a date to a \DateTime instance.
+$dh->getDeltaDays($from, $to, $timezone = 'user'); //Returns the difference in days between to dates.
+$dh->formatDate($value = 'now', $format = 'short', $toTimezone = 'user'); //Render the date part of a date/time as a localized string.
+$dh->formatTime($value = 'now', $withSeconds = false, $toTimezone = 'user'); //Render the time part of a date/time as a localized string.
+$dh->formatDateTime($value = 'now', $longDate = false, $withSeconds = false, $toTimezone = 'user'); //Render both the date and time parts of a date/time as a localized string.
+$dh->formatPrettyDate($value, $longDate = false, $toTimezone = 'user'); //Render the date part of a date/time as a localized string. If the day is yesterday we'll print 'Yesterday' (the same for today, tomorrow).
+$dh->formatPrettyDateTime($value, $longDate = false, $withSeconds = false, $timezone = 'user'); //Render both the date and time parts of a date/time as a localized string. If the day is yesterday we'll print 'Yesterday' (the same for today, tomorrow).
+$dh->formatCustom($format, $value = 'now', $toTimezone = 'user', $fromTimezone = 'system'); //Render a date/time as a localized string, by specifying a custom format.
+$dh->getJQueryUIDatePickerFormat($relatedPHPFormat = ''); //Returns the format string for the jQueryUI DatePicker widget
+$dh->getTimeFormat(); //Returns the time format (12 or 24).
+$dh->getPHPDatePattern(); //
+$dh->getPHPTimePattern(); //Get the PHP date format string for times.
+$dh->getPHPDateTimePattern(); //Get the PHP date format string for dates/times.
+$dh->getLocalDateTime($systemDateTime = 'now', $mask = null); //@deprecated
+$dh->getSystemDateTime($userDateTime = 'now', $mask = null); //@deprecated
+$dh->dateTimeFormatLocal($datetime, $mask); //@deprecated
+
+//\concrete\src\Localization\Service\Date.php
 ```
 
 #### Image helper
 ```PHP
-$im = Core::make('helper/image');
+$ih = Core::make('helper/image');
+
+$ih->getStorageLocation(); //
+$ih->setStorageLocation(StorageLocationInterface $storageLocation); //
+$ih->setJpegCompression($level); //
+$ih->getJpegCompression(); //
+$ih->setPngCompression($level); //
+$ih->getPngCompression(); //
+$ih->setThumbnailsFormat($thumbnailsFormat); //
+$ih->getThumbnailsFormat(); //
+$ih->create($mixed, $savePath, $width, $height, $fit = false, $format = false); //
+$ih->returnThumbnailObjectFromResolver($obj, $maxWidth, $maxHeight, $crop = false); //Checks thumbnail resolver for filename, schedule for creation via ajax if necessary.
+$ih->checkForThumbnailAndCreateIfNecessary($obj, $maxWidth, $maxHeight, $crop = false); //Checks filesystem for thumbnail and if file doesn't exist will create it immediately. concrete5's default behavior from the beginning up to 8.1.
+$ih->processThumbnail($async, $obj, $maxWidth, $maxHeight, $crop); //
+$ih->getThumbnail($obj, $maxWidth, $maxHeight, $crop = false); //
+$ih->outputThumbnail($mixed, $maxWidth, $maxHeight, $alt = null, $return = false, $crop = false); //
+
+//\concrete\src\File\Image\BasicThumbnailer.php
 ```
+
+
+
+
+
 
 ## System Operations
 
@@ -1144,7 +1344,11 @@ $environment = Core::make('app')->environment(); //echo $environment;
 ```PHP
 Core::make('app')->clearCaches();
 //OR
-//$this->app->clearCaches();
+$this->app->clearCaches();
+//OR
+//use Concrete\Core\Support\Facade\Application;
+$app = Application::getFacadeApplication();
+$app->make('app')->clearCaches();
 ```
 
 
