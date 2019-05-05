@@ -85,6 +85,10 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Add a Collection/Page set](#add-a-collectionpage-set)
     - [Add a File set](#add-a-file-set)
     - [List of sets](#list-of-sets)
+- [Themes](#themes)
+  - [Page types](#page-types)
+    - [Adding areas in a Page Template](#adding-areas-in-a-page-template)
+    - [Embedding Blocks in a Page Template](#embedding-blocks-in-a-page-template)
 - [Single Pages](#single-pages)
 - [Blocks](#blocks)
 - [Stacks](#stacks)
@@ -94,6 +98,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
 - [Constants](#constants)
 - [Configs](#configs)
 - [Helpers](#helpers)
+    - [General](#general)
     - [Number helper](#number-helper)
     - [Text helper](#text-helper)
     - [URL helper](#url-helper)
@@ -103,6 +108,8 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Current database](#current-database)
     - [Another database](#another-database)
   - [Misc.](#misc)
+    - [URL](#url)
+    - [Logging](#logging)
     - [Get environment](#get-environment)
     - [Clear site cache](#clear-site-cache)
 - [Contributors](#contributors)
@@ -918,6 +925,37 @@ $attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
 ```PHP
 ```
 
+## Themes
+
+
+
+### Page types
+
+
+#### Adding areas in a Page Template
+```PHP
+//regular area
+$a = new Area("Main");
+//$a->enableGridContainer(); //enable grid container in area
+//$a->setAreaGridMaximumColumns(12);
+//if ($c->isEditMode()); //do something
+//if ($a->getTotalBlocksInArea($c) > 0); //do something
+$a->display($c);
+
+//global area
+$a = new GlobalArea("Main");
+$a->display();
+```
+
+#### Embedding Blocks in a Page Template
+```PHP
+$bt = BlockType::getByHandle('block_handle');
+$bt->controller->field1 = 'field1';
+$bt->render(); //render default template: view.php
+//$bt->render('templates/my_template'); //render specific template: my_template.php
+```
+
+
 ## Single Pages
 
 
@@ -952,7 +990,37 @@ $attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
 
 ## Helpers
 
+#### General
+```PHP
+//\concrete\bootstrap\helpers.php
 
+//Translate text (simple form).
+t($text);
+
+//Translate text (plural form).
+t2($singular, $plural, $number);
+
+//Translate text (simple form) with a context.
+tc($context, $text);
+
+//Security helper.
+h($input);
+
+//Returns $string in CamelCase.
+camelcase($string, $leaveSlashes = false);
+
+//Returns CamelCase string as camel_case.
+uncamelcase($string);
+
+//Fills an object properties from an array.
+array_to_object($o, $array);
+
+//Dumps information about a variable in a way that can be used with Doctrine recursive objects.).
+var_dump_safe($o, $echo = true, $maxDepth = true);
+
+//Generate the PHPDoc for a set of defined variables.
+output_vars(array $get_defined_vars, $valueOfThis = null, $return = false);
+```
 
 #### Number helper
 ```PHP
@@ -1051,6 +1119,21 @@ $dbPricing = Database::connection('pricing');
 ```
 
 ### Misc.
+
+#### URL
+```PHP
+$url = URL::to('/path/to/somewhere'); //http://ursite/index.php/path/to/somewhere
+```
+
+#### Logging
+```PHP
+//use Log;
+Log::addInfo('This is an informative message.');
+Log::addWarning('Uh oh.');
+Log::addAlert('Red alert!');
+Log::addNotice('A notice error.');
+//see logs at /dashboard/reports/logs
+```
 
 #### Get environment
 ```PHP
