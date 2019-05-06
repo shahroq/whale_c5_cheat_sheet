@@ -110,6 +110,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [JSON helper](#json-helper)
     - [Ajax helper](#ajax-helper)
     - [HTML helper](#html-helper)
+    - [Navigation helper](#navigation-helper)
     - [Date helper](#date-helper)
     - [Form helper](#form-helper)
     - [Form (color picker) helper](#form-color-picker-helper)
@@ -118,7 +119,13 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Form (user selector) helper](#form-user-selector-helper)
     - [Form (rating) helper](#form-rating-helper)
     - [Form (attribute) helper](#form-attribute-helper)
+    - [Form (typography) helper](#form-typography-helper)
+    - [Concrete URL helper](#concrete-url-helper)
+    - [Asset library (file manager) helper](#asset-library-file-manager-helper)
+    - [Validation error helper](#validation-error-helper)
+    - [User Interface helper](#user-interface-helper)
     - [Image helper](#image-helper)
+    - [List of all helper](#list-of-all-helper)
 - [System Operations](#system-operations)
   - [Database](#database)
     - [Current database](#current-database)
@@ -1178,7 +1185,6 @@ $ah->sendError($error); //Sends an error to the client and ends the execution.
 //\concrete\src\Http\Service\Ajax.php
 ```
 
-
 #### HTML helper
 ```PHP
 $hh = Core::make('helper/html');
@@ -1188,6 +1194,18 @@ $hh->javascript($file, $pkgHandle = null); //
 $hh->noFollowHref($input); //Takes in a string, and adds rel="nofollow" to any a tags that contain an href attribute.
 
 //\concrete\src\Html\Service\Html.php
+```
+
+#### Navigation helper
+```PHP
+$nh = Core::make('helper/navigation');
+
+$nh->getLinkToCollection($cObj); //Returns a link to a page. Note: this always returns a string.
+$nh->getTrailToCollection($c); //Returns an array of collections as a breadcrumb to the current page.
+$nh->getCollectionURL($cObj); //Returns the URL of a collection so that it can be clicked on.
+$nh->getLogInOutLink(); //
+
+//\concrete\src\Html\Service\Navigation.php
 ```
 
 #### Date helper
@@ -1266,7 +1284,7 @@ echo $form->parseMiscFields($defaultClass, $attributes); //Create an HTML fragme
 $cpfh = Core::make('helper/form/color');
 
 echo $cpfh->output($inputName, $value = null, $options = array()); //Creates form fields and JavaScript includes to add a color picker widget.
-//echo $dh->output('background-color', '#f00');
+//echo $cpfh->output('background-color', '#f00');
 
 //\concrete\src\Form\Service\Widget\Color.php
 ```
@@ -1341,6 +1359,94 @@ echo $afh->display($key);
 //\concrete\src\Form\Service\Widget\Attribute.php
 ```
 
+#### Form (typography) helper
+```PHP
+$tfh = Core::make('helper/form/typography');
+//OR
+$tfh = Core::make('helper/form/font');
+
+echo $tfh->output($inputName, $value = array(), $options = array()); //Creates form fields and JavaScript includes to add a font picker widget.
+
+//\concrete\src\Form\Service\Widget\Typography.php
+```
+
+#### Concrete URL helper
+```PHP
+$cuh = Core::make('helper/concrete/urls');
+
+$cuh->getPackageIconURL($pkg); //Gets a full URL to an icon for a particular application.
+$cuh->getPackageURL($pkg); //Get the package's URL.
+$cuh->getToolsURL($tool, $pkgHandle = null); //Gets a URL to reference a script in the tools directory
+$cuh->getBlockTypeIconURL($bt); //Gets a full URL to an icon for a particular block type.
+$cuh->getBlockTypeAssetsURL($bt, $file = false); //Gets a full URL to the directory containing all of a block's items, including JavaScript, tools, icons, etc...
+$cuh->getBlockTypeJavaScriptURL($bt); //Gets a full URL to a block's JavaScript file (if one exists).
+$cuh->getBlockTypeToolsURL($bt); //@deprecated: Gets a full URL to a block's tools directory
+
+//\concrete\src\Application\Service\Urls.php
+```
+
+#### Asset library (file manager) helper
+```PHP
+$alh = Core::make('helper/concrete/asset_library');
+//OR
+$alh = Core::make('helper/concrete/file_manager');
+
+$alh->file($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick a file.
+$alh->image($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick an image file.
+$alh->video($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick a video file.
+$alh->text($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick a text file.
+$alh->audio($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick an audio file.
+$alh->doc($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick a document file.
+$alh->app($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick a application file.
+$alh->fileOfType($type, $inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick a file of a specific type.
+
+//\concrete\src\Application\Service\FileManager.php
+```
+
+#### Validation error helper
+```PHP
+$errors = Core::make('error');
+//OR
+$errors = Core::make('helper/validation/error');
+
+$errors->add($e, $fieldName = null, $fieldDisplayName = null); //Add an error message/object or exception to the internal error array (error messages are in plain text if not otherwise specified).
+$errors->addHtml($e, $fieldName = null, $fieldDisplayName = null); //Add an error message/object or exception to the internal error array (error messages are in HTML if not otherwise specified).
+$errors->getList(); //Get the list of errors contained in this error list.
+$errors->has(); //Returns whether or not this error list has more than one error registered within it.
+$errors->toText(); //Render this error list as a plain text.
+$errors->containsField($field); //Does this list contain error associated to a field?
+$errors->getMessage($field); //Get the error message (if any) associated to a field.
+$errors->createResponse($errorCode = JsonResponse::HTTP_BAD_REQUEST); //Create a JSON response describing the errors in this list.
+
+//\concrete\src\Error\ErrorList\ErrorList.php
+```
+
+#### User Interface helper
+```PHP
+$uih = Core::make('helper/concrete/ui')
+
+$uih->submit($text, $formID = false, $buttonAlign = 'right', $innerClass = null, $args = []); //Generates a submit button in the Concrete style.
+$uih->button($text, $href, $buttonAlign = 'right', $innerClass = null, $args = []); //Generates a simple link button in the Concrete style.
+$uih->buttonJs($text, $onclick, $buttonAlign = 'right', $innerClass = null, $args = []); //Generates a JavaScript function button in the Concrete style.
+$uih->button_js($text, $onclick, $buttonAlign = 'right', $innerClass = null, $args = []); //"
+$uih->buttons($buttons = null); //Outputs button text passed as arguments with a special Concrete wrapper for positioning
+$uih->getQuickNavigationLinkHTML($c); //
+$uih->showWhiteLabelMessage(); //
+$uih->getToolbarLogoSRC(); //
+$uih->showNewsflowOverlay(); //@deprecated The Newsflow Overlay feature has been removed
+$uih->showHelpOverlay(); //Shall we show the introductive help overlay?
+$uih->trackHelpOverlayDisplayed(); //
+$uih->clearInterfaceItemsCache(); //Clears the Interface Items Cache (clears the session).
+$uih->cacheInterfaceItems(); //Cache the interface items.
+$uih->pagetabs($tabs); //
+$uih->tabs($tabs, $jstabs = true, $callback = 'ccm_activateTabBar'); //
+$uih->renderError($title, $error, $exception = false); //
+$uih->buildErrorResponse($title, $error, $exception = false); //
+$uih->notify($arguments); //
+
+//\concrete\src\Application\Service\UserInterface.php
+```
+
 #### Image helper
 ```PHP
 $ih = Core::make('helper/image');
@@ -1361,6 +1467,160 @@ $ih->getThumbnail($obj, $maxWidth, $maxHeight, $crop = false); //
 $ih->outputThumbnail($mixed, $maxWidth, $maxHeight, $alt = null, $return = false, $crop = false); //
 
 //\concrete\src\File\Image\BasicThumbnailer.php
+```
+
+#### List of all helper
+```PHP
+'app' instanceof Concrete\Core\Application\Application,
+'Concrete\Core\Application\Application' instanceof Concrete\Core\Application\Application,
+'Illuminate\Container\Container' instanceof Concrete\Core\Application\Application,
+'authentication/community' instanceof \Concrete\Core\Authentication\Type\Community\Service\Community,
+'authentication/facebook' instanceof \OAuth\OAuth2\Service\Facebook,
+'authentication/google' instanceof \OAuth\OAuth2\Service\Google,
+'authentication/twitter' instanceof \OAuth\OAuth1\Service\Twitter,
+'cache' instanceof \Concrete\Core\Cache\Level\ObjectCache,
+'cache/expensive' instanceof \Concrete\Core\Cache\Level\ExpensiveCache,
+'cache/request' instanceof \Concrete\Core\Cache\Level\RequestCache,
+'captcha' instanceof \Concrete\Core\Captcha\Service,
+'helper/validation/captcha' instanceof \Concrete\Core\Captcha\Service,
+'Concrete\Core\Config\Repository\Repository' instanceof \config,
+'Concrete\Core\Database\Driver\DriverManager' instanceof \Concrete\Core\Database\Driver\DriverManager,
+'Concrete\Core\Http\Request' instanceof \Concrete\Core\Http\Request,
+'Concrete\Core\Routing\Router' instanceof \Concrete\Core\Routing\Router,
+'Concrete\Core\Routing\RouterInterface' instanceof \Concrete\Core\Routing\Router,
+'Concrete\Core\Session\SessionFactoryInterface' instanceof \Concrete\Core\Session\SessionFactory,
+'Concrete\Core\Session\SessionValidatorInterface' instanceof \Concrete\Core\Session\SessionValidator,
+'config' instanceof Concrete\Core\Config\Repository\Repository,
+'config/database' instanceof Concrete\Core\Config\Repository\Repository,
+'Illuminate\Config\Repository' instanceof \Concrete\Core\Config\Repository\Repository,
+'cookie' instanceof \Concrete\Core\Cookie\CookieJar,
+'database' instanceof \Concrete\Core\Database\DatabaseManager,
+'Concrete\Core\Database\DatabaseManager' instanceof \Concrete\Core\Database\DatabaseManager,
+'database/orm' instanceof \Concrete\Core\Database\DatabaseManagerORM,
+'Concrete\Core\Database\DatabaseManagerORM' instanceof \Concrete\Core\Database\DatabaseManagerORM,
+'database/structure' instanceof \Concrete\Core\Database\DatabaseStructureManager,
+'date' instanceof        \Concrete\Core\Localization\Service\Date,
+'helper/date' instanceof \Concrete\Core\Localization\Service\Date,
+'device/manager' instanceof \Concrete\Core\Device\DeviceManager,
+'director' instanceof \Symfony\Component\EventDispatcher\EventDispatcher,
+'Doctrine\DBAL\Connection' instanceof \Concrete\Core\Database\Connection\Connection,
+'Concrete\Core\Database\Connection\Connection' instanceof \Concrete\Core\Database\Connection\Connection,
+'Doctrine\ORM\EntityManager' instanceof \Doctrine\ORM\EntityManagerInterface,
+'Doctrine\ORM\EntityManagerInterface' instanceof \Doctrine\ORM\EntityManager,
+'editor' instanceof \Concrete\Core\Editor\RedactorEditor,
+'editor/image' instanceof \Concrete\Core\ImageEditor\ImageEditor,
+'editor/image/core' instanceof \Concrete\Core\ImageEditor\ImageEditor,
+'editor/image/extension/factory' instanceof \Concrete\Core\ImageEditor\ExtensionFactory,
+'error' instanceof \Concrete\Core\Error\Error,
+'helper/validation/error' instanceof \Concrete\Core\Error\Error,
+'help' instanceof \Concrete\Core\Application\Service\UserInterface\Help,
+'helper/concrete/ui/help' instanceof \Concrete\Core\Application\Service\UserInterface\Help,
+'help/block_type' instanceof \Concrete\Core\Application\Service\UserInterface\Help\BlockTypeManager,
+'help/core' instanceof \Concrete\Core\Application\Service\UserInterface\Help\CoreManager,
+'help/dashboard' instanceof \Concrete\Core\Application\Service\UserInterface\Help\DashboardManager,
+'help/panel' instanceof \Concrete\Core\Application\Service\UserInterface\Help\PanelManager,
+'helper/ajax' instanceof \Concrete\Core\Http\Service\Ajax,
+'helper/arrays' instanceof \Concrete\Core\Utility\Service\Arrays,
+'helper/concrete/avatar' instanceof \Concrete\Core\Application\Service\Avatar,
+'helper/concrete/composer' instanceof \Concrete\Core\Application\Service\Composer,
+'helper/concrete/dashboard' instanceof \Concrete\Core\Application\Service\Dashboard,
+'helper/concrete/dashboard/sitemap' instanceof \Concrete\Core\Application\Service\Dashboard\Sitemap,
+'helper/concrete/file' instanceof \Concrete\Core\File\Service\Application,
+'helper/concrete/file_manager' instanceof \Concrete\Core\Application\Service\FileManager,
+'helper/concrete/asset_library' instanceof \Concrete\Core\Application\Service\FileManager,
+'helper/concrete/ui' instanceof \Concrete\Core\Application\Service\UserInterface,
+'helper/concrete/ui/menu' instanceof \Concrete\Core\Application\Service\UserInterface\Menu,
+'helper/concrete/upgrade' instanceof \Concrete\Core\Application\Service\Upgrade,
+'helper/concrete/urls' instanceof \Concrete\Core\Application\Service\Urls,
+'helper/concrete/user' instanceof \Concrete\Core\Application\Service\User,
+'helper/concrete/validation' instanceof \Concrete\Core\Application\Service\Validation,
+'helper/encryption' instanceof \Concrete\Core\Encryption\EncryptionService,
+'helper/feed' instanceof \Concrete\Core\Feed\FeedService,
+'helper/file' instanceof \Concrete\Core\File\Service\File,
+'helper/form' instanceof \Concrete\Core\Form\Service\Form,
+'helper/form/attribute' instanceof \Concrete\Core\Form\Service\Widget\Attribute,
+'helper/form/color' instanceof \Concrete\Core\Form\Service\Widget\Color,
+'helper/form/date_time' instanceof \Concrete\Core\Form\Service\Widget\DateTime,
+'helper/form/font' instanceof \Concrete\Core\Form\Service\Widget\Typography,
+'helper/form/typography' instanceof \Concrete\Core\Form\Service\Widget\Typography,
+'helper/form/page_selector' instanceof \Concrete\Core\Form\Service\Widget\PageSelector,
+'helper/form/rating' instanceof \Concrete\Core\Form\Service\Widget\Rating,
+'helper/form/user_selector' instanceof \Concrete\Core\Form\Service\Widget\UserSelector,
+'helper/html' instanceof \Concrete\Core\Html\Service\Html,
+'helper/image' instanceof \Concrete\Core\File\Image\BasicThumbnailer,
+'image/thumbnailer' instanceof \Concrete\Core\File\Image\BasicThumbnailer,
+'helper/json' instanceof \Concrete\Core\Http\Service\Json,
+'helper/lightbox' instanceof \Concrete\Core\Html\Service\Lightbox,
+'helper/mime' instanceof \Concrete\Core\File\Service\Mime,
+'helper/navigation' instanceof \Concrete\Core\Html\Service\Navigation,
+'helper/number' instanceof \Concrete\Core\Utility\Service\Number,
+'helper/pagination' instanceof \Concrete\Core\Legacy\Pagination,
+'helper/rating' instanceof \Concrete\Attribute\Rating\Service,
+'helper/security' instanceof \Concrete\Core\Validation\SanitizeService,
+'helper/seo' instanceof \Concrete\Core\Html\Service\Seo,
+'helper/text' instanceof \Concrete\Core\Utility\Service\Text,
+'helper/url' instanceof \Concrete\Core\Utility\Service\Url,
+'helper/validation/antispam' instanceof \Concrete\Core\Antispam\Service,
+'helper/validation/banned_words' instanceof \Concrete\Core\Validation\BannedWord\Service,
+'helper/validation/file' instanceof \Concrete\Core\File\ValidationService,
+'helper/validation/form' instanceof \Concrete\Core\Form\Service\Validation,
+'helper/validation/identifier' instanceof \Concrete\Core\Utility\Service\Identifier,
+'helper/validation/numbers' instanceof \Concrete\Core\Utility\Service\Validation\Numbers,
+'helper/validation/strings' instanceof \Concrete\Core\Utility\Service\Validation\Strings,
+'helper/xml' instanceof \Concrete\Core\Utility\Service\Xml,
+'html/image' instanceof \Concrete\Core\Html\Image,
+'helper/zip' instanceof \Concrete\Core\File\Service\Zip,
+'image/gd' instanceof \Imagine\Gd\Imagine,
+'image/imagick' instanceof \Imagine\Imagick\Imagine,
+'import/value_inspector' instanceof \Concrete\Core\Backup\ContentImporter\ValueInspector\ValueInspector,
+'import/value_inspector/core' instanceof \Concrete\Core\Backup\ContentImporter\ValueInspector\ValueInspector,
+'ip' instanceof \Concrete\Core\Permission\IPService,
+'helper/validation/ip' instanceof \Concrete\Core\Permission\IPService,
+'localization/countries' instanceof \Concrete\Core\Localization\Service\CountryList,
+'helper/lists/countries' instanceof \Concrete\Core\Localization\Service\CountryList,
+'helper/localization/countries' instanceof \Concrete\Core\Localization\Service\CountryList,
+'lists/countries' instanceof \Concrete\Core\Localization\Service\CountryList,
+'localization/languages' instanceof \Concrete\Core\Localization\Service\LanguageList,
+'localization/states_provinces' instanceof \Concrete\Core\Localization\Service\StatesProvincesList,
+'helper/lists/states_provinces' instanceof \Concrete\Core\Localization\Service\StatesProvincesList,
+'helper/localization/states_provinces' instanceof \Concrete\Core\Localization\Service\StatesProvincesList,
+'lists/states_provinces' instanceof \Concrete\Core\Localization\Service\StatesProvincesList,
+'log' instanceof Concrete\Core\Logging\Logger,
+'Concrete\Core\Logging\Logger' instanceof \Concrete\Core\Logging\Logger,
+'Psr\Log\LoggerInterface' instanceof \Concrete\Core\Logging\Logger,
+'mail' instanceof \Concrete\Core\Mail\Service,
+'helper/mail' instanceof \Concrete\Core\Mail\Service,
+'manager/area_layout_preset_provider' instanceof \Concrete\Core\Area\Layout\Preset\Provider\Manager,
+'manager/grid_framework' instanceof \Concrete\Core\Page\Theme\GridFramework\Manager,
+'manager/page_type/validator' instanceof \Concrete\Core\Page\Type\Validator\Manager,
+'manager/view/pagination' instanceof \Concrete\Core\Search\Pagination\View\Manager,
+'multilingual/detector' instanceof \Concrete\Core\Multilingual\Service\Detector,
+'multilingual/extractor' instanceof \Concrete\Core\Multilingual\Service\Extractor,
+'multilingual/interface/flag' instanceof \Concrete\Core\Multilingual\Service\UserInterface\Flag,
+'oauth/factory/extractor' instanceof \OAuth\UserData\ExtractorFactory,
+'oauth/factory/service' instanceof \OAuth\ServiceFactory,
+'session' instanceof \Symfony\Component\HttpFoundation\Session\Session,
+'Symfony\Component\HttpFoundation\Session\Session' instanceof \session,
+'token' instanceof \Concrete\Core\Validation\CSRF\Token,
+'helper/validation/token' instanceof \Concrete\Core\Validation\CSRF\Token,
+'url/canonical' instanceof \Concrete\Core\Url\UrlImmutable,
+'url/canonical/resolver' instanceof \Concrete\Core\Url\Resolver\CanonicalUrlResolver,
+'Concrete\Core\Url\Resolver\CanonicalUrlResolver' instanceof \Concrete\Core\Url\Resolver\CanonicalUrlResolver,
+'url/manager' instanceof \Concrete\Core\Url\Resolver\Manager\ResolverManager,
+'Concrete\Core\Url\Resolver\Manager\ResolverManager' instanceof \Concrete\Core\Url\Resolver\Manager\ResolverManager,
+'Concrete\Core\Url\Resolver\Manager\ResolverManagerInterface' instanceof \Concrete\Core\Url\Resolver\Manager\ResolverManager,
+'url/resolver/page' instanceof \Concrete\Core\Url\Resolver\PageUrlResolver,
+'Concrete\Core\Url\Resolver\PageUrlResolver' instanceof \Concrete\Core\Url\Resolver\PageUrlResolver,
+'url/resolver/path' instanceof \Concrete\Core\Url\Resolver\PathUrlResolver,
+'Concrete\Core\Url\Resolver\PathUrlResolver' instanceof \Concrete\Core\Url\Resolver\PathUrlResolver,
+'url/resolver/route' instanceof \Concrete\Core\Url\Resolver\RouteUrlResolver,
+'Concrete\Core\Url\Resolver\RouterUrlResolver' instanceof \Concrete\Core\Url\Resolver\RouterUrlResolver,
+'user.avatar' instanceof \Concrete\Core\User\Avatar\AvatarService,
+'Concrete\Core\User\Avatar\AvatarServiceInterface' instanceof \Concrete\Core\User\Avatar\AvatarService,
+'user.registration' instanceof \Concrete\Core\User\RegistrationService,
+'Concrete\Core\User\RegistrationServiceInterface' instanceof \Concrete\Core\User\RegistrationService,
+'validator/password' instanceof \Concrete\Core\Validator\ValidatorManager,
+'\Concrete\Core\Validator\ValidatorManagerInterface' instanceof \Concrete\Core\Validator\ValidatorManager,
 ```
 
 ## System Operations
