@@ -73,6 +73,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Clear an attribute of a user](#clear-an-attribute-of-a-user)
 - [Attributes](#attributes)
   - [Attribute operations](#attribute-operations)
+    - [Get an attribute](#get-an-attribute)
     - [Add an attribute](#add-an-attribute)
     - [Delete an attribute](#delete-an-attribute)
     - [List of attribute set categories (collection/user/file/site/event)](#list-of-attribute-set-categories-collectionuserfilesiteevent)
@@ -110,6 +111,13 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Ajax helper](#ajax-helper)
     - [HTML helper](#html-helper)
     - [Date helper](#date-helper)
+    - [Form helper](#form-helper)
+    - [Form (color picker) helper](#form-color-picker-helper)
+    - [Form (date/time) helper](#form-datetime-helper)
+    - [Form (page selector) helper](#form-page-selector-helper)
+    - [Form (user selector) helper](#form-user-selector-helper)
+    - [Form (rating) helper](#form-rating-helper)
+    - [Form (attribute) helper](#form-attribute-helper)
     - [Image helper](#image-helper)
 - [System Operations](#system-operations)
   - [Database](#database)
@@ -800,6 +808,10 @@ if ($ui) {
 
 ### Attribute operations
 
+#### Get an attribute
+```PHP
+$key = CollectionAttributeKey::getByHandle('attr_handle');
+```
 
 #### Add an attribute
 ```PHP
@@ -1129,7 +1141,7 @@ $nvh->number($data, $min = null, $max = null); //Tests whether the passed item i
 
 #### Strings validation helper
 ```PHP
-$nvh = Core::make('helper/validation/strings');
+$svh = Core::make('helper/validation/strings');
 
 $svh->email($em, $testMXRecord = false, $strict = false); //@deprecated Use Concrete\Core\Validator\String\EmailValidator
 $svh->alphanum($value, $allowSpaces = false, $allowDashes = false); //Returns true on whether the passed string is completely alpha-numeric, if the value is not a string or is an empty string false will be returned.
@@ -1215,6 +1227,120 @@ $dh->dateTimeFormatLocal($datetime, $mask); //@deprecated
 //\concrete\src\Localization\Service\Date.php
 ```
 
+#### Form helper
+```PHP
+$form = Core::make('helper/form'); //no need to initiate
+
+$form->setRequest(Request $request); //Set the request instance.
+$form->getRequest(); //
+echo $form->action($action, $task = null); //Returns an action suitable for including in a form action property.
+echo $form->submit($key, $value, $miscFields = [], $additionalClasses = ''); //Creates a submit button.
+echo $form->button($key, $value, $miscFields = [], $additionalClasses = ''); //Creates a button.
+echo $form->label($forFieldID, $innerHTML, $miscFields = []); //Creates a label tag.
+echo $form->file($key, $miscFields = []); //Creates a file input element.
+echo $form->hidden($key, $value = null, $miscFields = []); //Creates a hidden form field.
+echo $form->checkbox($key, $value, $isChecked = false, $miscFields = []); //Generates a checkbox.
+echo $form->textarea($key, $valueOrMiscFields = '', $miscFields = []); //Creates a textarea field.
+echo $form->radio($key, $value, $checkedValueOrMiscFields = '', $miscFields = []); //Generates a radio button.
+echo $form->getRequestValue($key); //Checks the request (first POST then GET) based on the key passed.
+echo $form->text($key, $valueOrMiscFields = '', $miscFields = []); //Renders a text input field.
+echo $form->number($key, $valueOrMiscFields = '', $miscFields = []); //Renders a number input field.
+echo $form->email($key, $valueOrMiscFields = '', $miscFields = []); //Renders an email input field.
+echo $form->telephone($key, $valueOrMiscFields = '', $miscFields = []); //Renders a telephone input field.
+echo $form->url($key, $valueOrMiscFields = '', $miscFields = []); //Renders a URL input field.
+echo $form->search($key, $valueOrMiscFields = '', $miscFields = []); //Renders a search input field.
+echo $form->select($key, $optionValues, $valueOrMiscFields = '', $miscFields = []); //Renders a select field.
+echo $form->selectCountry($key, $selectedCountryCode = '', array $configuration = [], array $miscFields = []); //Renders a select menu to choose a Country.
+echo $form->selectMultiple($key, $optionValues, $defaultValues = false, $miscFields = []); //Renders a multiple select box.
+echo $form->password($key, $valueOrMiscFields = '', $miscFields = []); //Renders a password input field.
+echo $form->getAutocompletionDisabler(); //Generates HTML code that can be added at the beginning of a form to disable username/password autocompletion.
+echo $form->processRequestValue($key, $type = 'post'); //Checks the request based on the key passed.
+echo $form->inputType($key, $type, $valueOrMiscFields, $miscFields); //Internal function that creates an <input> element of type $type. Handles the messiness of evaluating $valueOrMiscFields. Assigns a default class of ccm-input-$type.
+echo $form->parseMiscFields($defaultClass, $attributes); //Create an HTML fragment of attribute values, merging any CSS class names as necessary.
+
+//\concrete\src\Form\Service\Form.php
+```
+
+#### Form (color picker) helper
+```PHP
+$cpfh = Core::make('helper/form/color');
+
+echo $cpfh->output($inputName, $value = null, $options = array()); //Creates form fields and JavaScript includes to add a color picker widget.
+//echo $dh->output('background-color', '#f00');
+
+//\concrete\src\Form\Service\Widget\Color.php
+```
+
+#### Form (date/time) helper
+```PHP
+$dtfh = Core::make('helper/form/date_time');
+
+$dtfh->translate($field, $arr = null, $asDateTime = false); //Takes a "field" and grabs all the corresponding disparate fields from $_POST and translates into a timestamp.
+echo $dtfh->datetime($field, $value = null, $includeActivation = false, $calendarAutoStart = true, $classes = null, $timeResolution = 60, array $datePickerOptions = array()); //Creates form fields and JavaScript calendar includes for a particular item (date/time string representations will be converted from the user system-zone to the time-zone).
+echo $dtfh->date($field, $value = null, $calendarAutoStart = true, array $datePickerOptions = array()); //Creates form fields and JavaScript calendar includes for a particular item but includes only calendar controls (no time, so no time-zone conversions will be applied).
+echo $dtfh->selectNearestValue(array $values, $wantedValue); //hoose an array value nearest to a specified value. Useful when we work with time resolutions.
+
+//\concrete\src\Form\Service\Widget\DateTime.php
+```
+
+#### Form (page selector) helper
+```PHP
+$psfh = Core::make('helper/form/page_selector');
+
+echo $psfh->selectPage($fieldName, $cID = false); //Creates form fields and JavaScript page chooser for choosing a page. For use with inclusion in blocks.
+echo $psfh->quickSelect($key, $cID = false, $args = array()); //
+echo $psfh->selectMultipleFromSitemap($field, $pages = array(), $startingPoint = 'HOME_CID', $filters = array()); //
+echo $psfh->selectFromSitemap($field, $page = null, $startingPoint = 'HOME_CID', SiteTree $siteTree = null, $filters = array()); //
+
+//\concrete\src\Form\Service\Widget\PageSelector.php
+```
+
+#### Form (user selector) helper
+```PHP
+$usfh = Core::make('helper/form/user_selector');
+
+echo $usfh->selectUser($fieldName, $uID = false); //Build the HTML to be placed in a page to choose a user using a popup dialog.
+echo $usfh->quickSelect($fieldName, $uID = false, $miscFields = []); //Build the HTML to be placed in a page to choose a user using a select with users pupulated dynamically with ajax requests.
+echo $usfh->selectMultipleUsers($fieldName, $users = []); //Build the HTML to be placed in a page to choose multiple users using a popup dialog.
+
+//\concrete\src\Form\Service\Widget\UserSelector.php
+```
+
+#### Form (rating) helper
+```PHP
+$rfh = Core::make('helper/form/rating');
+
+echo $rfh->rating($prefix, $value = null, $includeJS = true); //
+
+//\concrete\src\Form\Service\Widget\Rating.php
+```
+
+#### Form (attribute) helper
+```PHP
+$afh = Core::make('helper/form/attribute');
+
+$afh->setAttributeObject($obj); //
+$afh->display($key, $required = false, $includeLabel = true, $template = 'composer'); //
+
+
+//usage for page(collection) attributes
+$afh = Core::make('helper/form/attribute');
+$key = CollectionAttributeKey::getByHandle('page_attribute_handle'); //get attribute object
+echo $afh->display($key);
+
+//usage for file attributes
+$afh = Core::make('helper/form/attribute');
+$key = FileAttributeKey::getByHandle('file_attribute_handle'); //get attribute object
+echo $afh->display($key);
+
+//usage for userinfo attributes
+$afh = Core::make('helper/form/attribute');
+$key = UserAttributeKey::getByHandle('user_attribute_handle'); //get attribute object
+echo $afh->display($key);
+
+//\concrete\src\Form\Service\Widget\Attribute.php
+```
+
 #### Image helper
 ```PHP
 $ih = Core::make('helper/image');
@@ -1236,11 +1362,6 @@ $ih->outputThumbnail($mixed, $maxWidth, $maxHeight, $alt = null, $return = false
 
 //\concrete\src\File\Image\BasicThumbnailer.php
 ```
-
-
-
-
-
 
 ## System Operations
 
