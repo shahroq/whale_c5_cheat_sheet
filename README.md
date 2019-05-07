@@ -730,9 +730,13 @@ $userList->filterByInAnyGroup($groups, $inGroups = true) //multiple group
 
 #### Sort a user list
 ```PHP
-$userList->sortByUserID();
-$userList->sortByDateAdded();
-$userList->sortByUserName();
+$userList->sortByUserID(); //by ID asc
+$userList->sortByUserName(); //by username asc
+$userList->sortByDateAdded(); //by date added desc
+
+$userList->sortBy('u.uID', 'desc'); //by ID desc
+$userList->sortBy('u.uName', 'asc'); //by username desc
+$userList->sortBy('u.uDateAdded', 'asc'); //by date added asc
 
 $userList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attrbute_handle
 ```
