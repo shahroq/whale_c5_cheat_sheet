@@ -635,7 +635,7 @@ if (is_object($fileNode)) $fileNode->move($folder);
 
 #### Get/Check current user
 ```PHP
-$u = new User();
+$u = $app->make(\Concrete\Core\User\User::class);
 
 if ($u->isRegistered()) {
     print 'User is logged in.';
