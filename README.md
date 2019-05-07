@@ -5,6 +5,10 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
 **Contributions are welcome via [issues](https://github.com/shahroq/whale_c5_cheat_sheet/issues) and [pull requests](https://github.com/shahroq/whale_c5_cheat_sheet/pulls).**
 
 ## Table of Contents <!-- omit in toc -->
+- [Application (`$app`)](#application-app)
+  - [`$app` in a controller](#app-in-a-controller)
+  - [`$app` in a custom class](#app-in-a-custom-class)
+  - [`$app` in other places](#app-in-other-places)
 - [Pages (Collections)](#pages-collections)
   - [A page](#a-page)
     - [Get Current page](#get-current-page)
@@ -137,6 +141,36 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Clear site cache](#clear-site-cache)
 - [Contributors](#contributors)
 
+
+## Application (`$app`)
+
+### `$app` in a controller
+
+```php
+$app = $this->app;
+```
+
+### `$app` in a custom class
+
+```php
+/** @var \Concrete\Core\Application\Application */
+protected $app;
+public function __construct(\Concrete\Core\Application\Application $app)
+{
+    $this->app = $app;
+}
+public function myMethod()
+{
+    $app = $this->app;
+}
+```
+(create instances of custom classes with `$app->make(\ClassName::class)`) 
+
+### `$app` in other places
+
+```php
+$app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
+```
 
 
 ## Pages (Collections)
