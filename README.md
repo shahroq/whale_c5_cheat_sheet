@@ -730,6 +730,7 @@ $userList->filterByInAnyGroup($groups, $inGroups = true) //multiple group
 
 #### Sort a user list
 ```PHP
+$userList->sortByUserID();
 $userList->sortByDateAdded();
 $userList->sortByUserName();
 
