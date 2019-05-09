@@ -75,6 +75,13 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Delete a user](#delete-a-user)
     - [Set/Update an attribute to a user](#setupdate-an-attribute-to-a-user)
     - [Clear an attribute of a user](#clear-an-attribute-of-a-user)
+- [Topics](#topics)
+  - [Schema](#schema)
+    - [Get a Topic Tree](#get-a-topic-tree)
+    - [List of Topic Trees](#list-of-topic-trees)
+    - [Get children (Categories, Nodes) of a Topic Tree](#get-children-categories-nodes-of-a-topic-tree)
+    - [Topic Tree operations](#topic-tree-operations)
+    - [Add a Category/Node](#add-a-categorynode)
 - [Attributes](#attributes)
   - [Attribute operations](#attribute-operations)
     - [Get an attribute](#get-an-attribute)
@@ -350,7 +357,7 @@ $pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%
 $pageList->getQueryObject()->where("ak_project_skills LIKE '%\n".$value1."\n%'");
 $pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%'");
 
-//by attribute: topic
+//by attribute: topics
 $topicNode = \Concrete\Core\Tree\Node::getByID(24); 
 $pageList->filterByBlogEntryTopic($topicNode);
 ```
@@ -883,11 +890,90 @@ if ($ui) {
 }    
 ```
 
+## Topics
+
+
+
+### Schema
+- Topic Tree
+	- Category
+		- Topic (Node)
+
+
+#### Get a Topic Tree 
+```PHP
+//use \Concrete\Core\Tree\Type\Topic as TopicTree;
+
+$topicTree = TopicTree::getByID(1); //by ID
+$topicTree = TopicTree::getByName('Blog Entries'); //by name
+
+if ($topicTree) echo $topicTree->getTreeName();
+```
+
+#### List of Topic Trees
+```PHP
+//use \Concrete\Core\Tree\Type\Topic as TopicTree;
+
+$topicTrees = TopicTree::getList();
+foreach ($topicTrees as $key => $topicTree) {
+	echo $topicTree->treeID;
+	echo $topicTree->topicTreeName;
+	echo $topicTree->treeDateAdded;
+	echo $topicTree->rootTreeNodeID;
+}
+```
+
+#### Get children (Categories, Nodes) of a Topic Tree
+```PHP
+//use \Concrete\Core\Tree\Type\Topic as TopicTree;
+
+$root = $topicTree->getRootTreeNodeObject();
+$root->populateChildren();
+$children = $root->getChildNodes();
+//print_r($children);
+```
+
+#### Topic Tree operations
+```PHP
+//use \Concrete\Core\Tree\Type\Topic as TopicTree;
+
+//add a Topic Tree
+$topicTree = TopicTree::add('Topic Tree Name');
+
+//rename a Topic Tree
+$topicTree->setTopicTreeName('New Topic Tree Name');
+```
+
+#### Add a Category/Node
+```PHP
+//use Concrete\Core\Tree\Type\Topic as TopicTree;
+//use Concrete\Core\Tree\Node\Node as TreeNode;
+//use Concrete\Core\Tree\Node\Type\Topic as TopicTreeNode;
+//use Concrete\Core\Attribute\Key\Category;
+
+//get root Category
+$topicCategory = TreeNode::getByID($topicTree->getRootTreeNodeObject()->treeNodeID);
+//OR: Get anotehr category by its handle
+//from https://documentation.concrete5.org/developers/topics/working-topics -> not working (error)
+$topicCategory = new Category();
+$topicCategory->getByHandle('Another Category');
+//OR:
+$topicCategory = TreeNode::getByID($catID);
+$topicCategory = TreeNode::getNodeByName($catName); //not working (error)
+
+//add a new topic (node)
+$topicNode = TopicTreeNode::add('New Node', $topicCategory);
+
+//add a new category
+$topicCategory->add('New Category below seected $topicCategory', $topicCategory);
+```
+
 ## Attributes
 
 
 
 ### Attribute operations
+
 
 #### Get an attribute
 ```PHP
