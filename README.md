@@ -302,12 +302,6 @@ $pageList->filterByPageTypeID($ctID); //by a page type ID
 $pageList->filterByPageTypeHandle('blog_entry'); //by a page type handle
 
 $pageList->filterByPageTypeHandle(['blog_entry', 'press_release']); //by page typeS
-$pageList->filterByExcludeNav(true); //by an attribute
-
-$topicNode = \Concrete\Core\Tree\Node::getByID(24); 
-$pageList->filterByBlogEntryTopic($topicNode); //by a topic
-
-$pageList->filterBySelectAttribute($akHandle, $value); //select attribute
 
 $pageList->filterByUserID($uID); //by user ID
 $pageList->filterByIsApproved($cvIsApproved); //by is approved
@@ -340,10 +334,13 @@ $pageList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start)); /
 $pageList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start), '>='); //greater than or equal to $start
 
 // by attribute: option list
-$pageList->filterByAttribute(
-	'attribute_handle', 
-	array($value1, $value2)
-); //have multiple options/ it seems not working properly for array with multiple options. use manual query method instead.
+//$pageList->filterBySelectAttribute($akHandle, $value); //legacy. not working
+
+//for filter based on a single option:
+$pageList->filterByAttribute('attribute_handle', $value1);
+
+//for filter based on multiple options: It seems not working properly for array with multiple options. use manual method instead.
+$pageList->filterByAttribute('attribute_handle', array($value1, $value2)); 
 
 //have both $value1 AND $value2 values
 $pageList->getQueryObject()->where("ak_project_skills LIKE '%\n".$value1."\n%'");
@@ -353,7 +350,9 @@ $pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%
 $pageList->getQueryObject()->where("ak_project_skills LIKE '%\n".$value1."\n%'");
 $pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%'");
 
-
+//by attribute: topic
+$topicNode = \Concrete\Core\Tree\Node::getByID(24); 
+$pageList->filterByBlogEntryTopic($topicNode);
 ```
 
 #### Sort a page list
