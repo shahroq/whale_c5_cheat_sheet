@@ -139,7 +139,6 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Logging](#logging)
     - [Get environment](#get-environment)
     - [Clear site cache](#clear-site-cache)
-- [Contributors](#contributors)
 
 
 ## Application (`$app`)
@@ -318,6 +317,43 @@ $pageList->filterByDateAdded($date, $comparison = '='); //by date added
 $pageList->filterByPublicDate($date, $comparison = '='); //by public date
 $pageList->filterByDateLastModified($date, $comparison = '='); //by last modified date
 $pageList->filterByNumberOfChildren($num, $comparison = '>'); //by number of children
+
+//by attribute:
+$pageList->filterByAttribute($column, $value, $comparison = '=');
+//OR
+$pageList->filterByAttributeHandle($value, $comparison = '='); //for 'attribute_handle' => filterByAttributeHandle/ 'is_featured' => filterByIsFeatured(TRUE);
+
+// by attribute: checkbox(boolean)
+$pageList->filterByAttribute('attribute_handle', TRUE);
+$pageList->filterByAttribute('attribute_handle', FALSE);
+
+//by attribute: string (text/text area/email/URL, Phone NUmber, etc)
+$pageList->filterByAttribute('attribute_handle', 'cat'); //equal to 'cat'
+$pageList->filterByAttribute('attribute_handle', '%'.'cat'.'%', 'LIKE'); //has 'cat' anywhere in the string
+
+//by attribute: number
+$pageList->filterByAttribute('attribute_handle', 5); //equal to 5
+$pageList->filterByAttribute('attribute_handle', 5, '>='); //greater than or equal to 5
+
+//by attribute: date/time
+$pageList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start)); //equal to $stat
+$pageList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start), '>='); //greater than or equal to $start
+
+// by attribute: option list
+$pageList->filterByAttribute(
+	'attribute_handle', 
+	array($value1, $value2)
+); //have multiple options/ it seems not working properly for array with multiple options. use manual query method instead.
+
+//have both $value1 AND $value2 values
+$pageList->getQueryObject()->where("ak_project_skills LIKE '%\n".$value1."\n%'");
+$pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%'");
+
+//have either $value1 OR $value2 value
+$pageList->getQueryObject()->where("ak_project_skills LIKE '%\n".$value1."\n%'");
+$pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%'");
+
+
 ```
 
 #### Sort a page list
@@ -335,7 +371,7 @@ $pageList->sortByPublicDateDescending();
 $pageList->sortByName();
 $pageList->sortByNameDescending();
 
-$pageList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attrbute_handle
+$pageList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attribute_handle
 ```
 
 ### Page operations
@@ -772,7 +808,7 @@ $userList->sortBy('u.uID', 'desc'); //by ID desc
 $userList->sortBy('u.uName', 'asc'); //by username desc
 $userList->sortBy('u.uDateAdded', 'asc'); //by date added asc
 
-$userList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attrbute_handle
+$userList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attribute_handle
 ```
 
 ### User operation
@@ -892,7 +928,7 @@ if (!is_object($key)) {
     );
     $key = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
 
-    //option list attrbute
+    //option list attribute
     //$keyOption = SelectAttributeTypeOption::add($key, 'Option 1'); //add options
     //$keyOption = SelectAttributeTypeOption::add($key, 'Option 2'); //"
 }
@@ -1764,8 +1800,3 @@ $environment = $app->environment(); //echo $environment;
 ```PHP
 $app->clearCaches();
 ```
-
-
-## Contributors
-
-
