@@ -244,7 +244,7 @@ if ($attr) {
     $attrExtension = $attr->getExtension(); //echo $attrExtension;
 
     //image thumbnail
-    $im = Core::make('helper/image');
+    $im = $app->make('helper/image');
     $thumbSrc = $im->getThumbnail($attr, 100, 100)->src; //echo $thumbSrc;
 }
 ```
@@ -1090,7 +1090,7 @@ output_vars(array $get_defined_vars, $valueOfThis = null, $return = false);
 
 #### Number helper
 ```PHP
-$in = Core::make('helper/number');
+$in = $app->make('helper/number');
 
 $im->flexround($value); //Rounds the value only out to its most significant digit.
 $im->trim($value); //Remove superfluous zeroes from a string containing a number.
@@ -1106,7 +1106,7 @@ $im->getBytes($val); //Nice and elegant function for converting memory. Thanks t
 
 #### Text helper
 ```PHP
-$th = Core::make('helper/text');
+$th = $app->make('helper/text');
 
 $th->encodePath($path); //URL-encodes collection path.
 $th->match($pattern, $value); //Determine if a given string matches a given pattern.
@@ -1143,7 +1143,7 @@ $th->appendXML(\SimpleXMLElement $root, \SimpleXMLElement $new); //Appends a Sim
 
 #### URL helper
 ```PHP
-$uh = Core::make('helper/url');
+$uh = $app->make('helper/url');
 
 $uh->setVariable($variable, $value = false, $url = false); //
 $uh->unsetVariable($variable, $url = false); //
@@ -1155,7 +1155,7 @@ $uh->shortenURL($strURL); //Shortens a given url with the tiny url api.
 
 #### Array helper
 ```PHP
-$ah = Core::make('helper/array');
+$ah = $app->make('helper/array');
 
 $ah->get(array $array, $keys, $default = null); //Fetches a value from an (multidimensional) array.
 $ah->set(array $array, $keys, $value); //Sets a value in an (multidimensional) array, creating the arrays recursivly.
@@ -1168,7 +1168,7 @@ $ah->subset($a, $b); //Returns whether $a is a proper subset of $b.
 
 #### Arrays validation helper
 ```PHP
-$avh = Core::make('helper/validation/arrays');
+$avh = $app->make('helper/validation/arrays');
 
 $avh->containsString($needle, $haystack = array(), $recurse = true); //Returns true if any string in the "haystack" contains the "needle".
 
@@ -1177,7 +1177,7 @@ $avh->containsString($needle, $haystack = array(), $recurse = true); //Returns t
 
 #### Numbers validation helper
 ```PHP
-$nvh = Core::make('helper/validation/numbers');
+$nvh = $app->make('helper/validation/numbers');
 
 $nvh->integer($data, $min = null, $max = null); //Tests whether the passed item is an integer.
 $nvh->number($data, $min = null, $max = null); //Tests whether the passed item is an integer or a floating point number.
@@ -1187,7 +1187,7 @@ $nvh->number($data, $min = null, $max = null); //Tests whether the passed item i
 
 #### Strings validation helper
 ```PHP
-$svh = Core::make('helper/validation/strings');
+$svh = $app->make('helper/validation/strings');
 
 $svh->email($em, $testMXRecord = false, $strict = false); //@deprecated Use Concrete\Core\Validator\String\EmailValidator
 $svh->alphanum($value, $allowSpaces = false, $allowDashes = false); //Returns true on whether the passed string is completely alpha-numeric, if the value is not a string or is an empty string false will be returned.
@@ -1205,7 +1205,7 @@ $svh->containsSymbol($str); //Returns 0 if there are no symbols in the string, o
 
 #### JSON helper
 ```PHP
-$jh = Core::make('helper/json');
+$jh = $app->make('helper/json');
 
 $jh->decode($string, $assoc = false); //Decodes a JSON string into a php variable.
 $jh->encode($mixed); //Encodes a data structure into a JSON string.
@@ -1215,7 +1215,7 @@ $jh->encode($mixed); //Encodes a data structure into a JSON string.
 
 #### Ajax helper
 ```PHP
-$ah = Core::make('helper/json');
+$ah = $app->make('helper/json');
 
 $ah->isAjaxRequest(Request $request); //Check if a request is an Ajax call.
 $ah->sendResult($result); //Sends a result to the client and ends the execution.
@@ -1226,7 +1226,7 @@ $ah->sendError($error); //Sends an error to the client and ends the execution.
 
 #### HTML helper
 ```PHP
-$hh = Core::make('helper/html');
+$hh = $app->make('helper/html');
 
 $hh->css($file, $pkgHandle = null); //
 $hh->javascript($file, $pkgHandle = null); //
@@ -1237,7 +1237,7 @@ $hh->noFollowHref($input); //Takes in a string, and adds rel="nofollow" to any a
 
 #### Navigation helper
 ```PHP
-$nh = Core::make('helper/navigation');
+$nh = $app->make('helper/navigation');
 
 $nh->getLinkToCollection($cObj); //Returns a link to a page. Note: this always returns a string.
 $nh->getTrailToCollection($c); //Returns an array of collections as a breadcrumb to the current page.
@@ -1249,8 +1249,8 @@ $nh->getLogInOutLink(); //
 
 #### Date helper
 ```PHP
-$dh = Core::make('helper/date'); 
-//$dh = Core::make('date');
+$dh = $app->make('helper/date'); 
+//$dh = $app->make('date');
 
 $dh->toDB($value = 'now', $fromTimezone = 'system'); //Convert any date/time representation to a string that can be used in DB queries.
 $dh->getOverridableNow($asTimestamp = false); //Return the date/time representation for now, that can be overridden by a custom request when viewing pages in a moment specified by administrators (custom request date/time).
@@ -1286,7 +1286,7 @@ $dh->dateTimeFormatLocal($datetime, $mask); //@deprecated
 
 #### Form helper
 ```PHP
-$form = Core::make('helper/form'); //no need to initiate
+$form = $app->make('helper/form'); //no need to initiate
 
 $form->setRequest(Request $request); //Set the request instance.
 $form->getRequest(); //
@@ -1320,7 +1320,7 @@ echo $form->parseMiscFields($defaultClass, $attributes); //Create an HTML fragme
 
 #### Form (color picker) helper
 ```PHP
-$cpfh = Core::make('helper/form/color');
+$cpfh = $app->make('helper/form/color');
 
 echo $cpfh->output($inputName, $value = null, $options = array()); //Creates form fields and JavaScript includes to add a color picker widget.
 //echo $cpfh->output('background-color', '#f00');
@@ -1330,7 +1330,7 @@ echo $cpfh->output($inputName, $value = null, $options = array()); //Creates for
 
 #### Form (date/time) helper
 ```PHP
-$dtfh = Core::make('helper/form/date_time');
+$dtfh = $app->make('helper/form/date_time');
 
 $dtfh->translate($field, $arr = null, $asDateTime = false); //Takes a "field" and grabs all the corresponding disparate fields from $_POST and translates into a timestamp.
 echo $dtfh->datetime($field, $value = null, $includeActivation = false, $calendarAutoStart = true, $classes = null, $timeResolution = 60, array $datePickerOptions = array()); //Creates form fields and JavaScript calendar includes for a particular item (date/time string representations will be converted from the user system-zone to the time-zone).
@@ -1342,7 +1342,7 @@ echo $dtfh->selectNearestValue(array $values, $wantedValue); //hoose an array va
 
 #### Form (page selector) helper
 ```PHP
-$psfh = Core::make('helper/form/page_selector');
+$psfh = $app->make('helper/form/page_selector');
 
 echo $psfh->selectPage($fieldName, $cID = false); //Creates form fields and JavaScript page chooser for choosing a page. For use with inclusion in blocks.
 echo $psfh->quickSelect($key, $cID = false, $args = array()); //
@@ -1354,7 +1354,7 @@ echo $psfh->selectFromSitemap($field, $page = null, $startingPoint = 'HOME_CID',
 
 #### Form (user selector) helper
 ```PHP
-$usfh = Core::make('helper/form/user_selector');
+$usfh = $app->make('helper/form/user_selector');
 
 echo $usfh->selectUser($fieldName, $uID = false); //Build the HTML to be placed in a page to choose a user using a popup dialog.
 echo $usfh->quickSelect($fieldName, $uID = false, $miscFields = []); //Build the HTML to be placed in a page to choose a user using a select with users pupulated dynamically with ajax requests.
@@ -1365,7 +1365,7 @@ echo $usfh->selectMultipleUsers($fieldName, $users = []); //Build the HTML to be
 
 #### Form (rating) helper
 ```PHP
-$rfh = Core::make('helper/form/rating');
+$rfh = $app->make('helper/form/rating');
 
 echo $rfh->rating($prefix, $value = null, $includeJS = true); //
 
@@ -1374,24 +1374,24 @@ echo $rfh->rating($prefix, $value = null, $includeJS = true); //
 
 #### Form (attribute) helper
 ```PHP
-$afh = Core::make('helper/form/attribute');
+$afh = $app->make('helper/form/attribute');
 
 $afh->setAttributeObject($obj); //
 $afh->display($key, $required = false, $includeLabel = true, $template = 'composer'); //
 
 
 //usage for page(collection) attributes
-$afh = Core::make('helper/form/attribute');
+$afh = $app->make('helper/form/attribute');
 $key = CollectionAttributeKey::getByHandle('page_attribute_handle'); //get attribute object
 echo $afh->display($key);
 
 //usage for file attributes
-$afh = Core::make('helper/form/attribute');
+$afh = $app->make('helper/form/attribute');
 $key = FileAttributeKey::getByHandle('file_attribute_handle'); //get attribute object
 echo $afh->display($key);
 
 //usage for userinfo attributes
-$afh = Core::make('helper/form/attribute');
+$afh = $app->make('helper/form/attribute');
 $key = UserAttributeKey::getByHandle('user_attribute_handle'); //get attribute object
 echo $afh->display($key);
 
@@ -1400,9 +1400,9 @@ echo $afh->display($key);
 
 #### Form (typography) helper
 ```PHP
-$tfh = Core::make('helper/form/typography');
+$tfh = $app->make('helper/form/typography');
 //OR
-$tfh = Core::make('helper/form/font');
+$tfh = $app->make('helper/form/font');
 
 echo $tfh->output($inputName, $value = array(), $options = array()); //Creates form fields and JavaScript includes to add a font picker widget.
 
@@ -1411,7 +1411,7 @@ echo $tfh->output($inputName, $value = array(), $options = array()); //Creates f
 
 #### Concrete URL helper
 ```PHP
-$cuh = Core::make('helper/concrete/urls');
+$cuh = $app->make('helper/concrete/urls');
 
 $cuh->getPackageIconURL($pkg); //Gets a full URL to an icon for a particular application.
 $cuh->getPackageURL($pkg); //Get the package's URL.
@@ -1426,9 +1426,9 @@ $cuh->getBlockTypeToolsURL($bt); //@deprecated: Gets a full URL to a block's too
 
 #### Asset library (file manager) helper
 ```PHP
-$alh = Core::make('helper/concrete/asset_library');
+$alh = $app->make('helper/concrete/asset_library');
 //OR
-$alh = Core::make('helper/concrete/file_manager');
+$alh = $app->make('helper/concrete/file_manager');
 
 $alh->file($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick a file.
 $alh->image($inputID, $inputName, $chooseText, $preselectedFile = null, $args = []); //Sets up a form field to let users pick an image file.
@@ -1444,9 +1444,9 @@ $alh->fileOfType($type, $inputID, $inputName, $chooseText, $preselectedFile = nu
 
 #### Validation error helper
 ```PHP
-$errors = Core::make('error');
+$errors = $app->make('error');
 //OR
-$errors = Core::make('helper/validation/error');
+$errors = $app->make('helper/validation/error');
 
 $errors->add($e, $fieldName = null, $fieldDisplayName = null); //Add an error message/object or exception to the internal error array (error messages are in plain text if not otherwise specified).
 $errors->addHtml($e, $fieldName = null, $fieldDisplayName = null); //Add an error message/object or exception to the internal error array (error messages are in HTML if not otherwise specified).
@@ -1462,7 +1462,7 @@ $errors->createResponse($errorCode = JsonResponse::HTTP_BAD_REQUEST); //Create a
 
 #### User Interface helper
 ```PHP
-$uih = Core::make('helper/concrete/ui')
+$uih = $app->make('helper/concrete/ui')
 
 $uih->submit($text, $formID = false, $buttonAlign = 'right', $innerClass = null, $args = []); //Generates a submit button in the Concrete style.
 $uih->button($text, $href, $buttonAlign = 'right', $innerClass = null, $args = []); //Generates a simple link button in the Concrete style.
@@ -1488,7 +1488,7 @@ $uih->notify($arguments); //
 
 #### Image helper
 ```PHP
-$ih = Core::make('helper/image');
+$ih = $app->make('helper/image');
 
 $ih->getStorageLocation(); //
 $ih->setStorageLocation(StorageLocationInterface $storageLocation); //
@@ -1672,7 +1672,7 @@ $ih->outputThumbnail($mixed, $maxWidth, $maxHeight, $alt = null, $return = false
 #### Current database
 ```PHP
 //database connection
-$db = Database::connection();
+$db = $app->make(\Concrete\Core\Database\Connection\Connection::class);
 
 //prepare any query
 $statement = $db->executeQuery('SELECT * FROM `myTable` WHERE `id`>?;', array(0)); 
@@ -1735,7 +1735,7 @@ return array(
     ),
 );
 
-$dbPricing = Database::connection('pricing');
+$dbPricing = $app->make('database')->connection('pricing');
 ```
 
 ### Misc.
@@ -1757,18 +1757,12 @@ Log::addNotice('A notice error.');
 
 #### Get environment
 ```PHP
-$environment = Core::make('app')->environment(); //echo $environment;
+$environment = $app->environment(); //echo $environment;
 ```
 
 #### Clear site cache
 ```PHP
-Core::make('app')->clearCaches();
-//OR
-$this->app->clearCaches();
-//OR
-//use Concrete\Core\Support\Facade\Application;
-$app = Application::getFacadeApplication();
-$app->make('app')->clearCaches();
+$app->clearCaches();
 ```
 
 
