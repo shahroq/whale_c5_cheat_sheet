@@ -351,13 +351,13 @@ $pageList->filterByAttribute('attribute_handle', $value1);
 //for filter based on multiple options: It seems not working properly for array with multiple options. use manual method instead.
 $pageList->filterByAttribute('attribute_handle', array($value1, $value2)); 
 
-//have both $value1 AND $value2 values
-$pageList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
-$pageList->getQueryObject()->andWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
-
 //have either $value1 OR $value2 value
 $pageList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
 $pageList->getQueryObject()->orWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
+
+//have both $value1 AND $value2 values
+$pageList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
+$pageList->getQueryObject()->andWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
 
 //by attribute: topics
 //first get nodes:
@@ -366,10 +366,14 @@ $topicNode1 = TreeNode::getByID(1);
 $topicNode2 = TreeNode::getByID(2);
 
 $pageList->filterByAttribute('attribute_handle', array($topicNode1, $topicNode2));
+//or send the nodeIDs directly
+$pageList->filterByAttribute('attribute_handle', array(1,2));
 
 //OR: Category
 $topicCategory1 = TreeNode::getByID(1);
 $pageList->filterByAttribute('attribute_handle', array($topicCategory1));
+//or send the nodeIDs directly
+$pageList->filterByAttribute('attribute_handle', array(1));
 ```
 
 #### Sort a page list
@@ -837,19 +841,19 @@ $userList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start), '>
 // by attribute: option list
 //$userList->filterBySelectAttribute($akHandle, $value); //legacy. not working
 
-//for filter based on a single option:
+//for filtering based on a single option:
 $userList->filterByAttribute('attribute_handle', $value1);
 
-//for filter based on multiple options: It seems not working properly for array with multiple options. use manual method instead.
+//for filtering based on multiple options: It seems not working properly for array with multiple options. use manual method instead.
 $userList->filterByAttribute('attribute_handle', array($value1, $value2)); 
-
-//have both $value1 AND $value2 values
-$userList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
-$userList->getQueryObject()->andWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
 
 //have either $value1 OR $value2 value
 $userList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
 $userList->getQueryObject()->orWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
+
+//have both $value1 AND $value2 values
+$userList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
+$userList->getQueryObject()->andWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
 
 //by attribute: topics
 //first get nodes:
