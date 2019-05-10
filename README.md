@@ -76,11 +76,12 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Set/Update an attribute to a user](#setupdate-an-attribute-to-a-user)
     - [Clear an attribute of a user](#clear-an-attribute-of-a-user)
 - [Topics](#topics)
-  - [Schema](#schema)
+    - [Schema](#schema)
     - [Get a Topic Tree](#get-a-topic-tree)
     - [List of Topic Trees](#list-of-topic-trees)
     - [Get children (Categories, Nodes) of a Topic Tree](#get-children-categories-nodes-of-a-topic-tree)
     - [Topic Tree operations](#topic-tree-operations)
+    - [Get a Category/Node](#get-a-categorynode)
     - [Add a Category/Node](#add-a-categorynode)
 - [Attributes](#attributes)
   - [Attribute operations](#attribute-operations)
@@ -319,6 +320,7 @@ $pageList->filterByPublicDate($date, $comparison = '='); //by public date
 $pageList->filterByDateLastModified($date, $comparison = '='); //by last modified date
 $pageList->filterByNumberOfChildren($num, $comparison = '>'); //by number of children
 
+
 //by attribute:
 $pageList->filterByAttribute($column, $value, $comparison = '=');
 //OR
@@ -350,16 +352,24 @@ $pageList->filterByAttribute('attribute_handle', $value1);
 $pageList->filterByAttribute('attribute_handle', array($value1, $value2)); 
 
 //have both $value1 AND $value2 values
-$pageList->getQueryObject()->where("ak_project_skills LIKE '%\n".$value1."\n%'");
-$pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%'");
+$pageList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
+$pageList->getQueryObject()->andWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
 
 //have either $value1 OR $value2 value
-$pageList->getQueryObject()->where("ak_project_skills LIKE '%\n".$value1."\n%'");
-$pageList->getQueryObject()->andWhere("ak_project_skills LIKE '%\n".$value2."\n%'");
+$pageList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
+$pageList->getQueryObject()->orWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
 
 //by attribute: topics
-$topicNode = \Concrete\Core\Tree\Node::getByID(24); 
-$pageList->filterByBlogEntryTopic($topicNode);
+//first get nodes:
+//use \Concrete\Core\Tree\Node\Node as TreeNode;
+$topicNode1 = TreeNode::getByID(1);
+$topicNode2 = TreeNode::getByID(2);
+
+$pageList->filterByAttribute('attribute_handle', array($topicNode1, $topicNode2));
+
+//OR: Category
+$topicCategory1 = TreeNode::getByID(1);
+$pageList->filterByAttribute('attribute_handle', array($topicCategory1));
 ```
 
 #### Sort a page list
@@ -791,7 +801,8 @@ $userList->includeUnvalidatedUsers();
 $userList->filterByIsActive($isActive);
 $userList->filterByIsValidated($isValidated);
 
-$userList->filterByGroup('Administrators'); //by group
+//by group
+$userList->filterByGroup('Administrators'); 
 //OR send the group object
 $group = \Group::getByName('Administrators');
 $userList->filterByGroup($group);
@@ -799,9 +810,59 @@ $userList->filterByGroup($group);
 $group = \Group::getByName('Administrators');
 $userList->filterByGroup($group, false); //return all non-admins
 
-$userList->filterByProfilePrivateMessagesEnabled(true); //by attribute
-
 $userList->filterByInAnyGroup($groups, $inGroups = true) //multiple group
+
+
+//by attribute:
+$userList->filterByAttribute($column, $value, $comparison = '=');
+//OR
+$userList->filterByAttributeHandle($value, $comparison = '='); //for 'attribute_handle' => filterByAttributeHandle/ 'is_featured' => filterByIsFeatured(TRUE);
+
+// by attribute: checkbox(boolean)
+$userList->filterByAttribute('attribute_handle', TRUE);
+$userList->filterByAttribute('attribute_handle', FALSE);
+
+//by attribute: string (text/text area/email/URL, Phone NUmber, etc)
+$userList->filterByAttribute('attribute_handle', 'cat'); //equal to 'cat'
+$userList->filterByAttribute('attribute_handle', '%'.'cat'.'%', 'LIKE'); //has 'cat' anywhere in the string
+
+//by attribute: number
+$userList->filterByAttribute('attribute_handle', 5); //equal to 5
+$userList->filterByAttribute('attribute_handle', 5, '>='); //greater than or equal to 5
+
+//by attribute: date/time
+$userList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start)); //equal to $stat
+$userList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start), '>='); //greater than or equal to $start
+
+// by attribute: option list
+//$userList->filterBySelectAttribute($akHandle, $value); //legacy. not working
+
+//for filter based on a single option:
+$userList->filterByAttribute('attribute_handle', $value1);
+
+//for filter based on multiple options: It seems not working properly for array with multiple options. use manual method instead.
+$userList->filterByAttribute('attribute_handle', array($value1, $value2)); 
+
+//have both $value1 AND $value2 values
+$userList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
+$userList->getQueryObject()->andWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
+
+//have either $value1 OR $value2 value
+$userList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
+$userList->getQueryObject()->orWhere("ak_attribute_handle LIKE '%\n".$value2."\n%'");
+
+//by attribute: topics
+//first get nodes:
+//use \Concrete\Core\Tree\Node\Node as TreeNode;
+$topicNode1 = TreeNode::getByID(1);
+$topicNode2 = TreeNode::getByID(2);
+
+$userList->filterByAttribute('attribute_handle', array($topicNode1, $topicNode2));
+
+//OR: Category
+$topicCategory1 = TreeNode::getByID(1);
+$userList->filterByAttribute('attribute_handle', array($topicCategory1));
+
 ```
 
 #### Sort a user list
@@ -894,11 +955,10 @@ if ($ui) {
 
 
 
-### Schema
+#### Schema
 - Topic Tree
 	- Category
 		- Topic (Node)
-
 
 #### Get a Topic Tree 
 ```PHP
@@ -942,6 +1002,19 @@ $topicTree = TopicTree::add('Topic Tree Name');
 
 //rename a Topic Tree
 $topicTree->setTopicTreeName('New Topic Tree Name');
+```
+
+#### Get a Category/Node
+```PHP
+//use \Concrete\Core\Tree\Node\Node as TreeNode;
+
+//Category
+$topicCategory = TreeNode::getByID($catID);
+$topicCategory = TreeNode::getNodeByName($catName); //not working (error)
+
+//Topic (Node)
+$topicNode = TreeNode::getByID($nodeID);
+$topicNode = TreeNode::getNodeByName($nodeName); //not working (error)
 ```
 
 #### Add a Category/Node
