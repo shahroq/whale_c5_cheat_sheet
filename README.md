@@ -32,6 +32,11 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Set/Update an attribute of a page](#setupdate-an-attribute-of-a-page)
     - [Clear an attribute of a page](#clear-an-attribute-of-a-page)
     - [Refresh page cache](#refresh-page-cache)
+  - [Attributes](#attributes)
+    - [Get an attribute](#get-an-attribute)
+    - [Add an attribute](#add-an-attribute)
+    - [Delete an attribute](#delete-an-attribute)
+    - [Add a Collection/Page attribute set](#add-a-collectionpage-attribute-set)
 - [Files](#files)
   - [A Files](#a-files)
     - [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
@@ -83,20 +88,12 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Topic Tree operations](#topic-tree-operations)
     - [Get a Category/Node](#get-a-categorynode)
     - [Add a Category/Node](#add-a-categorynode)
-- [Attributes](#attributes)
-  - [Attribute operations](#attribute-operations)
-    - [Get an attribute](#get-an-attribute)
-    - [Add an attribute](#add-an-attribute)
-    - [Delete an attribute](#delete-an-attribute)
+- [Attributes](#attributes-1)
     - [List of attribute set categories (collection/user/file/site/event)](#list-of-attribute-set-categories-collectionuserfilesiteevent)
     - [List of sets in a category](#list-of-sets-in-a-category)
-    - [Get a Collection/Page attribute](#get-a-collectionpage-attribute)
-    - [Get options of an 'Option List' attribute](#get-options-of-an-option-list-attribute)
   - [Attrubute Set](#attrubute-set)
     - [A set](#a-set)
     - [Attributes in a set](#attributes-in-a-set)
-    - [Add a Collection/Page set](#add-a-collectionpage-set)
-    - [Add a File set](#add-a-file-set)
     - [List of sets](#list-of-sets)
 - [Themes](#themes)
   - [Page types](#page-types)
@@ -466,6 +463,9 @@ $page->addAdditionalPagePath('/blog-path-for-others');
 ```PHP
 $page = \Page::getByID(1); //by ID
 $page->setAttribute('attribute_handle', 'value');
+
+//multiple values (option list)
+$page->setAttribute('attribute_handle', array('value1', 'value2'));
 ```
 
 #### Clear an attribute of a page
@@ -479,6 +479,89 @@ $page->clearAttribute('attribute_handle');
 $page = \Page::getByID(1); //by ID
 $page->refreshCache();
 ```
+
+### Attributes
+
+
+#### Get an attribute
+```PHP
+$attr = CollectionAttributeKey::getByID(1); //by ID
+$attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
+
+$attrID = $attr->getAttributeKeyID(); //echo $attrID;
+$attrHandle = $attr->getAttributeKeyHandle(); //echo $attrHandle;
+$attrName = $attr->getAttributeKeyName(); //echo $attrName;
+
+//options of an 'Option List' attribute
+$controller = $attr->getController();
+$attrOptions = $controller->getOptions();
+foreach ((object)$attrOptions as $attrOption) {
+    $attrOptionID = $attrOption->getSelectAttributeOptionID(); //echo $attrOptionID;
+    $attrOptionValue = $attrOption->getSelectAttributeOptionValue(); //echo $attrOptionValue;
+}
+```
+
+#### Add an attribute
+```PHP
+//use CollectionAttributeKey;
+//use Concrete\Core\Attribute\Type as AttributeType;
+//use Concrete\Attribute\Select\Option as SelectAttributeTypeOption;
+
+$key = CollectionAttributeKey::getByHandle('attr_handle');
+if (!is_object($key)) {
+    $attr_type = AttributeType::getByHandle('text'); 
+    //$attr_type = AttributeType::getByHandle('number'); 
+    //$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
+    //$attr_type = AttributeType::getByHandle('textarea'); 
+    //$attr_type = AttributeType::getByHandle('image_file');
+    //$attr_type = AttributeType::getByHandle('date_time'); 
+    //$attr_type = AttributeType::getByHandle('url'); 
+
+    $desc = array ( 
+        'akHandle' => 'attr_handle',
+        'akName'=> t('Attribute Name'),
+        //'asID' => $attrSetID, //attribute set ID: check 'Get a set/Create a set' on how to get $attrSetID
+        //'akIsSearchableIndexed' => TRUE, //Content included in search index
+        //'akIsSearchable' => TRUE, //Field available in advanced search
+        
+        //textarea attribute
+        //'akTextareaDisplayMode' => 'rich_text', //ONLY FOR 'textarea': Input Format/ values: text,rich_text
+
+        //date_time attribute
+        //'akUseNowIfEmpty' => TRUE, //ONLY FOR 'date_time': Suggest the current date/time if empty/ values: TRUE, FALSE
+        //'akDateDisplayMode' => 'date_time', //ONLY FOR 'date_time': Ask User For/ values: date_time, date, date_text, text
+        //'akTextCustomFormat' => 'Y-m-d H:i:s', //ONLY FOR 'date_time': Custom format/ values: PHP date function values
+        //'akTimeResolution' => 60, //ONLY FOR 'date_time': Time Resolution/ values: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
+    );
+    $key = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
+
+    //add option to an 'option list' attribute
+    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 1'); //add options
+    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 2'); //"
+}
+```
+
+#### Delete an attribute
+```PHP
+...
+
+//delete options of an 'option list' attribute
+...
+```
+
+#### Add a Collection/Page attribute set
+```PHP
+//use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
+
+$akc = AttributeKeyCategory::getByHandle('collection');
+$akc->setAllowAttributeSets(AttributeKeyCategory::ASET_ALLOW_SINGLE);
+$attrSet = $akc->addSet('my_set', t('My Set'), $pkg = null, $locked = null); 
+    
+$attrSetID = $attrSet->getAttributeSetID(); //echo $attrSetID;
+$attrSetHandle = $attrSet->getAttributeSetHandle(); //echo $attrSetHandle;
+$attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
+```
+
 
 
 ## Files
@@ -1049,58 +1132,6 @@ $topicCategory->add('New Category below seected $topicCategory', $topicCategory)
 
 
 
-### Attribute operations
-
-
-#### Get an attribute
-```PHP
-$key = CollectionAttributeKey::getByHandle('attr_handle');
-```
-
-#### Add an attribute
-```PHP
-//use CollectionAttributeKey;
-//use Concrete\Core\Attribute\Type as AttributeType;
-
-$key = CollectionAttributeKey::getByHandle('attr_handle');
-if (!is_object($key)) {
-    $attr_type = AttributeType::getByHandle('text'); 
-    //$attr_type = AttributeType::getByHandle('number'); 
-    //$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
-    //$attr_type = AttributeType::getByHandle('textarea'); 
-    //$attr_type = AttributeType::getByHandle('image_file');
-    //$attr_type = AttributeType::getByHandle('date_time'); 
-    //$attr_type = AttributeType::getByHandle('url'); 
-
-    $desc = array ( 
-        'akHandle' => 'attr_handle',
-        'akName'=> t('Attribute Name'),
-        //'asID' => $attrSetID, //attribute set ID: check 'Get a set/Create a set' on how to get $attrSetID
-        //'akIsSearchableIndexed' => TRUE, //Content included in search index
-        //'akIsSearchable' => TRUE, //Field available in advanced search
-        
-        //textarea attribute
-        //'akTextareaDisplayMode' => 'rich_text', //ONLY FOR 'textarea': Input Format/ values: text,rich_text
-
-        //date_time attribute
-        //'akUseNowIfEmpty' => TRUE, //ONLY FOR 'date_time': Suggest the current date/time if empty/ values: TRUE, FALSE
-        //'akDateDisplayMode' => 'date_time', //ONLY FOR 'date_time': Ask User For/ values: date_time, date, date_text, text
-        //'akTextCustomFormat' => 'Y-m-d H:i:s', //ONLY FOR 'date_time': Custom format/ values: PHP date function values
-        //'akTimeResolution' => 60, //ONLY FOR 'date_time': Time Resolution/ values: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
-    );
-    $key = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
-
-    //option list attribute
-    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 1'); //add options
-    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 2'); //"
-}
-```
-
-#### Delete an attribute
-```PHP
-
-```
-
 #### List of attribute set categories (collection/user/file/site/event)
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
@@ -1126,27 +1157,6 @@ if (is_object($category)) {
 }	
 ```
 
-#### Get a Collection/Page attribute
-```PHP
-$attr = CollectionAttributeKey::getByID(1); //by ID
-$attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
-
-$attrID = $attr->getAttributeKeyID(); //echo $attrID;
-$attrHandle = $attr->getAttributeKeyHandle(); //echo $attrHandle;
-$attrName = $attr->getAttributeKeyName(); //echo $attrName;
-```
-
-#### Get options of an 'Option List' attribute
-```PHP
-$attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
-$controller = $attr->getController();
-$attrOptions = $controller->getOptions();
-foreach ((object)$attrOptions as $attrOption) {
-    $attrOptionID = $attrOption->getSelectAttributeOptionID(); //echo $attrOptionID;
-    $attrOptionValue = $attrOption->getSelectAttributeOptionValue(); //echo $attrOptionValue;
-}
-```
-
 ### Attrubute Set
 
 
@@ -1165,25 +1175,6 @@ foreach($attrs as $attr) {
     $attrName = $attr->getAttributeKeyName(); //echo $attrName;
 }
 ```
-
-#### Add a Collection/Page set
-```PHP
-//use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
-
-$akc = AttributeKeyCategory::getByHandle('collection');
-$akc->setAllowAttributeSets(AttributeKeyCategory::ASET_ALLOW_SINGLE);
-$attrSet = $akc->addSet('my_set', t('My Set'), $pkg = null, $locked = null); 
-    
-$attrSetID = $attrSet->getAttributeSetID(); //echo $attrSetID;
-$attrSetHandle = $attrSet->getAttributeSetHandle(); //echo $attrSetHandle;
-$attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
-```
-
-#### Add a File set
-```PHP
-```
-
-
 
 #### List of sets
 ```PHP
