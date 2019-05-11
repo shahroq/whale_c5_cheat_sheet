@@ -36,7 +36,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get an attribute](#get-an-attribute)
     - [Add an attribute](#add-an-attribute)
     - [Delete an attribute](#delete-an-attribute)
-    - [Add a Collection/Page attribute set](#add-a-collectionpage-attribute-set)
+    - [Add an attribute set](#add-an-attribute-set)
 - [Files](#files)
   - [A Files](#a-files)
     - [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
@@ -549,7 +549,7 @@ if (!is_object($key)) {
 ...
 ```
 
-#### Add a Collection/Page attribute set
+#### Add an attribute set
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
 
