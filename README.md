@@ -507,8 +507,8 @@ foreach ((object)$attrOptions as $attrOption) {
 //use Concrete\Core\Attribute\Type as AttributeType;
 //use Concrete\Attribute\Select\Option as SelectAttributeTypeOption;
 
-$key = CollectionAttributeKey::getByHandle('attr_handle');
-if (!is_object($key)) {
+$attr = CollectionAttributeKey::getByHandle('attr_handle');
+if (!is_object($attr)) {
     $attr_type = AttributeType::getByHandle('text'); 
     //$attr_type = AttributeType::getByHandle('number'); 
     //$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
@@ -533,11 +533,11 @@ if (!is_object($key)) {
         //'akTextCustomFormat' => 'Y-m-d H:i:s', //ONLY FOR 'date_time': Custom format/ values: PHP date function values
         //'akTimeResolution' => 60, //ONLY FOR 'date_time': Time Resolution/ values: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
     );
-    $key = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
+    $attr = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
 
     //add option to an 'option list' attribute
-    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 1'); //add options
-    //$keyOption = SelectAttributeTypeOption::add($key, 'Option 2'); //"
+    //$attrOption = SelectAttributeTypeOption::add($attr, 'Option 1'); //add options
+    //$attrOption = SelectAttributeTypeOption::add($attr, 'Option 2'); //"
 }
 ```
 
