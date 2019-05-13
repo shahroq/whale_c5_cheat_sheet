@@ -60,6 +60,10 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Add a file to a set](#add-a-file-to-a-set)
     - [Create a file folder](#create-a-file-folder)
     - [Add a file to a folder](#add-a-file-to-a-folder)
+  - [Attributes](#attributes-1)
+    - [Get an attribute](#get-an-attribute-1)
+    - [Add an attribute](#add-an-attribute-1)
+    - [Add an attribute set](#add-an-attribute-set-1)
 - [Users](#users)
   - [A User](#a-user)
     - [Get/Check current user](#getcheck-current-user)
@@ -80,6 +84,10 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Delete a user](#delete-a-user)
     - [Set/Update an attribute to a user](#setupdate-an-attribute-to-a-user)
     - [Clear an attribute of a user](#clear-an-attribute-of-a-user)
+  - [Attributes](#attributes-2)
+    - [Get an attribute](#get-an-attribute-2)
+    - [Add an attribute](#add-an-attribute-2)
+    - [Add an attribute set](#add-an-attribute-set-2)
 - [Topics](#topics)
     - [Schema](#schema)
     - [Get a Topic Tree](#get-a-topic-tree)
@@ -88,7 +96,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Topic Tree operations](#topic-tree-operations)
     - [Get a Category/Node](#get-a-categorynode)
     - [Add a Category/Node](#add-a-categorynode)
-- [Attributes](#attributes-1)
+- [Attributes](#attributes-3)
     - [List of attribute set categories (collection/user/file/site/event)](#list-of-attribute-set-categories-collectionuserfilesiteevent)
     - [List of sets in a category](#list-of-sets-in-a-category)
   - [Attrubute Set](#attrubute-set)
@@ -766,6 +774,18 @@ $fileNode = $file->getFileNodeObject();
 if (is_object($fileNode)) $fileNode->move($folder);    
 ```
 
+### Attributes
+
+
+#### Get an attribute
+Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'File'.
+
+#### Add an attribute
+Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'File'.
+
+#### Add an attribute set
+Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'File'.
+
 ## Users
 
 
@@ -1037,6 +1057,18 @@ if ($ui) {
     $ui->clearAttribute('attribute_handle');
 }    
 ```
+
+### Attributes
+
+
+#### Get an attribute
+Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'File'.
+
+#### Add an attribute
+Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'File'.
+
+#### Add an attribute set
+Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'File'.
 
 ## Topics
 
