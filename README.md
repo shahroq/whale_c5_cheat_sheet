@@ -529,9 +529,13 @@ if (!is_object($attr)) {
         'akHandle' => 'attr_handle',
         'akName'=> t('Attribute Name'),
         //'asID' => $attrSetID, //attribute set ID: check 'Get a set/Create a set' on how to get $attrSetID
-        //'akIsSearchableIndexed' => TRUE, //Content included in search index
-        //'akIsSearchable' => TRUE, //Field available in advanced search
-        
+        //'akIsSearchableIndexed' => TRUE, //Content included in search index. Default: FALSE
+        //'akIsSearchable' => FALSE, //Field available in advanced search. Default: TRUE
+
+        //boolean attribute
+        //'akCheckedByDefault'=> TRUE,
+        //'akCheckboxLabel'=> t('Attribute Label'),
+
         //textarea attribute
         //'akTextareaDisplayMode' => 'rich_text', //ONLY FOR 'textarea': Input Format/ values: text,rich_text
 
