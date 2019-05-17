@@ -1306,6 +1306,7 @@ configValue
 
 #### Database
 table: *`Config`*
+
 configNamespace | configGroup | configItem | configValue
 --------------- | ----------- | ---------- | -----------
 my_package | front_end | show_header | 1
