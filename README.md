@@ -309,6 +309,7 @@ echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
 
 //Pagination functions
 $pagination->setCurrentPage(1);
+//$pagination->setCurrentPage($_GET['ccm_paging_p'] ? $_GET['ccm_paging_p'] : 1); //in case the result is not generated correctly based on current page number
 echo $pagination->getTotalResults(); //total number of results
 echo $pagination->getTotalPages(); //total number of pages
 echo $pagination->hasNextPage(); //To determine whether paging is necessary
@@ -674,6 +675,7 @@ echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
 
 //Pagination functions
 $pagination->setCurrentPage(1);
+//$pagination->setCurrentPage($_GET['ccm_paging_p'] ? $_GET['ccm_paging_p'] : 1); //in case the result is not generated correctly based on current page number
 echo $pagination->getTotalResults(); //total number of results
 echo $pagination->getTotalPages(); //total number of files
 echo $pagination->hasNextPage(); //To determine whether paging is necessary
@@ -910,6 +912,7 @@ echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
 
 //Pagination functions
 $pagination->setCurrentPage(1);
+//$pagination->setCurrentPage($_GET['ccm_paging_p'] ? $_GET['ccm_paging_p'] : 1); //in case the result is not generated correctly based on current page number
 echo $pagination->getTotalResults(); //total number of results
 echo $pagination->getTotalPages(); //total number of pages
 echo $pagination->hasNextPage(); //To determine whether paging is necessary
