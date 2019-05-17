@@ -296,21 +296,23 @@ foreach ((array)$pages as $page) {
 $pageList = new PageList();
 
 $pagination = $pageList->getPagination();
-$pagination->setMaxPerPage(10);
-$pagination->setCurrentPage(1);
+$pagination->setMaxPerPage(5);
 $pages = $pagination->getCurrentPageResults();
 
+//echo count($pages);
+foreach ((array)$pages as $page) {
+    echo $page->getCollectionID().'-'.$page->getCollectionName().'<br/>';
+}
+
+//pagination buttons
+echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
+
 //Pagination functions
+$pagination->setCurrentPage(1);
 echo $pagination->getTotalResults(); //total number of results
 echo $pagination->getTotalPages(); //total number of pages
 echo $pagination->hasNextPage(); //To determine whether paging is necessary
 echo $pagination->hasPreviousPage(); //"
-echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
-
-//echo count($pages);
-foreach ((array)$pages as $page) {
-    echo $page->getCollectionID();
-}
 ```
 For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
@@ -659,21 +661,23 @@ foreach ((array)$files as $file) {
 $fileList = new FileList();
 
 $pagination = $fileList->getPagination();
-$pagination->setMaxPerPage(10);
-$pagination->setCurrentPage(1);
+$pagination->setMaxPerPage(5);
 $files = $pagination->getCurrentPageResults();
 
+//echo count($files);
+foreach ((array)$files as $file) {
+    echo $file->getFileID().'-'.$file->getFileName().'<br/>';
+}
+
+//pagination buttons
+echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
+
 //Pagination functions
+$pagination->setCurrentPage(1);
 echo $pagination->getTotalResults(); //total number of results
 echo $pagination->getTotalPages(); //total number of files
 echo $pagination->hasNextPage(); //To determine whether paging is necessary
 echo $pagination->hasPreviousPage(); //"
-echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
-
-//echo count($files);
-foreach ((array)$files as $file) {
-    echo $file->getFileID();
-}
 ```
 For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
@@ -893,21 +897,23 @@ foreach ((array)$users as $user) {
 $userList = new UserList();
 
 $pagination = $userList->getPagination();
-$pagination->setMaxPerPage(10);
-$pagination->setCurrentPage(1);
+$pagination->setMaxPerPage(5);
 $users = $pagination->getCurrentPageResults();
 
+//echo count($users);
+foreach ((array)$users as $user) {
+    echo $user->getUserID().'-'.$user->getUserName().'<br/>';
+}
+
+//pagination buttons
+echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
+
 //Pagination functions
+$pagination->setCurrentPage(1);
 echo $pagination->getTotalResults(); //total number of results
 echo $pagination->getTotalPages(); //total number of pages
 echo $pagination->hasNextPage(); //To determine whether paging is necessary
 echo $pagination->hasPreviousPage(); //"
-echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
-
-//echo count($users);
-foreach ((array)$users as $user) {
-    echo $user->getUserID();
-}
 ```
 
 #### Filter a user list
