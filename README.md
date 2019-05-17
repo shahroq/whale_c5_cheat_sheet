@@ -115,6 +115,16 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
 - [Language](#language)
 - [Constants](#constants)
 - [Configs](#configs)
+  - [Basics](#basics)
+    - [Key](#key)
+    - [Value](#value)
+  - [Different places for storing data](#different-places-for-storing-data)
+    - [Database](#database)
+    - [FileSystem](#filesystem)
+  - [Different ways to read and write config values](#different-ways-to-read-and-write-config-values)
+    - [1: Using a Package object](#1-using-a-package-object)
+    - [2: Using a service provider](#2-using-a-service-provider)
+    - [3: Using Config](#3-using-config)
 - [Helpers](#helpers)
     - [General](#general)
     - [Number helper](#number-helper)
@@ -144,7 +154,7 @@ This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Image helper](#image-helper)
     - [List of all helper](#list-of-all-helper)
 - [System Operations](#system-operations)
-  - [Database](#database)
+  - [Database](#database-1)
     - [Current database](#current-database)
     - [Another database](#another-database)
   - [Misc.](#misc)
@@ -1279,7 +1289,112 @@ $bt->render(); //render default template: view.php
 
 
 
+### Basics
+
+
+#### Key
+```PHP
+configNamespace::configGroup.configItem
+```
+#### Value
+```PHP
+configValue
+```
+
+### Different places for storing data
+
+
+#### Database
+table: *`Config`*
+configNamespace | configGroup | configItem | configValue
+------------ | ------------- | ------------- | -------------
+my_package | front_end | show_header | 1
+
+#### FileSystem
+File: *application\config\generated_overrides\configNamespace\configGroup.php*
+```PHP
+return array(
+    'configItem' => TRUE,
+    'configItem2' => 2,
+    'configItem3' => 'Hey!',
+);
+```
+
+### Different ways to read and write config values
+
+
+#### 1: Using a Package object
+```PHP
+$packageObject = \Package::getByHandle('my_package');
+
+//Database
+
+//save config value
+$packageObject->getConfig()->save('front_end.show_header', true);
+//get config value
+$showHeader = $packageObject->getConfig()->get('front_end.show_header');
+//has config value
+$hasShowHeader = $packageObject->getConfig()->has('front_end.show_header');
+//set config value
+//$packageObject->getConfig()->set('front_end.show_header'); //not working
+//clear config value
+//$packageObject->getConfig()->clear('front_end.show_header'); //not working
+
+
+//FileSystem:
+
+//save config value
+$packageObject->getFileConfig()->save('front_end.show_header', true);
+//get config value
+$showHeader = $packageObject->getFileConfig()->get('front_end.show_header');
+//has config value
+$hasShowHeader = $packageObject->getFileConfig()->has('front_end.show_header');
+//set config value
+//$packageObject->getConfig()->set('front_end.show_header'); //not working
+//clear config value
+//$packageObject->getConfig()->clear('front_end.show_header'); //not working
+```
+
+#### 2: Using a service provider
+```PHP
+$key = 'configNamespace::configGroup.configItem';
+$value = '5';
+$default = -1;
+
+//Database
+$configDatabase = \Core::make('config/database');
+$configDatabase->save($key, $value);
+$configDatabase->get($key, $default);
+$configDatabase->has($key);
+//$configDatabase->set($key, $value); //not working
+//$configDatabase->clear($key); //not working
+
+//FileSystem:
+$configFile = \Core::make('config');
+$configFile->save($key, $value);
+$configFile->get($key, $default);
+$configFile->has($key);
+//$configFile->set($key, $value); //not working
+//$configFile->clear($key); //not working
+```
+
+#### 3: Using Config
+//FileSystem:
+```PHP
+$key = 'configNamespace::configGroup.configItem';
+$value = '5';
+$default = -1;
+
+\Config::save($key, $value);
+\Config::get($key, $default);
+\Config::has($key);
+//\Config::set($key, $value); //not working
+//\Config::clear($key); //not working
+```
+
 ## Helpers
+
+
 
 #### General
 ```PHP
