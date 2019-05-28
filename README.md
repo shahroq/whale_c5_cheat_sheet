@@ -258,6 +258,7 @@ foreach ((object)$attr as $option) {
 }
 
 //Image/File
+$attr = $page->getAttribute('thumbnail');
 if ($attr) {
     $attrURL = $attr->getURL(); //echo $attrURL);
     $attrDownloadURL = $attr->getDownloadURL(); //echo $attrDownloadURL;
