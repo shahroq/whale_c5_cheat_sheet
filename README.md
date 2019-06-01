@@ -1443,14 +1443,14 @@ output_vars(array $get_defined_vars, $valueOfThis = null, $return = false);
 ```PHP
 $in = $app->make('helper/number');
 
-$im->flexround($value); //Rounds the value only out to its most significant digit.
-$im->trim($value); //Remove superfluous zeroes from a string containing a number.
-$im->isNumber($string); //Checks if a given string is valid representation of a number in the current locale.
-$im->isInteger($string); //Checks if a given string is valid representation of an integer in the current locale.
-$im->format($number, $precision = null); //Format a number with grouped thousands and localized decimal point/thousands separator.
-$im->unformat($string, $trim = true, $precision = null); //Parses a localized number representation and returns the number (or null if $string is not a valid number representation).
-$im->formatSize($size, $forceUnit = ''); //Formats a size (measured in bytes, KB, MB, ...).
-$im->getBytes($val); //Nice and elegant function for converting memory. Thanks to @lightness races in orbit on Stackoverflow.
+$in->flexround($value); //Rounds the value only out to its most significant digit.
+$in->trim($value); //Remove superfluous zeroes from a string containing a number.
+$in->isNumber($string); //Checks if a given string is valid representation of a number in the current locale.
+$in->isInteger($string); //Checks if a given string is valid representation of an integer in the current locale.
+$in->format($number, $precision = null); //Format a number with grouped thousands and localized decimal point/thousands separator.
+$in->unformat($string, $trim = true, $precision = null); //Parses a localized number representation and returns the number (or null if $string is not a valid number representation).
+$in->formatSize($size, $forceUnit = ''); //Formats a size (measured in bytes, KB, MB, ...).
+$in->getBytes($val); //Nice and elegant function for converting memory. Thanks to @lightness races in orbit on Stackoverflow.
 
 //\concrete\src\Utility\Service\Number.php
 ```
