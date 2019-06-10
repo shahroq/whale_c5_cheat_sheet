@@ -1315,14 +1315,14 @@ configValue
 
 
 #### Database
-table: *`Config`*
+Databse Table: *`Config`*
 
 configNamespace | configGroup | configItem | configValue
 --------------- | ----------- | ---------- | -----------
 my_package | front_end | show_header | 1
 
 #### FileSystem
-File: *application\config\generated_overrides\configNamespace\configGroup.php*
+File: *`application\config\generated_overrides\configNamespace\configGroup.php`*
 ```PHP
 return array(
     'configItem' => TRUE,
@@ -1390,12 +1390,13 @@ $configFile->has($key);
 ```
 
 #### 3: Using Config
-//FileSystem:
+
 ```PHP
 $key = 'configNamespace::configGroup.configItem';
 $value = '5';
 $default = -1;
 
+//FileSystem:
 \Config::save($key, $value);
 \Config::get($key, $default);
 \Config::has($key);
@@ -1441,16 +1442,16 @@ output_vars(array $get_defined_vars, $valueOfThis = null, $return = false);
 
 #### Number helper
 ```PHP
-$in = $app->make('helper/number');
+$nh = $app->make('helper/number');
 
-$in->flexround($value); //Rounds the value only out to its most significant digit.
-$in->trim($value); //Remove superfluous zeroes from a string containing a number.
-$in->isNumber($string); //Checks if a given string is valid representation of a number in the current locale.
-$in->isInteger($string); //Checks if a given string is valid representation of an integer in the current locale.
-$in->format($number, $precision = null); //Format a number with grouped thousands and localized decimal point/thousands separator.
-$in->unformat($string, $trim = true, $precision = null); //Parses a localized number representation and returns the number (or null if $string is not a valid number representation).
-$in->formatSize($size, $forceUnit = ''); //Formats a size (measured in bytes, KB, MB, ...).
-$in->getBytes($val); //Nice and elegant function for converting memory. Thanks to @lightness races in orbit on Stackoverflow.
+$nh->flexround($value); //Rounds the value only out to its most significant digit.
+$nh->trim($value); //Remove superfluous zeroes from a string containing a number.
+$nh->isNumber($string); //Checks if a given string is valid representation of a number in the current locale.
+$nh->isInteger($string); //Checks if a given string is valid representation of an integer in the current locale.
+$nh->format($number, $precision = null); //Format a number with grouped thousands and localized decimal point/thousands separator.
+$nh->unformat($string, $trim = true, $precision = null); //Parses a localized number representation and returns the number (or null if $string is not a valid number representation).
+$nh->formatSize($size, $forceUnit = ''); //Formats a size (measured in bytes, KB, MB, ...).
+$nh->getBytes($val); //Nice and elegant function for converting memory. Thanks to @lightness races in orbit on Stackoverflow.
 
 //\concrete\src\Utility\Service\Number.php
 ```
