@@ -1,4 +1,4 @@
-# Whale [Concrete5](https://www.concrete5.org) Cheat Sheet V8+
+# [Concrete5](https://www.concrete5.org) Cheat Sheet V8+
 
 This is a collection of Concrete5 cheat sheets, based on the C5 V8+ source code. 
 
@@ -267,8 +267,8 @@ if ($attr) {
     $attrExtension = $attr->getExtension(); //echo $attrExtension;
 
     //image thumbnail
-    $im = $app->make('helper/image');
-    $thumbSrc = $im->getThumbnail($attr, 100, 100)->src; //echo $thumbSrc;
+    $ih = $app->make('helper/image');
+    $thumbSrc = $ih->getThumbnail($attr, 100, 100)->src; //echo $thumbSrc;
 }
 ```
 
@@ -2051,6 +2051,11 @@ $rows = $db->fetchAll('SELECT `name` FROM `myTable`;'); //print_r($rows);
 //get a column
 $column = $db->fetchColumn('SELECT `name` FROM `myTable` WHERE id = ?;', array($id)); //echo $column;
 
+
+//INSERT
+$statement = $db->executeQuery('INSERT INTO `myTable` (`name`, `url`) VALUES (?, ?);', array('Name 1', 'URL 1')); 
+//echo $db->lastInsertId(); //last inserted id
+//echo $statement->rowCount(); //number of affected rows
 
 //UPDATE
 $statement = $db->executeQuery('UPDATE `myTable` SET name = ? WHERE `id` = ?;', array('new name', 1)); 
