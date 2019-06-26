@@ -9,6 +9,10 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [`$app` in a controller](#app-in-a-controller)
   - [`$app` in a custom class](#app-in-a-custom-class)
   - [`$app` in other places](#app-in-other-places)
+- [Superglobals](#Superglobals)
+  - [`$request` in a controller](#request-in-a-controller)
+  - [`$request` in a custom class](#request-in-a-custom-class)
+  - [`$request` in other places](#request-in-other-places)
 - [Pages (Collections)](#Pages-Collections)
   - [A page](#A-page)
     - [Get Current page](#Get-Current-page)
@@ -194,9 +198,47 @@ public function myMethod()
 $app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
 ```
 
+## Superglobals
+
+Direct access to PHP superglobals (that is, `$_REQUEST`, `$_POST`, `$_GET`, `$_SERVER`, `$_FILES`) should be avoided: concrete5 have a nicer way to work with them with the `$request` instance.
+
+- instead of `$_GET['key']`: use `$request->query->get('key')`
+- instead of `$_POST['key']`: use `$request->request->get('key')`
+- instead of `$_REQUEST['key']`: use `$request->get('key')`
+- instead of `$_SERVER['key']`: use `$request->server->get('key')`
+- instead of `$_FILES['key']`: use `$request->files->get('key')`
+
+### `$request` in a controller
+
+```php
+$request = $this->request;
+```
+
+### `$request` in a custom class
+
+```php
+/** @var \Concrete\Core\Http\Request */
+protected $request;
+public function __construct(\Concrete\Core\Http\Request $request)
+{
+    $this->request = $request;
+}
+public function myMethod()
+{
+    $request = $this->request;
+}
+```
+(create instances of custom classes with `$app->make(\ClassName::class)`) 
+
+
+### `$request` in other places
+
+```php
+$request = $app->make(\Concrete\Core\Http\Request::class);
+```
+
 
 ## Pages (Collections)
-
 
 
 ### A page
