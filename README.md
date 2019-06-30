@@ -263,10 +263,36 @@ echo $page->getCollectionDescription();
 echo $page->getCollectionDateAdded();
 echo $page->getCollectionDatePublic();
 echo $page->getCollectionUserID();
+
 echo $page->getCollectionPath();
 echo $page->getCollectionLink();
+echo $page->getCollectionHandle()
+
 echo $page->getCollectionParentID();
+
+echo $page->getCollectionTypeID();
+echo $page->getCollectionTypeHandle();
+echo $page->getCollectionTypeName();
+
+echo $page->getPageTypeID();
+echo $page->getPageTypeHandle();
+echo $page->getPageTypeName();
+echo $page->getPageTypeObject();
+
+echo $page->getPageTemplateID();
+echo $page->getPageTemplateHandle();
+echo $page->getPageTemplateObject();
+
 echo $page->isSystemPage();
+
+//get all page paths (locations)
+foreach ($page->getPagePaths() as $path) {
+	echo $path->getPagePath();
+	echo $path->getPagePathID();
+	echo $path->isPagePathCanonical();
+}
+
+//\concrete\src\Page\Page.php
 ```
 
 #### Get a page type/template
@@ -279,7 +305,7 @@ if (is_object($pt)) {
     $ptHandle = $pt->getPageTemplateHandle(); //echo $ptHandle;
 }        
 
-//Page Type (not working)
+//Page Type
 $pt = $page->getPageTypeObject();
 if (is_object($pt)) {
     $ptID = $pt->getPageTypeID(); //echo $ptID;
