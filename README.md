@@ -604,8 +604,8 @@ foreach ((object)$attrOptions as $attrOption) {
 $attr = CollectionAttributeKey::getByHandle('attr_handle');
 if (!is_object($attr)) {
     $attr_type = AttributeType::getByHandle('text'); 
-    //$attr_type = AttributeType::getByHandle('textarea'); 
-	//$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
+    //$attr_type = AttributeType::getByHandle('textarea');
+    //$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
     //$attr_type = AttributeType::getByHandle('date_time'); 
     //$attr_type = AttributeType::getByHandle('image_file');
     //$attr_type = AttributeType::getByHandle('number'); 
@@ -619,6 +619,8 @@ if (!is_object($attr)) {
     //$attr_type = AttributeType::getByHandle('calendar'); 
     //$attr_type = AttributeType::getByHandle('calendar_event'); 
     //$attr_type = AttributeType::getByHandle('page_selector'); 
+    //$attr_type = AttributeType::getByHandle('address'); //NOT available for collections
+    //$attr_type = AttributeType::getByHandle('social_links'); //NOT available for collections
 
     $desc = array ( 
         'akHandle' => 'attr_handle',
@@ -630,39 +632,45 @@ if (!is_object($attr)) {
         //////ATRBUTE TYPES WITH SETTINGS://////
 
         ////text attribute (table: `atTextSettings`)
-        //'akTextPlaceholder' => 'placeholder',
+        //'akTextPlaceholder' => 'placeholder', //Placeholder Text
 
         ////textarea attribute (table: `atTextareaSettings`)
-        //'akTextareaDisplayMode' => 'rich_text', //values: text,rich_text
+        //'akTextareaDisplayMode' => 'rich_text', //Input Format: 'text', 'rich_text'
 
         ////boolean attribute (table: `atBooleanSettings`)
-        //'akCheckedByDefault' => TRUE,
-        //'akCheckboxLabel'=> t('Attribute Label'),
+        //'akCheckedByDefault' => TRUE, //Default Value: TRUE, FALSE
+        //'akCheckboxLabel'=> t('Attribute Label'), //Label
 
         ////date_time attribute (table: `atDateTimeSettings`)
-        //'akUseNowIfEmpty' => TRUE, //Suggest the current date/time if empty/ values: TRUE, FALSE
-        //'akDateDisplayMode' => 'date_time', //Ask User For/ values: date_time, date, date_text, text
-        //'akTextCustomFormat' => 'Y-m-d H:i:s', //Custom format/ values: PHP date function values
-        //'akTimeResolution' => 60, //Time Resolution/ values: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
+        //'akUseNowIfEmpty' => TRUE, //Suggest the current date/time if empty: TRUE, FALSE
+        //'akDateDisplayMode' => 'date_time', //Ask User For: 'date_time', 'date', 'date_text', 'text'
+        //'akTextCustomFormat' => 'Y-m-d H:i:s', //Custom format: PHP date function values (https://www.php.net/manual/en/function.date.php)
+        //'akTimeResolution' => 60, //Time Resolution: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
 
         ////image_file attribute (table: `atFileSettings`)
-        //'akFileManagerMode' => 0, //values: 0 (File Manager Selector), 5 (HTML Input)
+        //'akFileManagerMode' => 0, //Input Format: 0 (File Manager Selector), 5 (HTML Input)
 
         ////select attribute (table: `atSelectSettings`)
-        //'akSelectAllowMultipleValues' => FALSE, 
-        //'akDisplayMultipleValuesOnSelect' => FALSE, 
-        //'akHideNoneOption' => FALSE, 
-        //'akSelectAllowOtherValues' => FALSE, 
-        //'akSelectOptionDisplayOrder' => 'display_asc', //values: 'display_asc', 'alpha_asc', 'popularity_desc'
-        //adding options: check below this block
+        //'akSelectAllowMultipleValues' => FALSE, //Multiple Values: TRUE, FALSE
+        //'akDisplayMultipleValuesOnSelect' => FALSE, //Single Value: TRUE, FALSE
+        //'akHideNoneOption' => FALSE, //Hide None Option: TRUE, FALSE
+        //'akSelectAllowOtherValues' => FALSE, //User Submissions: TRUE, FALSE
+        //'akSelectOptionDisplayOrder' => 'display_asc', //Option Order: 'display_asc', 'alpha_asc', 'popularity_desc'
+        ////Adding Options: check below this code block
 
         ////topic attribute (table: `atTopicSettings`)
-        //'topicTreeID' => $topicTreeID, //find id here: /index.php/dashboard/system/attributes/topics OR in the table: `TopicTrees`
-        //'akTopicParentNodeID' => $topicParentNodeID, //find id in the table: `TreeNodes`
-        //'akTopicAllowMultipleValues' => TRUE, 
+        //'topicTreeID' => $topicTreeID, //Topic Tree: find id here: /index.php/dashboard/system/attributes/topics OR in the table: `TopicTrees`
+        //'akTopicParentNodeID' => $topicParentNodeID, //Topic Default Parent Node: find id in the table: `TreeNodes`
+        //'akTopicAllowMultipleValues' => TRUE, //Allow multiple nodes to be chosen: TRUE, FALSE
 
         ////express entity attribute (table: `atExpressSettings`)
-        //'exEntityID' => $entityID, //find id in the table: `ExpressEntities`
+        //'exEntityID' => $entityID, //Entity: find id in the table: `ExpressEntities`
+
+        ////address attribute (table: `atAddressSettings`)
+        //'akDefaultCountry ' => '', //Available Countries
+        //'akHasCustomCountries ' => '', //Default Country
+        //'customCountries ' => '', 
+        //'akGeolocateCountry ' => '', //Suggest the Country from the user IP address: TRUE, FALSE
     );
     $attr = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
 
@@ -1397,6 +1405,7 @@ $bt->render(); //render default template: view.php
 
 #### Create the object
 ```PHP
+
 ```
 
 #### Create the Form
