@@ -1411,9 +1411,9 @@ if (!is_object($eObj)) {
 
     ////general checkboxes (HELP WANTED)
     //use Concrete\Core\Entity\Attribute\Key\Key;
-    //Content included in search index 
+    //'Content included in search index' checkbox 
     //akIsSearchableIndexed --> setIsAttributeKeyContentIndexed()
-    //Field available in advanced search
+    //'Field available in advanced search' checkbox 
     //akIsSearchable--> setIsAttributeKeySearchable()
 
     ////settings
