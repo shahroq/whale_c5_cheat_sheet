@@ -116,6 +116,11 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
 - [Stacks](#Stacks)
 - [Packages](#Packages)
 - [Express Entries](#Express-Entries)
+  - [Express Entity](#Express-Entity)
+    - [Create the object](#Create-the-object)
+    - [Create the Form](#Create-the-Form)
+    - [Add attributes](#Add-attributes)
+  - [Express Entry](#Express-Entry)
 - [Language](#Language)
 - [Constants](#Constants)
 - [Configs](#Configs)
@@ -593,19 +598,27 @@ foreach ((object)$attrOptions as $attrOption) {
 
 #### Add an attribute
 ```PHP
-//use CollectionAttributeKey;
 //use Concrete\Core\Attribute\Type as AttributeType;
 //use Concrete\Attribute\Select\Option as SelectAttributeTypeOption;
 
 $attr = CollectionAttributeKey::getByHandle('attr_handle');
 if (!is_object($attr)) {
     $attr_type = AttributeType::getByHandle('text'); 
-    //$attr_type = AttributeType::getByHandle('number'); 
-    //$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
     //$attr_type = AttributeType::getByHandle('textarea'); 
-    //$attr_type = AttributeType::getByHandle('image_file');
+	//$attr_type = AttributeType::getByHandle('boolean'); //checkbox 
     //$attr_type = AttributeType::getByHandle('date_time'); 
+    //$attr_type = AttributeType::getByHandle('image_file');
+    //$attr_type = AttributeType::getByHandle('number'); 
+    //$attr_type = AttributeType::getByHandle('select'); //Option List
+    //$attr_type = AttributeType::getByHandle('telephone'); //Phone Number
     //$attr_type = AttributeType::getByHandle('url'); 
+    //$attr_type = AttributeType::getByHandle('email'); 
+    //$attr_type = AttributeType::getByHandle('rating'); 
+    //$attr_type = AttributeType::getByHandle('topics'); 
+    //$attr_type = AttributeType::getByHandle('express'); //Express Entity
+    //$attr_type = AttributeType::getByHandle('calendar'); 
+    //$attr_type = AttributeType::getByHandle('calendar_event'); 
+    //$attr_type = AttributeType::getByHandle('page_selector'); 
 
     $desc = array ( 
         'akHandle' => 'attr_handle',
@@ -614,18 +627,42 @@ if (!is_object($attr)) {
         //'akIsSearchableIndexed' => TRUE, //Content included in search index. Default: FALSE
         //'akIsSearchable' => FALSE, //Field available in advanced search. Default: TRUE
 
-        //boolean attribute
-        //'akCheckedByDefault'=> TRUE,
+        //////ATRBUTE TYPES WITH SETTINGS://////
+
+        ////text attribute (table: `atTextSettings`)
+        //'akTextPlaceholder' => 'placeholder',
+
+        ////textarea attribute (table: `atTextareaSettings`)
+        //'akTextareaDisplayMode' => 'rich_text', //values: text,rich_text
+
+        ////boolean attribute (table: `atBooleanSettings`)
+        //'akCheckedByDefault' => TRUE,
         //'akCheckboxLabel'=> t('Attribute Label'),
 
-        //textarea attribute
-        //'akTextareaDisplayMode' => 'rich_text', //ONLY FOR 'textarea': Input Format/ values: text,rich_text
+        ////date_time attribute (table: `atDateTimeSettings`)
+        //'akUseNowIfEmpty' => TRUE, //Suggest the current date/time if empty/ values: TRUE, FALSE
+        //'akDateDisplayMode' => 'date_time', //Ask User For/ values: date_time, date, date_text, text
+        //'akTextCustomFormat' => 'Y-m-d H:i:s', //Custom format/ values: PHP date function values
+        //'akTimeResolution' => 60, //Time Resolution/ values: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
 
-        //date_time attribute
-        //'akUseNowIfEmpty' => TRUE, //ONLY FOR 'date_time': Suggest the current date/time if empty/ values: TRUE, FALSE
-        //'akDateDisplayMode' => 'date_time', //ONLY FOR 'date_time': Ask User For/ values: date_time, date, date_text, text
-        //'akTextCustomFormat' => 'Y-m-d H:i:s', //ONLY FOR 'date_time': Custom format/ values: PHP date function values
-        //'akTimeResolution' => 60, //ONLY FOR 'date_time': Time Resolution/ values: 1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 10800, 14400, 21600, 43200
+        ////image_file attribute (table: `atFileSettings`)
+        //'akFileManagerMode' => 0, //values: 0 (File Manager Selector), 5 (HTML Input)
+
+        ////select attribute (table: `atSelectSettings`)
+        //'akSelectAllowMultipleValues' => FALSE, 
+        //'akDisplayMultipleValuesOnSelect' => FALSE, 
+        //'akHideNoneOption' => FALSE, 
+        //'akSelectAllowOtherValues' => FALSE, 
+        //'akSelectOptionDisplayOrder' => 'display_asc', //values: 'display_asc', 'alpha_asc', 'popularity_desc'
+        //adding options: check below this block
+
+        ////topic attribute (table: `atTopicSettings`)
+        //'topicTreeID' => $topicTreeID, //find id here: /index.php/dashboard/system/attributes/topics OR in the table: `TopicTrees`
+        //'akTopicParentNodeID' => $topicParentNodeID, //find id in the table: `TreeNodes`
+        //'akTopicAllowMultipleValues' => TRUE, 
+
+        ////express entity attribute (table: `atExpressSettings`)
+        //'exEntityID' => $entityID, //find id in the table: `ExpressEntities`
     );
     $attr = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
 
@@ -1353,6 +1390,24 @@ $bt->render(); //render default template: view.php
 
 ## Express Entries
 
+
+
+### Express Entity
+
+
+#### Create the object
+```PHP
+```
+
+#### Create the Form
+```PHP
+```
+
+#### Add attributes
+```PHP
+```
+
+### Express Entry
 
 
 ## Language
