@@ -1405,9 +1405,9 @@ $bt->render(); //render default template: view.php
 
 #### Create the entity
 ```PHP
-$eObj = Express::getObjectByHandle('mmmmarina');
+$eObj = Express::getObjectByHandle('marina');
 if (!is_object($eObj)) {
-    $eObj = Express::buildObject('mmmmarina', 'mmmmarinas', 'mmmmarina', $pkg = null);
+    $eObj = Express::buildObject('marina', 'marinas', 'Marina', $pkg = null);
 
     ////general checkboxes (HELP WANTED)
     //use Concrete\Core\Entity\Attribute\Key\Key;
