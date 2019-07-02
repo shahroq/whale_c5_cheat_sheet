@@ -1504,7 +1504,7 @@ if (!is_object($eObj)) {
     $eObj->save();
 }
 ```
-For more info on each settings method and possible values check [`HERE`](#Add-an-attribute).
+For more info on each method and its possible values check [`HERE`](#Add-an-attribute).
 
 #### Create the Form
 ```PHP
