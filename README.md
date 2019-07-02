@@ -1407,103 +1407,101 @@ $bt->render(); //render default template: view.php
 ```PHP
 $eObj = Express::getObjectByHandle('mmmmarina');
 if (!is_object($eObj)) {
-		
-	$eObj = Express::buildObject('mmmmarina', 'mmmmarinas', 'mmmmarina', $pkg = null);
+    $eObj = Express::buildObject('mmmmarina', 'mmmmarinas', 'mmmmarina', $pkg = null);
 
     ////general checkboxes (HELP WANTED)
-	//use Concrete\Core\Entity\Attribute\Key\Key;
+    //use Concrete\Core\Entity\Attribute\Key\Key;
     //Content included in search index 
     //akIsSearchableIndexed --> setIsAttributeKeyContentIndexed()
     //Field available in advanced search
     //akIsSearchable--> setIsAttributeKeySearchable()
 
-	////settings
-    
+    ////settings
     //text
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\TextSettings();
-	$settings->setPlaceholder('Enter Marina Name Here');
-	$eObj->addAttribute('text', 'Name', 'marina_name', $settings);
-    
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\TextSettings();
+    $settings->setPlaceholder('Enter Marina Name Here');
+    $eObj->addAttribute('text', 'Name', 'marina_name', $settings);
+
     //textarea
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\TextareaSettings();
-	$settings->setMode('text'); //values: 'text', 'rich_text'
-	$eObj->addAttribute('textarea', 'Description', 'marina_description', $settings);
-    
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\TextareaSettings();
+    $settings->setMode('text'); //values: 'text', 'rich_text'
+    $eObj->addAttribute('textarea', 'Description', 'marina_description', $settings);
+
     //checkbox
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\BooleanSettings();
-	$settings->setIsCheckedByDefault(FALSE);
-	$settings->setCheckboxLabel('Checkbox Label');
-	$eObj->addAttribute('boolean', 'Active', 'marina_active', $settings);
-    
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\BooleanSettings();
+    $settings->setIsCheckedByDefault(FALSE);
+    $settings->setCheckboxLabel('Checkbox Label');
+    $eObj->addAttribute('boolean', 'Active', 'marina_active', $settings);
+
     //date_time
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\DateTimeSettings();
-	$settings->setUseNowIfEmpty(FALSE);
-	$settings->setMode('date_time');
-	$settings->setTextCustomFormat('Y-m-d H:i:s');
-	$settings->setTimeResolution(60);
-	$eObj->addAttribute('date_time', 'Establishment', 'marina_establishment', $settings);
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\DateTimeSettings();
+    $settings->setUseNowIfEmpty(FALSE);
+    $settings->setMode('date_time');
+    $settings->setTextCustomFormat('Y-m-d H:i:s');
+    $settings->setTimeResolution(60);
+    $eObj->addAttribute('date_time', 'Establishment', 'marina_establishment', $settings);
     
     //image_file
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\ImageFileSettings();
-	$settings->setModeToFileManager(); //OR $settings->setModeToHtmlInput();
-	$eObj->addAttribute('image_file', 'Image', 'marina_image', $settings);
-    
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\ImageFileSettings();
+    $settings->setModeToFileManager(); //OR $settings->setModeToHtmlInput();
+    $eObj->addAttribute('image_file', 'Image', 'marina_image', $settings);
+
     //number
-	$eObj->addAttribute('number', 'Size', 'marina_size');
+    $eObj->addAttribute('number', 'Size', 'marina_size');
     
     //select
-	$eObj->addAttribute('select', 'Facilities', 'marina_facilities', $settings);
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\SelectSettings();
-	$settings->setAllowMultipleValues(FALSE);
-	$settings->setDisplayMultipleValuesOnSelect(FALSE);
-	$settings->setHideNoneOption(FALSE);
-	$settings->setAllowOtherValues(FALSE);
-	$settings->setDisplayOrder('display_asc');
+    $eObj->addAttribute('select', 'Facilities', 'marina_facilities', $settings);
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\SelectSettings();
+    $settings->setAllowMultipleValues(FALSE);
+    $settings->setDisplayMultipleValuesOnSelect(FALSE);
+    $settings->setHideNoneOption(FALSE);
+    $settings->setAllowOtherValues(FALSE);
+    $settings->setDisplayOrder('display_asc');
     
     //address
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\AddressSettings();
-	$settings->setCustomCountries(array('US','UK'));
-	$settings->setHasCustomCountries(true);
-	$settings->setDefaultCountry('UK');
-	$eObj->addAttribute('address', 'Address', 'marina_address', $settings);
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\AddressSettings();
+    $settings->setCustomCountries(array('US','UK'));
+    $settings->setHasCustomCountries(true);
+    $settings->setDefaultCountry('UK');
+    $eObj->addAttribute('address', 'Address', 'marina_address', $settings);
     
     //telephone
-	$eObj->addAttribute('telephone', 'Telephone', 'marina_telephone');
+    $eObj->addAttribute('telephone', 'Telephone', 'marina_telephone');
     
     //url
-	$eObj->addAttribute('url', 'Website', 'marina_website');
+    $eObj->addAttribute('url', 'Website', 'marina_website');
     
     //email
-	$eObj->addAttribute('email', 'Email', 'marina_email');
+    $eObj->addAttribute('email', 'Email', 'marina_email');
     
     //rating
-	$eObj->addAttribute('rating', 'Rating', 'marina_rating');
+    $eObj->addAttribute('rating', 'Rating', 'marina_rating');
     
     //topics
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\TopicsSettings();
-	$settings->setTopicTreeID($topicTreeID);
-	$settings->setParentNodeID($topicParentNodeID);
-	$settings->setAllowMultipleValues(TRUE);
-	$eObj->addAttribute('topics', 'District', 'marina_district', $settings);
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\TopicsSettings();
+    $settings->setTopicTreeID($topicTreeID);
+    $settings->setParentNodeID($topicParentNodeID);
+    $settings->setAllowMultipleValues(TRUE);
+    $eObj->addAttribute('topics', 'District', 'marina_district', $settings);
     
     //social_links
-	$eObj->addAttribute('social_links', 'twitter', 'marina_twitter');
+    $eObj->addAttribute('social_links', 'twitter', 'marina_twitter');
     
     //express
-	$settings = new \Concrete\Core\Entity\Attribute\Key\Settings\ExpressSettings();
-	$settings->setEntity($entityID);
-	$eObj->addAttribute('express', 'Personnels', 'marina_personnels');
+    $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\ExpressSettings();
+    $settings->setEntity($entityID);
+    $eObj->addAttribute('express', 'Personnels', 'marina_personnels');
     
     //calendar
-	$eObj->addAttribute('calendar', 'Calendar', 'marina_calendar');
+    $eObj->addAttribute('calendar', 'Calendar', 'marina_calendar');
     
     //calendar_event
-	$eObj->addAttribute('calendar_event', 'Event', 'marina_event');
+    $eObj->addAttribute('calendar_event', 'Event', 'marina_event');
     
     //page_selector
-	$eObj->addAttribute('page_selector', 'Info Page', 'marina_info_page');
+    $eObj->addAttribute('page_selector', 'Info Page', 'marina_info_page');
 
-	$eObj->save();
+    $eObj->save();
 }
 ```
 //For more info on each settings method and possible values check [`HERE`](#Add-an-attribute).
