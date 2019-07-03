@@ -347,7 +347,15 @@ if ($attr) {
 
 #### Get list of attributes of a page
 ```PHP
-
+// get a list of attribute keys for which the page has values
+$attrKeyst = $page->getSetCollectionAttributes();
+if (count($attrKeys)) {
+    foreach ($attrKeys as $key) {
+    	// each $key is an instance of \Concrete\Core\Entity\Attribute\Key\Key
+    	$attrHandle = $key->getAttributeKeyHandle();
+	$attrName = $key->getAttributeKeyName();
+    }
+}
 ```
 
 ### List of pages
