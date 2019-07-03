@@ -753,7 +753,17 @@ echo $file->getAttribute('width');
 
 #### Get list of attributes of a file
 ```PHP
+// First get the approved version of the file
+$version = $file->getApprovedVersion();
+$attrValues = $version->getAttributes();
 
+if (count($attrValues)) {
+    foreach ($attrValues as $value) {
+        $key = $value->getAttributeKey();
+        $attrHandle = $key->getAttributeKeyHandle();
+	$attrName = $key->getAttributeKeyName();
+    }
+}
 ```
 
 ### List of files
