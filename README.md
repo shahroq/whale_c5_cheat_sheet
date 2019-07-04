@@ -956,14 +956,14 @@ if ($u->isRegistered()) {
 }
 
 if ($u->isSuperUser()) {
-    print 'Yes, they are!';
+    print 'Yes, they are SuperUser!';
 }
 
 print $u->getUserID();
 
-$groups = $u->getUserGroups();
-foreach($groups as $groupID) {
-    $group = \Concrete\Core\User\Group\Group::getByID($groupID);
+$groups = $u->getUserGroupObjects(); 
+foreach($groups as $group) {
+    print $group->getGroupID();
     print $group->getGroupName();
 }
 ```
