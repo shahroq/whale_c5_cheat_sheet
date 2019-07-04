@@ -118,6 +118,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
 - [Express Entries](#Express-Entries)
   - [Express Entity](#Express-Entity)
     - [Create the entity](#Create-the-entity)
+    - [Adding Associations to the Object](#Adding-Associations-to-the-Object)
     - [Create the Form](#Create-the-Form)
     - [Add attributes](#Add-attributes)
   - [Express Entry](#Express-Entry)
@@ -292,9 +293,9 @@ echo $page->isSystemPage();
 
 //get all page paths (locations)
 foreach ($page->getPagePaths() as $path) {
-	echo $path->getPagePath();
-	echo $path->getPagePathID();
-	echo $path->isPagePathCanonical();
+    echo $path->getPagePath();
+    echo $path->getPagePathID();
+    echo $path->isPagePathCanonical();
 }
 
 //\concrete\src\Page\Page.php
@@ -389,7 +390,7 @@ foreach ((array)$pages as $page) {
 //pagination buttons
 echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
 
-//Pagination functions
+//pagination functions
 $pagination->setCurrentPage(1);
 //$pagination->setCurrentPage($_GET['ccm_paging_p'] ?? 1); //in case the result is not generated correctly based on current page number
 echo $pagination->getTotalResults(); //total number of results
@@ -534,7 +535,8 @@ $page->update(
         //'cCacheFullPageContent' => FALSE,
         //'cCacheFullPageContentOverrideLifetime' => FALSE,
         //'cCacheFullPageContentLifetimeCustom' => FALSE,
-));
+    )    
+);
 ```
 
 #### Delete a page
@@ -559,7 +561,7 @@ $page->duplicate($copyTo);
 ```PHP
 //$page = \Page::getByID(1);
 $page = \Page::getByPath('/blog');
-$page->addAdditionalPagePath('/blog-path-for-others');
+$page->addAdditionalPagePath('/blog-path-alternative');
 ```
 
 #### Set/Update an attribute of a page
@@ -761,7 +763,7 @@ echo $file->getAttribute('width');
 
 #### Get list of attributes of a file
 ```PHP
-// First get the approved version of the file
+//first get the approved version of the file
 $version = $file->getApprovedVersion();
 $attrValues = $version->getAttributes();
 
@@ -806,7 +808,7 @@ foreach ((array)$files as $file) {
 //pagination buttons
 echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
 
-//Pagination functions
+//pagination functions
 $pagination->setCurrentPage(1);
 //$pagination->setCurrentPage($_GET['ccm_paging_p'] ?? 1); //in case the result is not generated correctly based on current page number
 echo $pagination->getTotalResults(); //total number of results
@@ -1043,7 +1045,7 @@ foreach ((array)$users as $user) {
 //pagination buttons
 echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
 
-//Pagination functions
+//pagination functions
 $pagination->setCurrentPage(1);
 //$pagination->setCurrentPage($_GET['ccm_paging_p'] ?? 1); //in case the result is not generated correctly based on current page number
 echo $pagination->getTotalResults(); //total number of results
@@ -1426,6 +1428,7 @@ $bt->render(); //render default template: view.php
 ```PHP
 $eObj = Express::getObjectByHandle('marina');
 if (!is_object($eObj)) {
+    
     $eObj = Express::buildObject('marina', 'marinas', 'Marina', $pkg = null);
 
     ////general checkboxes (HELP WANTED)
@@ -1521,9 +1524,32 @@ if (!is_object($eObj)) {
     $eObj->addAttribute('page_selector', 'Info Page', 'marina_info_page');
 
     $eObj->save();
+
+    //creating an Express Object Form
+    $form = $eObj->buildForm('Form');
+    $form->addFieldset('Basics')
+        ->addAttributeKeyControl('marina_name')
+        ->addAttributeKeyControl('marina_description')
+        ->addAttributeKeyControl('marina_active') //...
+        ->addTextControl('', 'This is just some basic explanatory text.')
+        ->addAttributeKeyControl('marina_establishment') //...
+        ;
+    $form = $form->save();
+
 }
 ```
 For more info on each method and its possible values check [`HERE`](#Add-an-attribute).
+
+#### Adding Associations to the Object
+```PHP
+$marina = Express::buildObject('marina', 'marinas', 'Marina', $pkg);
+$boat = Express::buildObject('boat', 'boats', 'Boat', $pkg);
+
+$builder = $marina->buildAssociation();
+$builder->addOneToMany($boat);
+$boat = $builder->save();
+$marina = $marina->getEntity();
+```
 
 #### Create the Form
 ```PHP
