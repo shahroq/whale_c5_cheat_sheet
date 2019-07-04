@@ -213,6 +213,7 @@ Direct access to PHP superglobals (that is, `$_REQUEST`, `$_POST`, `$_GET`, `$_S
 - instead of `$_REQUEST['key']`: use `$request->get('key', $default = null)`
 - instead of `$_SERVER['key']`: use `$request->server->get('key')`
 - instead of `$_FILES['key']`: use `$request->files->get('key')`
+
 For more options check `\concrete\vendor\symfony\http-foundation\ParameterBag.php`
 
 ### `$request` in a controller
