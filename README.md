@@ -210,9 +210,10 @@ Direct access to PHP superglobals (that is, `$_REQUEST`, `$_POST`, `$_GET`, `$_S
 
 - instead of `$_GET['key']`: use `$request->query->get('key')`
 - instead of `$_POST['key']`: use `$request->request->get('key')`
-- instead of `$_REQUEST['key']`: use `$request->get('key')`
+- instead of `$_REQUEST['key']`: use `$request->get('key', $default = null)`
 - instead of `$_SERVER['key']`: use `$request->server->get('key')`
 - instead of `$_FILES['key']`: use `$request->files->get('key')`
+For more options check `\concrete\vendor\symfony\http-foundation\ParameterBag.php`
 
 ### `$request` in a controller
 
@@ -326,7 +327,7 @@ if (is_object($pt)) {
 $attr = $page->getAttribute('attribute_handle');
 
 //Option List: get options
-foreach ((object)$attr as $option) {
+foreach ((object) $attr as $option) {
     $optionID = $option->getSelectAttributeOptionID(); //echo $optionID;
     $optionValue = $option->getSelectAttributeOptionValue(); //echo $optionValue;
 }
@@ -600,7 +601,7 @@ $attrName = $attr->getAttributeKeyName(); //echo $attrName;
 //options of an 'Option List' attribute
 $controller = $attr->getController();
 $attrOptions = $controller->getOptions();
-foreach ((object)$attrOptions as $attrOption) {
+foreach ((object) $attrOptions as $attrOption) {
     $attrOptionID = $attrOption->getSelectAttributeOptionID(); //echo $attrOptionID;
     $attrOptionValue = $attrOption->getSelectAttributeOptionValue(); //echo $attrOptionValue;
 }
@@ -1339,7 +1340,7 @@ $categoryID = 1;
 $category = AttributeKeyCategory::getByID($categoryID);
 if (is_object($category)) {
     $sets = $category->getController()->getSetManager()->getAttributeSets();
-    foreach ((object)$sets as $set) {
+    foreach ((object) $sets as $set) {
         $setID = $set->getAttributeSetID(); //echo $setID);
         $setHandle = $set->getAttributeSetHandle(); //echo $setHandle;
         $setName = $set->getAttributeSetDisplayName(); //echo $setName;
