@@ -348,12 +348,12 @@ if ($attr) {
 #### Get list of attributes of a page
 ```PHP
 // get a list of attribute keys for which the page has values
-$attrKeyst = $page->getSetCollectionAttributes();
+$attrKeys = $page->getSetCollectionAttributes();
 if (count($attrKeys)) {
     foreach ($attrKeys as $key) {
     	// each $key is an instance of \Concrete\Core\Entity\Attribute\Key\Key
-    	$attrHandle = $key->getAttributeKeyHandle();
-	$attrName = $key->getAttributeKeyName();
+        echo $attrHandle = $key->getAttributeKeyHandle();
+        echo $attrName = $key->getAttributeKeyName();
     }
 }
 ```
@@ -768,8 +768,9 @@ $attrValues = $version->getAttributes();
 if (count($attrValues)) {
     foreach ($attrValues as $value) {
         $key = $value->getAttributeKey();
-        $attrHandle = $key->getAttributeKeyHandle();
-	$attrName = $key->getAttributeKeyName();
+        
+        echo $attrHandle = $key->getAttributeKeyHandle();
+        echo $attrName = $key->getAttributeKeyName();
     }
 }
 ```
