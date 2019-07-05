@@ -122,6 +122,8 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Create the Form](#Create-the-Form)
     - [Add attributes](#Add-attributes)
   - [Express Entry](#Express-Entry)
+    - [Get an entry](#Get-an-entry)
+    - [Get list of entries in an entity](#Get-list-of-entries-in-an-entity)
 - [Language](#Language)
 - [Constants](#Constants)
 - [Configs](#Configs)
@@ -371,7 +373,7 @@ $pageList = new PageList();
 $pages = $pageList->getResults();
 
 //echo count($pages);
-foreach ((array)$pages as $page) {
+foreach ((array) $pages as $page) {
     echo $page->getCollectionID();
 }
 ```
@@ -385,7 +387,7 @@ $pagination->setMaxPerPage(5);
 $pages = $pagination->getCurrentPageResults();
 
 //echo count($pages);
-foreach ((array)$pages as $page) {
+foreach ((array) $pages as $page) {
     echo $page->getCollectionID().'-'.$page->getCollectionName().'<br/>';
 }
 
@@ -404,15 +406,20 @@ For custom markup check [`here`](https://documentation.concrete5.org/tutorials/s
 
 #### Filter a page list
 ```PHP
+$pageList->filter(false, 'p.cID IN ($cID1, $cID2)'); //by cIDs
+$pageList->filterByName($cName); //by name
 $pageList->filterByParentID($cParentID); //by parent ID
+$pageList->filterByPath($cPath); //by path
+
+$pageList->filterByCollectionTypeID($cTypeID); //by collection type ID
+$pageList->filterByCollectionTypeHandle($cTypeHandle); //by collection type handle
+$pageList->filterByPageTypeHandle(['blog_entry', 'press_release']); //by page typeS
 
 $pageList->filterByKeywords('foobar'); //by keyword
 $pageList->filterByFulltextKeywords('foobar'); //more advanced search by keyword
 
 $pageList->filterByPageTypeID($ctID); //by a page type ID
 $pageList->filterByPageTypeHandle('blog_entry'); //by a page type handle
-
-$pageList->filterByPageTypeHandle(['blog_entry', 'press_release']); //by page typeS
 
 $pageList->filterByUserID($uID); //by user ID
 $pageList->filterByIsApproved($cvIsApproved); //by is approved
@@ -477,6 +484,8 @@ $topicCategory1 = TreeNode::getByID(1);
 $pageList->filterByAttribute('attribute_handle', array($topicCategory1));
 //or send the nodeIDs directly
 $pageList->filterByAttribute('attribute_handle', array(1));
+
+//\concrete\src\Page\PageList.php
 ```
 
 #### Sort a page list
@@ -789,7 +798,7 @@ $fileList = new FileList();
 $files = $fileList->getResults();
 
 //echo count($files);
-foreach ((array)$files as $file) {
+foreach ((array) $files as $file) {
     echo $file->getFileID();
 }
 ```
@@ -803,7 +812,7 @@ $pagination->setMaxPerPage(5);
 $files = $pagination->getCurrentPageResults();
 
 //echo count($files);
-foreach ((array)$files as $file) {
+foreach ((array) $files as $file) {
     echo $file->getFileID().'-'.$file->getFileName().'<br/>';
 }
 
@@ -848,7 +857,7 @@ if ($fileFolder) {
 }	
 
 //echo count($files);
-foreach ((array)$files as $file) {
+foreach ((array) $files as $file) {
     $file = $file->getTreeNodeFileObject();
     echo $file->getFileID();
 }
@@ -1026,7 +1035,7 @@ $userList = new UserList();
 $users = $userList->getResults();
 
 //echo count($users);
-foreach ((array)$users as $user) {
+foreach ((array) $users as $user) {
     echo $user->getUserID();
 }
 ```
@@ -1040,7 +1049,7 @@ $pagination->setMaxPerPage(5);
 $users = $pagination->getCurrentPageResults();
 
 //echo count($users);
-foreach ((array)$users as $user) {
+foreach ((array) $users as $user) {
     echo $user->getUserID().'-'.$user->getUserName().'<br/>';
 }
 
@@ -1058,6 +1067,7 @@ echo $pagination->hasPreviousPage(); //"
 
 #### Filter a user list
 ```PHP
+$userList->filter(false, 'u.uID IN ($uID1, $uID2)'); //by uIDs
 $userList->filterByKeywords('andrew'); //by keywords (simple)
 $userList->filterByFulltextKeywords('foobar'); //by keywords (advanced)
 $userList->filterByUsername('foobar'); //by username
@@ -1328,7 +1338,7 @@ $topicCategory->add('New Category below seected $topicCategory', $topicCategory)
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
 $categories = AttributeKeyCategory::getList();		
-foreach ((array)$categories as $category) {
+foreach ((array) $categories as $category) {
     $categoryID = $category->getAttributeKeyCategoryID(); //echo $categoryID;
     $categoryHandle = $category->getAttributeKeyCategoryHandle(); //echo $categoryHandle;
 }
@@ -1562,6 +1572,10 @@ $marina = $marina->getEntity();
 ```
 
 ### Express Entry
+
+#### Get an entry
+
+#### Get list of entries in an entity
 
 
 ## Language
