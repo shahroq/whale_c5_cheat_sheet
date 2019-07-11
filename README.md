@@ -41,6 +41,12 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Add an attribute](#Add-an-attribute)
     - [Delete an attribute](#Delete-an-attribute)
     - [Add an attribute set](#Add-an-attribute-set)
+  - [Page Types](#Page-Types)
+    - [Get a page type](#Get-a-page-type)
+    - [Add a page type](#Add-a-page-type)
+  - [Page Templates](#Page-Templates)
+    - [Get a page template](#Get-a-page-template)
+    - [Add a page template](#Add-a-page-template)
 - [Files](#Files)
   - [A Files](#A-Files)
     - [Get a file by a unique identifier](#Get-a-file-by-a-unique-identifier)
@@ -722,6 +728,52 @@ $attrSetHandle = $attrSet->getAttributeSetHandle(); //echo $attrSetHandle;
 $attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
 ```
 
+### Page Types
+
+
+#### Get a page type
+```PHP
+$newsItem = PageType::getByHandle('news_item');
+```
+
+#### Add a page type
+```PHP
+//get a page template
+$leftSide = PageTemplate::getByHandle('left_sidebar');
+
+$newsItem = PageType::getByHandle('news_item');
+if (!is_object($newsItem)) {
+    $newsItem = PageType::add(
+        array(
+            'handle' => 'news_item',
+            'name' => 'News Item', //Note: it does not appear you can pass the t() function in the name
+            'defaultTemplate' => $leftSide, // optional item, but wise to add
+            'allowedTemplates' => 'C', //A is all, C is selected only, X is not selected only, all referring to the next key, defaults to A if key is not included
+            'templates' => array($leftSide), //So, in this case, with C above, ONLY left sidebar can be used
+            'ptLaunchInComposer' => false, //optional, defaults to false, but good to know the key in case it needs to be true
+            'ptIsFrequentlyAdded' => true //optional, defaults to false, and whether or not it shows up in the add page type frequent list
+        ),
+        $pkg = null //this would come from the install or upgrade function usually
+    );
+}
+```
+
+
+### Page Templates
+
+
+#### Get a page template
+```PHP
+$threeColumn = PageType::getByHandle('three_column');
+```
+
+#### Add a page template
+```PHP
+$threeColumn = PageType::getByHandle('three_column');
+if(!$threeColumn) {
+    PageTemplate::add('three_column', t('Three Column'), 'three_column.png', $pkg = null);
+}
+```
 
 
 ## Files
@@ -914,7 +966,7 @@ $file->clearAttribute('attribute_handle');
 
 #### Create a file set
 ```PHP
-$fileSet = Set::createAndGetSet('My File Set', Set::TYPE_PUBLIC);
+$fileSet = FileSet::createAndGetSet('My File Set', FileSet::TYPE_PUBLIC);
 ```
 
 #### Add a file to a set
@@ -1068,10 +1120,10 @@ echo $pagination->hasPreviousPage(); //"
 #### Filter a user list
 ```PHP
 $userList->filter(false, 'u.uID IN ($uID1, $uID2)'); //by uIDs
-$userList->filterByKeywords('andrew'); //by keywords (simple)
-$userList->filterByFulltextKeywords('foobar'); //by keywords (advanced)
 $userList->filterByUsername('foobar'); //by username
 $userList->filterByFuzzyUsername('foobar'); //by username(fuzzy)
+$userList->filterByKeywords('andrew'); //by keywords (simple)
+$userList->filterByFulltextKeywords('foobar'); //by keywords (advanced)
 $userList->filterByDateAdded($date, $comparison = '='); //by date added
 $userList->includeInactiveUsers();
 $userList->includeUnvalidatedUsers();
