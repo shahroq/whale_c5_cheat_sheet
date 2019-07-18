@@ -118,6 +118,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Adding areas in a Page Template](#Adding-areas-in-a-Page-Template)
     - [Embedding Blocks in a Page Template](#Embedding-Blocks-in-a-Page-Template)
 - [Single Pages](#Single-Pages)
+    - [Create a single page](#Create-a-single-page)
 - [Blocks](#Blocks)
 - [Stacks](#Stacks)
 - [Packages](#Packages)
@@ -143,6 +144,8 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [1: Using a Package object](#1-Using-a-Package-object)
     - [2: Using a service provider](#2-Using-a-service-provider)
     - [3: Using Config](#3-Using-Config)
+- [Aliases](#Aliases)
+    - [List of all aliases](#List-of-all-aliases)
 - [Helpers](#Helpers)
     - [General](#General)
     - [Number helper](#Number-helper)
@@ -608,7 +611,7 @@ $page->refreshCache();
 #### Get an attribute
 ```PHP
 $attr = CollectionAttributeKey::getByID(1); //by ID
-$attr = CollectionAttributeKey::getByHandle('attribute_handle'); //by handle
+$attr = CollectionAttributeKey::getByHandle('attr_handle'); //by handle
 
 $attrID = $attr->getAttributeKeyID(); //echo $attrID;
 $attrHandle = $attr->getAttributeKeyHandle(); //echo $attrHandle;
@@ -628,7 +631,7 @@ foreach ((object) $attrOptions as $attrOption) {
 //use Concrete\Core\Attribute\Type as AttributeType;
 //use Concrete\Attribute\Select\Option as SelectAttributeTypeOption;
 
-$attr = CollectionAttributeKey::getByHandle('attr_handle');
+$attr = CollectionAttributeKey::getByHandle('attr_handle'); //by handle
 if (!is_object($attr)) {
     $attr_type = AttributeType::getByHandle('text'); 
     //$attr_type = AttributeType::getByHandle('textarea');
@@ -1468,6 +1471,18 @@ $bt->render(); //render default template: view.php
 ## Single Pages
 
 
+#### Create a single page
+```PHP
+$sp = Page::getByPath('/dashboard/pages/my_page');
+if (!is_object($sp) || $sp->isError()) {
+    $sp = SinglePage::add('/dashboard/pages/my_page', $pkg = null, $moveToRoot = false);
+    $sp->update(array(
+    	'cName'=>'My Page', 
+    	'cDescription'=>'My Page Description'
+    ));
+}    
+```
+
 
 ## Blocks
 
@@ -1745,6 +1760,88 @@ $default = -1;
 \Config::has($key);
 //\Config::set($key, $value); //not working
 //\Config::clear($key); //not working
+```
+
+## Aliases
+
+
+
+#### List of all aliases
+```PHP
+//\concrete/config/app.php
+
+'Area' => '\Concrete\Core\Area\Area',
+'Asset' => '\Concrete\Core\Asset\Asset',
+'AssetList' => '\Concrete\Core\Asset\AssetList',
+'AttributeSet' => '\Concrete\Core\Attribute\Set',
+'AuthenticationType' => '\Concrete\Core\Authentication\AuthenticationType',
+'Block' => '\Concrete\Core\Block\Block',
+'BlockType' => '\Concrete\Core\Block\BlockType\BlockType',
+'BlockTypeList' => '\Concrete\Core\Block\BlockType\BlockTypeList',
+'BlockTypeSet' => '\Concrete\Core\Block\BlockType\Set',
+'Cache' => '\Concrete\Core\Cache\Cache',
+'Request' => '\Concrete\Core\Http\Request',
+'CacheLocal' => '\Concrete\Core\Cache\CacheLocal',
+'Collection' => '\Concrete\Core\Page\Collection\Collection',
+'CollectionAttributeKey' => '\Concrete\Core\Attribute\Key\CollectionKey',
+'CollectionVersion' => '\Concrete\Core\Page\Collection\Version\Version',
+'ConcreteAuthenticationTypeController' => '\Concrete\Authentication\Concrete\Controller',
+'Controller' => '\Concrete\Core\Controller\Controller',
+'Conversation' => '\Concrete\Core\Conversation\Conversation',
+'ConversationEditor' => '\Concrete\Core\Conversation\Editor\Editor',
+'ConversationFlagType' => '\Concrete\Core\Conversation\FlagType\FlagType',
+'ConversationMessage' => '\Concrete\Core\Conversation\Message\Message',
+'ConversationRatingType' => '\Concrete\Core\Conversation\Rating\Type',
+'Cookie' => '\Concrete\Core\Cookie\Cookie',
+'Environment' => '\Concrete\Core\Foundation\Environment',
+'FacebookAuthenticationTypeController' => '\Concrete\Authentication\Facebook\Controller',
+'File' => '\Concrete\Core\File\File',
+'FileAttributeKey' => '\Concrete\Core\Attribute\Key\FileKey',
+'FileImporter' => '\Concrete\Core\File\Importer',
+'FileList' => '\Concrete\Core\File\FileList',
+'FilePermissions' => '\Concrete\Core\Legacy\FilePermissions',
+'FileSet' => '\Concrete\Core\File\Set\Set',
+'GlobalArea' => '\Concrete\Core\Area\GlobalArea',
+'Group' => '\Concrete\Core\User\Group\Group',
+'GroupList' => '\Concrete\Core\User\Group\GroupList',
+'GroupSet' => '\Concrete\Core\User\Group\GroupSet',
+'GroupSetList' => '\Concrete\Core\User\Group\GroupSetList',
+'GroupTree' => '\Concrete\Core\Tree\Type\Group',
+'GroupTreeNode' => '\Concrete\Core\Tree\Node\Type\Group',
+'Job' => '\Concrete\Core\Job\Job',
+'JobSet' => '\Concrete\Core\Job\Set',
+'Loader' => '\Concrete\Core\Legacy\Loader',
+'Localization' => '\Concrete\Core\Localization\Localization',
+'Marketplace' => '\Concrete\Core\Marketplace\Marketplace',
+'Package' => '\Concrete\Core\Package\Package',
+'Page' => '\Concrete\Core\Page\Page',
+'PageCache' => '\Concrete\Core\Cache\Page\PageCache',
+'PageController' => '\Concrete\Core\Page\Controller\PageController',
+'PageEditResponse' => '\Concrete\Core\Page\EditResponse',
+'PageList' => '\Concrete\Core\Page\PageList',
+'PageTemplate' => '\Concrete\Core\Page\Template',
+'PageTheme' => '\Concrete\Core\Page\Theme\Theme',
+'PageType' => '\Concrete\Core\Page\Type\Type',
+'PermissionAccess' => '\Concrete\Core\Permission\Access\Access',
+'PermissionKey' => '\Concrete\Core\Permission\Key\Key',
+'PermissionKeyCategory' => '\Concrete\Core\Permission\Category',
+'Permissions' => '\Concrete\Core\Permission\Checker',
+'Queue' => '\Concrete\Core\Foundation\Queue\Queue',
+'QueueableJob' => '\Concrete\Core\Job\QueueableJob',
+'Redirect' => '\Concrete\Core\Routing\Redirect',
+'RedirectResponse' => '\Concrete\Core\Routing\RedirectResponse',
+'Response' => '\Concrete\Core\Http\Response',
+'Router' => '\Concrete\Core\Routing\Router',
+'SinglePage' => '\Concrete\Core\Page\Single',
+'Stack' => '\Concrete\Core\Page\Stack\Stack',
+'StackList' => '\Concrete\Core\Page\Stack\StackList',
+'StartingPointPackage' => '\Concrete\Core\Package\StartingPointPackage',
+'TaskPermission' => '\Concrete\Core\Legacy\TaskPermission',
+'User' => '\Concrete\Core\User\User',
+'UserAttributeKey' => '\Concrete\Core\Attribute\Key\UserKey',
+'UserList' => '\Concrete\Core\User\UserList',
+'View' => '\Concrete\Core\View\View',
+'Workflow' => '\Concrete\Core\Workflow\Workflow',
 ```
 
 ## Helpers
