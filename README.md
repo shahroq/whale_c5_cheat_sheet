@@ -40,13 +40,20 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get an attribute](#Get-an-attribute)
     - [Add an attribute](#Add-an-attribute)
     - [Delete an attribute](#Delete-an-attribute)
+  - [Attribute Sets](#Attribute-Sets)
+    - [Get an attribute set](#Get-an-attribute-set)
+    - [Get an attribute set data](#Get-an-attribute-set-data)
     - [Add an attribute set](#Add-an-attribute-set)
   - [Page Types](#Page-Types)
     - [Get a page type](#Get-a-page-type)
     - [Add a page type](#Add-a-page-type)
+    - [Update a page type](#Update-a-page-type)
   - [Page Templates](#Page-Templates)
     - [Get a page template](#Get-a-page-template)
     - [Add a page template](#Add-a-page-template)
+  - [Single Page](#Single-Page)
+    - [Get a single page](#Get-a-single-page)
+    - [Add a single page](#Add-a-single-page)
 - [Files](#Files)
   - [A Files](#A-Files)
     - [Get a file by a unique identifier](#Get-a-file-by-a-unique-identifier)
@@ -117,11 +124,16 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [Page types](#Page-types)
     - [Adding areas in a Page Template](#Adding-areas-in-a-Page-Template)
     - [Embedding Blocks in a Page Template](#Embedding-Blocks-in-a-Page-Template)
-- [Single Pages](#Single-Pages)
-    - [Create a single page](#Create-a-single-page)
 - [Blocks](#Blocks)
+  - [A Block Type](#A-Block-Type)
+    - [Get a Block Type](#Get-a-Block-Type)
+    - [Get a Block Type data](#Get-a-Block-Type-data)
+    - [Install a Block Type](#Install-a-Block-Type)
 - [Stacks](#Stacks)
 - [Packages](#Packages)
+  - [A Package](#A-Package)
+    - [Get a package](#Get-a-package)
+    - [Get a package data](#Get-a-package-data)
 - [Express Entries](#Express-Entries)
   - [Express Entity](#Express-Entity)
     - [Create the entity](#Create-the-entity)
@@ -633,29 +645,29 @@ foreach ((object) $attrOptions as $attrOption) {
 
 $attr = CollectionAttributeKey::getByHandle('attr_handle'); //by handle
 if (!is_object($attr)) {
-    $attr_type = AttributeType::getByHandle('text'); 
-    //$attr_type = AttributeType::getByHandle('textarea');
-    //$attr_type = AttributeType::getByHandle('boolean'); //Checkbox 
-    //$attr_type = AttributeType::getByHandle('date_time'); 
-    //$attr_type = AttributeType::getByHandle('image_file');
-    //$attr_type = AttributeType::getByHandle('number'); 
-    //$attr_type = AttributeType::getByHandle('select'); //Option List
-    //$attr_type = AttributeType::getByHandle('telephone'); //Phone Number
-    //$attr_type = AttributeType::getByHandle('url'); 
-    //$attr_type = AttributeType::getByHandle('email'); 
-    //$attr_type = AttributeType::getByHandle('rating'); 
-    //$attr_type = AttributeType::getByHandle('topics'); 
-    //$attr_type = AttributeType::getByHandle('express'); //Express Entity
-    //$attr_type = AttributeType::getByHandle('calendar'); 
-    //$attr_type = AttributeType::getByHandle('calendar_event'); 
-    //$attr_type = AttributeType::getByHandle('page_selector'); 
-    //$attr_type = AttributeType::getByHandle('address'); //NOT available for collections
-    //$attr_type = AttributeType::getByHandle('social_links'); //NOT available for collections
+    $type = AttributeType::getByHandle('text'); 
+    //$type = AttributeType::getByHandle('textarea');
+    //$type = AttributeType::getByHandle('boolean'); //Checkbox 
+    //$type = AttributeType::getByHandle('date_time'); 
+    //$type = AttributeType::getByHandle('image_file');
+    //$type = AttributeType::getByHandle('number'); 
+    //$type = AttributeType::getByHandle('select'); //Option List
+    //$type = AttributeType::getByHandle('telephone'); //Phone Number
+    //$type = AttributeType::getByHandle('url'); 
+    //$type = AttributeType::getByHandle('email'); 
+    //$type = AttributeType::getByHandle('rating'); 
+    //$type = AttributeType::getByHandle('topics'); 
+    //$type = AttributeType::getByHandle('express'); //Express Entity
+    //$type = AttributeType::getByHandle('calendar'); 
+    //$type = AttributeType::getByHandle('calendar_event'); 
+    //$type = AttributeType::getByHandle('page_selector'); 
+    //$type = AttributeType::getByHandle('address'); //NOT available for collections
+    //$type = AttributeType::getByHandle('social_links'); //NOT available for collections
 
-    $desc = array ( 
+    $args = array ( 
         'akHandle' => 'attr_handle',
         'akName'=> t('Attribute Name'),
-        //'asID' => $attrSetID, //attribute set ID: check 'Get a set/Create a set' on how to get $attrSetID
+        //'asID' => $asID, //attribute set ID: check 'Get a set/Create a set' on how to get $asID
         //'akIsSearchableIndexed' => TRUE, //Content included in search index. Default: FALSE
         //'akIsSearchable' => FALSE, //Field available in advanced search. Default: TRUE
 
@@ -702,7 +714,7 @@ if (!is_object($attr)) {
         //'customCountries ' => '', 
         //'akGeolocateCountry ' => '', //Suggest the Country from the user IP address: TRUE, FALSE
     );
-    $attr = CollectionAttributeKey::add( $attr_type, $desc, $pkg = null);
+    $attr = CollectionAttributeKey::add($type, $args, $pkg = null);
 
     //add option to an 'option list' attribute
     //$attrOption = SelectAttributeTypeOption::add($attr, 'Option 1'); //add options
@@ -718,18 +730,31 @@ if (!is_object($attr)) {
 ...
 ```
 
+### Attribute Sets
+
+
+#### Get an attribute set
+```PHP
+//use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
+$as = AttributeSet::getByHandle('my_set');
+```
+
+#### Get an attribute set data
+```PHP
+$asID = $as->getAttributeSetID(); //echo $asID;
+$asHandle = $as->getAttributeSetHandle(); //echo $asHandle;
+$asName = $as->getAttributeSetName(); //echo $asName;
+```
+
 #### Add an attribute set
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
 
 $akc = AttributeKeyCategory::getByHandle('collection');
 $akc->setAllowAttributeSets(AttributeKeyCategory::ASET_ALLOW_SINGLE);
-$attrSet = $akc->addSet('my_set', t('My Set'), $pkg = null, $locked = null); 
-    
-$attrSetID = $attrSet->getAttributeSetID(); //echo $attrSetID;
-$attrSetHandle = $attrSet->getAttributeSetHandle(); //echo $attrSetHandle;
-$attrSetName = $attrSet->getAttributeSetName(); //echo $attrSetName;
+$as = $akc->addSet('my_set', t('My Set'), $pkg = null, $locked = null); 
 ```
+
 
 ### Page Types
 
@@ -761,20 +786,43 @@ if (!is_object($newsItem)) {
 }
 ```
 
+#### Update a page type
+check [`here`](#update-a-page)
 
 ### Page Templates
 
 
 #### Get a page template
 ```PHP
-$threeColumn = PageType::getByHandle('three_column');
+$pt = PageTemplate::getByHandle('three_column');
 ```
 
 #### Add a page template
 ```PHP
-$threeColumn = PageType::getByHandle('three_column');
-if(!$threeColumn) {
+$pt = PageTemplate::getByHandle('three_column');
+if(!$pt) {
     PageTemplate::add('three_column', t('Three Column'), 'three_column.png', $pkg = null);
+}
+```
+
+
+### Single Page
+
+
+#### Get a single page
+```PHP
+$sp = Page::getByPath('/dashboard/pages/my_page');
+```
+
+#### Add a single page
+```PHP
+$sp = Page::getByPath('/dashboard/pages/my_page');
+if (!is_object($sp) || $sp->isError()) {
+    $sp = SinglePage::add('/dashboard/pages/my_page', $pkg = null, $moveToRoot = false);
+    $sp->update(array(
+    	'cName'=>'My Page', 
+    	'cDescription'=>'My Page Description'
+    ));
 }
 ```
 
@@ -1419,13 +1467,13 @@ if (is_object($category)) {
 
 #### A set
 ```PHP
-$attrSet = AttributeSet::getByID('attribute_set_id'); //by ID
-$attrSet = AttributeSet::getByHandle('attribute_set_handle'); //by handle
+$as = AttributeSet::getByID('attribute_set_id'); //by ID
+$as = AttributeSet::getByHandle('attribute_set_handle'); //by handle
 ```
 
 #### Attributes in a set
 ```PHP
-$attrs = $attrSet->getAttributeKeys();
+$attrs = $as->getAttributeKeys();
 foreach($attrs as $attr) {
     $attrID = $attr->getAttributeKeyID(); //echo $attrID;
     $attrHandle = $attr->getAttributeKeyHandle(); //echo $attrHandle;
@@ -1468,23 +1516,34 @@ $bt->render(); //render default template: view.php
 ```
 
 
-## Single Pages
-
-
-#### Create a single page
-```PHP
-$sp = Page::getByPath('/dashboard/pages/my_page');
-if (!is_object($sp) || $sp->isError()) {
-    $sp = SinglePage::add('/dashboard/pages/my_page', $pkg = null, $moveToRoot = false);
-    $sp->update(array(
-    	'cName'=>'My Page', 
-    	'cDescription'=>'My Page Description'
-    ));
-}    
-```
-
 
 ## Blocks
+
+
+
+### A Block Type
+
+
+#### Get a Block Type
+```PHP
+$bt = BlockType::getByHandle('my_block');
+//$bt = BlockType::getByID(1);
+```
+
+#### Get a Block Type data
+```PHP
+echo $bt->getBlockTypeID();
+echo $bt->getBlockTypeName();
+echo $bt->getBlockTypeDescription();
+```
+
+#### Install a Block Type
+```PHP
+$bt = BlockType::getByHandle('my_block');
+if (!is_object($bt)) {
+    BlockType::installBlockType('my_block', $pkg = null);
+}
+```
 
 
 
@@ -1493,6 +1552,27 @@ if (!is_object($sp) || $sp->isError()) {
 
 
 ## Packages
+
+
+### A Package
+
+
+#### Get a package
+```PHP
+$pkg = Package::getByHandle('theme_pixel');
+//$pkg = Package::getByID(1);
+```
+
+#### Get a package data
+```PHP
+echo $pkg->getPackageID();
+echo $pkg->getPackageHandle();
+echo $pkg->getPackageName();
+echo $pkg->getPackageDescription();
+echo $pkg->getPackageVersion();
+echo $pkg->getPackagePath();
+print_r($pkg->getPackageDependencies()); 
+```
 
 
 
@@ -1694,34 +1774,34 @@ return array(
 
 #### 1: Using a Package object
 ```PHP
-$packageObject = \Package::getByHandle('my_package');
+$pkg = \Package::getByHandle('my_package');
 
 //Database
 
 //save config value
-$packageObject->getConfig()->save('front_end.show_header', true);
+$pkg->getConfig()->save('front_end.show_header', true);
 //get config value
-$showHeader = $packageObject->getConfig()->get('front_end.show_header');
+$showHeader = $pkg->getConfig()->get('front_end.show_header');
 //has config value
-$hasShowHeader = $packageObject->getConfig()->has('front_end.show_header');
+$hasShowHeader = $pkg->getConfig()->has('front_end.show_header');
 //set config value
-//$packageObject->getConfig()->set('front_end.show_header'); //not working
+//$pkg->getConfig()->set('front_end.show_header'); //not working
 //clear config value
-//$packageObject->getConfig()->clear('front_end.show_header'); //not working
+//$pkg->getConfig()->clear('front_end.show_header'); //not working
 
 
 //FileSystem:
 
 //save config value
-$packageObject->getFileConfig()->save('front_end.show_header', true);
+$pkg->getFileConfig()->save('front_end.show_header', true);
 //get config value
-$showHeader = $packageObject->getFileConfig()->get('front_end.show_header');
+$showHeader = $pkg->getFileConfig()->get('front_end.show_header');
 //has config value
-$hasShowHeader = $packageObject->getFileConfig()->has('front_end.show_header');
+$hasShowHeader = $pkg->getFileConfig()->has('front_end.show_header');
 //set config value
-//$packageObject->getConfig()->set('front_end.show_header'); //not working
+//$pkg->getConfig()->set('front_end.show_header'); //not working
 //clear config value
-//$packageObject->getConfig()->clear('front_end.show_header'); //not working
+//$pkg->getConfig()->clear('front_end.show_header'); //not working
 ```
 
 #### 2: Using a service provider
