@@ -141,8 +141,12 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Create the Form](#Create-the-Form)
     - [Add attributes](#Add-attributes)
   - [Express Entry](#Express-Entry)
-    - [Get an entry](#Get-an-entry)
     - [Get list of entries in an entity](#Get-list-of-entries-in-an-entity)
+    - [Get list of entries in an entity with pagination](#Get-list-of-entries-in-an-entity-with-pagination)
+    - [Filter a list of entries](#Filter-a-list-of-entries)
+    - [Sort a list of entries](#Sort-a-list-of-entries)
+    - [Update an entry](#Update-an-entry)
+    - [Delete an entry](#Delete-an-entry)
 - [Language](#Language)
 - [Constants](#Constants)
 - [Configs](#Configs)
@@ -525,6 +529,8 @@ $pageList->sortByName();
 $pageList->sortByNameDescending();
 
 $pageList->sortBy('ak_attribute_handle', 'desc'); //by an attribute: 'ak_' + attribute_handle
+
+//\concrete\src\Page\PageList.php
 ```
 
 ### Page operations
@@ -918,18 +924,8 @@ $files = $pagination->getCurrentPageResults();
 foreach ((array) $files as $file) {
     echo $file->getFileID().'-'.$file->getFileName().'<br/>';
 }
-
-//pagination buttons
-echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3. 
-
-//pagination functions
-$pagination->setCurrentPage(1);
-//$pagination->setCurrentPage($_GET['ccm_paging_p'] ?? 1); //in case the result is not generated correctly based on current page number
-echo $pagination->getTotalResults(); //total number of results
-echo $pagination->getTotalPages(); //total number of files
-echo $pagination->hasNextPage(); //To determine whether paging is necessary
-echo $pagination->hasPreviousPage(); //"
 ```
+For Pagination buttons & functions check [`here`](#Get-list-of-pages-with-pagination)  
 For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a file list
@@ -1155,18 +1151,9 @@ $users = $pagination->getCurrentPageResults();
 foreach ((array) $users as $user) {
     echo $user->getUserID().'-'.$user->getUserName().'<br/>';
 }
-
-//pagination buttons
-echo $pagination->renderDefaultView(); //Outputs HTML for Bootstrap 3.
-
-//pagination functions
-$pagination->setCurrentPage(1);
-//$pagination->setCurrentPage($_GET['ccm_paging_p'] ?? 1); //in case the result is not generated correctly based on current page number
-echo $pagination->getTotalResults(); //total number of results
-echo $pagination->getTotalPages(); //total number of pages
-echo $pagination->hasNextPage(); //To determine whether paging is necessary
-echo $pagination->hasPreviousPage(); //"
 ```
+For Pagination buttons & functions check [`here`](#Get-list-of-pages-with-pagination)  
+For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a user list
 ```PHP
@@ -1720,9 +1707,74 @@ $marina = $marina->getEntity();
 
 ### Express Entry
 
-#### Get an entry
+
 
 #### Get list of entries in an entity
+```PHP
+// use Concrete\Core\Express\EntryList;
+$entity = Express::getObjectByHandle('entity_handle');
+$entityList = new EntryList($entity);
+$entities = $entityList->getResults();
+
+//echo count($entities);
+foreach ($entities as $entity) {
+    echo $entity->getId(); //internal ID
+	echo $entity->getAttributeId();
+	//OR// echo $entity->getAttribute('attribute_id');
+    //OR// echo $entity->getAttributeValueObject('attribute_id');
+
+	print_r($entity->getDateCreated());
+	//print_r($entity->getDateCreated()->getTimestamp());
+	//print_r($entity->getDateCreated()->format(DateTime::ATOM));
+}
+```
+
+#### Get list of entries in an entity with pagination
+```PHP
+// use Concrete\Core\Express\EntryList;
+$entity = Express::getObjectByHandle('entity_handle');
+$entityList = new EntryList($entity);
+$pagination = $entityList->getPagination();
+$pagination->setMaxPerPage(5);
+$entities = $pagination->getCurrentPageResults();
+
+//echo count($entities);
+foreach ($entities as $entity) {
+    //
+}
+```
+For Pagination buttons & functions check [`here`](#Get-list-of-pages-with-pagination)  
+For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
+
+#### Filter a list of entries
+```PHP
+$entityList->filterByKeywords($keywords = ''); //not working?
+$entityList->filterByAttributeHandle($keywords = ''); //not working?
+
+//\concrete\src\Express\EntryList.php
+```
+
+#### Sort a list of entries
+```PHP
+$entityList->sortByDisplayOrderAscending();
+$entityList->sortByAttributeHandle('desc'); //by an attribute // asc or desc
+
+//\concrete\src\Express\EntryList.php
+```
+
+#### Update an entry
+```PHP
+$entity->setAttribute('attribute_handle', 'Andy'); 
+//OK //$entity->setAttributeHandle('Andy');
+
+//If you were to immediately call getAttribute() later in the script, the attribute value in the object might not be updated. To combat this, use the refresh() method in the express Object manager:
+//$entity = Express::refresh($entity);
+```
+
+#### Delete an entry
+```PHP
+Express::deleteEntry($entity);
+```
 
 
 ## Language
