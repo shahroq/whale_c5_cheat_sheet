@@ -178,6 +178,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Navigation helper](#navigation-helper)
     - [Date helper](#date-helper)
     - [Form helper](#form-helper)
+    - [Form (editor/richtext editor/Redactor) helper](#form-editorrichtext-editorredactor-helper)
     - [Form (color picker) helper](#form-color-picker-helper)
     - [Form (date/time) helper](#form-datetime-helper)
     - [Form (page selector) helper](#form-page-selector-helper)
@@ -332,6 +333,9 @@ foreach ($page->getPagePaths() as $path) {
     echo $path->isPagePathCanonical();
 }
 
+//check whether a page selected
+if($page->isError()) ...
+
 //\concrete\src\Page\Page.php
 ```
 
@@ -461,7 +465,8 @@ $pageList->filterByDateAdded($date, $comparison = '='); //by date added
 $pageList->filterByPublicDate($date, $comparison = '='); //by public date
 $pageList->filterByDateLastModified($date, $comparison = '='); //by last modified date
 $pageList->filterByNumberOfChildren($num, $comparison = '>'); //by number of children
-
+//$pageList->filterByPublicDate(date('Y-m-d H:i:s', $end), "<=");
+//filterByAttribute('special_offer_end_date', date('Y-m-d H:i:s', $start), ">=");
 
 //by attribute:
 $pageList->filterByAttribute($column, $value, $comparison = '=');
@@ -859,8 +864,8 @@ echo $file->getFileName(); //file name
 
 echo $file->getURL(); //direct url
 echo $file->getDownloadURL(); //tracked url
-echo $file->getRelativePath();echo "<br><br>";
-echo $_SERVER['DOCUMENT_ROOT'].$file->getRelativePath();echo "<br><br>";
+echo $file->getRelativePath();
+echo $_SERVER['DOCUMENT_ROOT'] . $file->getRelativePath();
 
 echo $file->getTitle();
 echo $file->getDescription();
@@ -2253,6 +2258,23 @@ echo $form->inputType($key, $type, $valueOrMiscFields, $miscFields); //Internal 
 echo $form->parseMiscFields($defaultClass, $attributes); //Create an HTML fragment of attribute values, merging any CSS class names as necessary.
 
 //\concrete\src\Form\Service\Form.php
+```
+
+#### Form (editor/richtext editor/Redactor) helper 
+```PHP
+$editor = Core::make('editor');
+$editor->setAllowFileManager(false);
+$editor->setAllowSitemap(false);
+echo $editor->outputStandardEditor($key, $content = null);
+
+//\Concrete\src\Editor\RedactorEditor.php
+
+//In 5.7.4.2+, we can include and exclude editor plugins. Here we exclude table, underline, and specialcharacters and include fontsize.
+//https://documentation.concrete5.org/developers/interface-customization/rich-text-editor/embedding-rich-text-editor
+$editor = Core::make('editor');
+$editor->getPluginManager()->deselect(array('table', 'underline', 'specialcharacters'));
+$editor->getPluginManager()->select('fontsize');
+echo $editor->outputStandardEditor('notes', $notes);
 ```
 
 #### Form (color picker) helper
