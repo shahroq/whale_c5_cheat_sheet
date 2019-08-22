@@ -332,6 +332,9 @@ foreach ($page->getPagePaths() as $path) {
     echo $path->getPagePathID();
     echo $path->isPagePathCanonical();
 }
+//get additional paths
+$page->getPagePaths(); 
+
 
 //check whether a page selected
 if($page->isError()) ...
@@ -372,7 +375,8 @@ foreach ((object) $attr as $option) {
 //Image/File
 $attr = $page->getAttribute('thumbnail');
 if ($attr) {
-    $attrURL = $attr->getURL(); //echo $attrURL);
+    $attrTitle = $attr->getTitle(); //echo $attrTitle;
+    $attrURL = $attr->getURL(); //echo $attrURL;
     $attrDownloadURL = $attr->getDownloadURL(); //echo $attrDownloadURL;
     $attrForceDownloadURL = $attr->getForceDownloadURL(); //echo $attrForceDownloadURL;
     $attrSize = $attr->getSize(); //echo $attrSize;
