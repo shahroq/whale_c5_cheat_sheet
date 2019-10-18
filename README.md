@@ -2276,8 +2276,8 @@ echo $form->parseMiscFields($defaultClass, $attributes); // Create an HTML fragm
 #### Form (editor/richtext editor/Redactor) helper 
 ```PHP
 $editor = Core::make('editor');
-$editor->setAllowFileManager(false);
-$editor->setAllowSitemap(false);
+//$editor->setAllowSitemap(false); //disable SiteMap
+//$editor->setAllowFileManager(false); // disable FileManager
 echo $editor->outputStandardEditor($key, $content = null);
 
 //\Concrete\src\Editor\RedactorEditor.php
