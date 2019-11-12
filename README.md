@@ -233,6 +233,18 @@ public function myMethod()
 $app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
 ```
 
+Since concrete5 version 8.5.2, you can also use the `app()` global function:
+```php
+$app = app();
+```
+
+You can also use `app()` to create instances:
+
+```php
+$token = app('token');
+// By default, $token is an instance of Concrete\Core\Validation\CSRF\Token
+```
+
 ## Superglobals
 
 Direct access to PHP superglobals (that is, `$_REQUEST`, `$_POST`, `$_GET`, `$_SERVER`, `$_FILES`) should be avoided: concrete5 have a nicer way to work with them with the `$request` instance.
