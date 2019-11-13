@@ -1360,13 +1360,13 @@ if ($ui) {
 
 
 #### Get an attribute
-Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'File'.
+Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'User'.
 
 #### Add an attribute
-Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'File'.
+Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'User'.
 
 #### Add an attribute set
-Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'File'.
+Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'User'.
 
 ## Topics
 
