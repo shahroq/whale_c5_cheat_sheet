@@ -774,6 +774,12 @@ if (!is_object($attr)) {
 ...
 ```
 
+#### Get all attribute keys
+```PHP
+$pageCategory = $this->app->make(\Concrete\Core\Attribute\Category\PageCategory::class);
+$keys = $pageCategory->getList();
+```
+
 ### Attribute Sets
 
 
