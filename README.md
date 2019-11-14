@@ -40,6 +40,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get an attribute](#get-an-attribute)
     - [Add an attribute](#add-an-attribute)
     - [Delete an attribute](#delete-an-attribute)
+    - [Get all attribute keys](#get-all-attribute-keys)
   - [Attribute Sets](#attribute-sets)
     - [Get an attribute set](#get-an-attribute-set)
     - [Get an attribute set data](#get-an-attribute-set-data)
@@ -777,7 +778,13 @@ if (!is_object($attr)) {
 #### Get all attribute keys
 ```PHP
 $pageCategory = $this->app->make(\Concrete\Core\Attribute\Category\PageCategory::class);
-$keys = $pageCategory->getList();
+$attributes = $pageCategory->getList();
+
+foreach ($attributes as $attr) {
+    $attrID = $attr->getAttributeKeyID(); //echo $attrID;
+    $attrHandle = $attr->getAttributeKeyHandle(); //echo $attrHandle;
+    $attrName = $attr->getAttributeKeyName(); //echo $attrName;
+}
 ```
 
 ### Attribute Sets
