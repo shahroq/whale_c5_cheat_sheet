@@ -650,15 +650,16 @@ $page->setAttribute('attribute_handle', 'value');
 $page->setAttribute('attribute_handle', array('value1', 'value2'));
 
 // multiple values (topics)
-$newIds = [1,2,3,4];
+//use Concrete\Core\Entity\Attribute\Value\Value\TopicsValue;
+//use Concrete\Core\Entity\Attribute\Value\Value\SelectedTopic;
+$treeNodeIDs = [1, 2, 3];
 $topicsValue = new TopicsValue();
-foreach ($newIds as $treeNodeID) {
+foreach ($treeNodeIDs as $treeNodeID) {
   $topicsValueNode = new SelectedTopic();
   $topicsValueNode->setAttributeValue($topicsValue);
   $topicsValueNode->setTreeNodeID($treeNodeID);
   $topicsValue->getSelectedTopics()->add($topicsValueNode);
 }
-
 $page->setAttribute('attribute_handle', $topicsValue);
 ```
 
