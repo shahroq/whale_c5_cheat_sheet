@@ -648,6 +648,18 @@ $page->setAttribute('attribute_handle', 'value');
 
 // multiple values (option list)
 $page->setAttribute('attribute_handle', array('value1', 'value2'));
+
+// multiple values (topics)
+$newIds = [1,2,3,4];
+$topicsValue = new TopicsValue();
+foreach ($newIds as $treeNodeID) {
+  $topicsValueNode = new SelectedTopic();
+  $topicsValueNode->setAttributeValue($topicsValue);
+  $topicsValueNode->setTreeNodeID($treeNodeID);
+  $topicsValue->getSelectedTopics()->add($topicsValueNode);
+}
+
+$page->setAttribute('attribute_handle', $topicsValue);
 ```
 
 #### Clear an attribute of a page
