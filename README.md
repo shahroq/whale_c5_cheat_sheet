@@ -40,6 +40,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get an attribute](#get-an-attribute)
     - [Add an attribute](#add-an-attribute)
     - [Delete an attribute](#delete-an-attribute)
+    - [Get all attribute keys](#get-all-attribute-keys)
   - [Attribute Sets](#attribute-sets)
     - [Get an attribute set](#get-an-attribute-set)
     - [Get an attribute set data](#get-an-attribute-set-data)
@@ -647,6 +648,19 @@ $page->setAttribute('attribute_handle', 'value');
 
 // multiple values (option list)
 $page->setAttribute('attribute_handle', array('value1', 'value2'));
+
+// multiple values (topics)
+//use Concrete\Core\Entity\Attribute\Value\Value\TopicsValue;
+//use Concrete\Core\Entity\Attribute\Value\Value\SelectedTopic;
+$treeNodeIDs = [1, 2, 3];
+$topicsValue = new TopicsValue();
+foreach ($treeNodeIDs as $treeNodeID) {
+  $topicsValueNode = new SelectedTopic();
+  $topicsValueNode->setAttributeValue($topicsValue);
+  $topicsValueNode->setTreeNodeID($treeNodeID);
+  $topicsValue->getSelectedTopics()->add($topicsValueNode);
+}
+$page->setAttribute('attribute_handle', $topicsValue);
 ```
 
 #### Clear an attribute of a page
@@ -772,6 +786,18 @@ if (!is_object($attr)) {
 
 // delete options of an 'option list' attribute
 ...
+```
+
+#### Get all attribute keys
+```PHP
+$pageCategory = $this->app->make(\Concrete\Core\Attribute\Category\PageCategory::class);
+$attributes = $pageCategory->getList();
+
+foreach ($attributes as $attr) {
+    $attrID = $attr->getAttributeKeyID(); //echo $attrID;
+    $attrHandle = $attr->getAttributeKeyHandle(); //echo $attrHandle;
+    $attrName = $attr->getAttributeKeyName(); //echo $attrName;
+}
 ```
 
 ### Attribute Sets
@@ -1360,13 +1386,13 @@ if ($ui) {
 
 
 #### Get an attribute
-Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'File'.
+Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'User'.
 
 #### Add an attribute
-Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'File'.
+Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'User'.
 
 #### Add an attribute set
-Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'File'.
+Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'User'.
 
 ## Topics
 
