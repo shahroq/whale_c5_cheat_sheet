@@ -1549,6 +1549,8 @@ foreach($attrs as $attr) {
 $a = new Area("Main");
 //$a->enableGridContainer(); //enable grid container in area
 //$a->setAreaGridMaximumColumns(12);
+//$a->setBlockWrapperStart('<div class="block-wrapper">'); //output content before each block
+//$a->setBlockWrapperEnd('</div>'); //output content after each block
 //if ($c->isEditMode()); //do something
 //if ($a->getTotalBlocksInArea($c) > 0); //do something
 $a->display($c);
