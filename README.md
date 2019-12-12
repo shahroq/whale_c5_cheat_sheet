@@ -5,14 +5,14 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
 **Contributions are welcome via [issues](https://github.com/shahroq/whale_c5_cheat_sheet/issues) and [pull requests](https://github.com/shahroq/whale_c5_cheat_sheet/pulls).**
 
 ## Table of Contents <!-- omit in toc -->
-- [Application (`$app`)](#application-app)
-  - [`$app` in a controller](#app-in-a-controller)
-  - [`$app` in a custom class](#app-in-a-custom-class)
-  - [`$app` in other places](#app-in-other-places)
+- [Application ($app)](#application-app)
+  - [$app in a controller](#app-in-a-controller)
+  - [$app in a custom class](#app-in-a-custom-class)
+  - [$app in other places](#app-in-other-places)
 - [Superglobals](#superglobals)
-  - [`$request` in a controller](#request-in-a-controller)
-  - [`$request` in a custom class](#request-in-a-custom-class)
-  - [`$request` in other places](#request-in-other-places)
+  - [$request in a controller](#request-in-a-controller)
+  - [$request in a custom class](#request-in-a-custom-class)
+  - [$request in other places](#request-in-other-places)
 - [Pages (Collections)](#pages-collections)
   - [A page](#a-page)
     - [Get Current page](#get-current-page)
@@ -250,13 +250,13 @@ $token = app('token');
 
 Direct access to PHP superglobals (that is, `$_REQUEST`, `$_POST`, `$_GET`, `$_SERVER`, `$_FILES`) should be avoided: concrete5 have a nicer way to work with them with the `$request` instance.
 
-- instead of `$_GET['key']`: use `$request->query->get('key')`
-- instead of `$_POST['key']`: use `$request->request->get('key')`
+- instead of `$_GET['key']`: use `$request->query->get('key', $default = null)`
+- instead of `$_POST['key']`: use `$request->request->get('key', $default = null)`
 - instead of `$_REQUEST['key']`: use `$request->get('key', $default = null)`
 - instead of `$_SERVER['key']`: use `$request->server->get('key')`
 - instead of `$_FILES['key']`: use `$request->files->get('key')`
 
-For more options check `\concrete\vendor\symfony\http-foundation\ParameterBag.php`
+For more options check `\concrete\vendor\symfony\http-foundation\ParameterBag.php` or [`here`](https://symfony.com/doc/current/components/http_foundation.html)
 
 ### `$request` in a controller
 
