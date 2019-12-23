@@ -150,6 +150,8 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Update an entry](#update-an-entry)
     - [Delete an entry](#delete-an-entry)
 - [Language](#language)
+    - [Get active locale](#get-active-locale)
+    - [Get all added locales](#get-all-added-locales)
 - [Constants](#constants)
 - [Configs](#configs)
   - [Basics](#basics)
@@ -1852,6 +1854,37 @@ Express::deleteEntry($entity);
 ## Language
 
 
+
+#### Get active locale
+```PHP
+$activeLocale = \Localization::activeLocale();
+echo $activeLocale; // `en_US`
+```
+
+#### Get all added locales
+```PHP
+$app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
+$site = $app->make('site')->getActiveSiteForEditing();
+$flag = $app->make(Concrete\Core\Multilingual\Service\UserInterface\Flag::class);
+
+$locales = $site->getLocales(); //echo count($locales);
+foreach ($locales as $locale) {
+    echo $locale->getLocaleID(); 
+    echo $locale->getLanguageText(); // `English`, `Spanish`
+    echo $locale->getLocale(); // `en_US`, `es_ES`
+    
+    // get home page of each locale
+    $localeSiteTree = $locale->getSiteTree();
+    $home = $localeSiteTree === null ? null : $localeSiteTree->getSiteHomePageObject();
+    if (is_object($home)) {
+        echo $home->getCollectionLink();
+        echo $home->getCollectionName();
+    }
+
+    // flag
+    echo $flag->getLocaleFlagIcon($locale);
+}
+```
 
 ## Constants
 
