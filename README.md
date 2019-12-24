@@ -153,6 +153,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get active locale](#get-active-locale)
     - [Get all added locales](#get-all-added-locales)
 - [Constants](#constants)
+    - [Get all constants](#get-all-constants)
 - [Configs](#configs)
   - [Basics](#basics)
     - [Key](#key)
@@ -1889,6 +1890,11 @@ foreach ($locales as $locale) {
 ## Constants
 
 
+
+#### Get all constants
+```PHP
+print_r(get_defined_constants($categorize = true));
+```
 
 ## Configs
 
