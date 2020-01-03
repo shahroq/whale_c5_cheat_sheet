@@ -130,6 +130,8 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get a Block Type](#get-a-block-type)
     - [Get a Block Type data](#get-a-block-type-data)
     - [Install a Block Type](#install-a-block-type)
+  - [Working with Blocks](#working-with-blocks)
+    - [Hard-coding a Block with Custom Template](#hard-coding-a-block-with-custom-template)
 - [Stacks](#stacks)
 - [Packages](#packages)
   - [A Package](#a-package)
@@ -1601,6 +1603,24 @@ if (!is_object($bt)) {
 }
 ```
 
+### Working with Blocks
+
+
+#### Hard-coding a Block with Custom Template
+```PHP
+$bt = BlockType::getByHandle('block_type_handle'); // block_type_handle: autonav, tag, ...
+$bt->controller->block_attribute_handle = 'some_attribute'; // block attribute handles can be retrieved by looking at the related table in database (e.g.: btNavigation, btTags)
+// ...
+$bt->render($view = 'view'); // $view: template name
+
+// Sample code for autonav
+$bt = BlockType::getByHandle('autonav');
+$bt->controller->orderBy = 'display_asc';
+$bt->controller->displayPages = 'top';
+$bt->controller->displaySubPages = 'relevant_breadcrumb';
+$bt->controller->displaySubPageLevels = 'all';
+$bt->render('templates/breadcrumb');
+```
 
 
 ## Stacks
