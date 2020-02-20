@@ -189,6 +189,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Form (date/time) helper](#form-datetime-helper)
     - [Form (page selector) helper](#form-page-selector-helper)
     - [Form (user selector) helper](#form-user-selector-helper)
+    - [Form (group selector) helper](#form-group-selector-helper)
     - [Form (rating) helper](#form-rating-helper)
     - [Form (attribute) helper](#form-attribute-helper)
     - [Form (typography) helper](#form-typography-helper)
@@ -2432,6 +2433,16 @@ echo $usfh->quickSelect($fieldName, $uID = false, $miscFields = []); //Build the
 echo $usfh->selectMultipleUsers($fieldName, $users = []); //Build the HTML to be placed in a page to choose multiple users using a popup dialog.
 
 //\concrete\src\Form\Service\Widget\UserSelector.php
+```
+
+#### Form (group selector) helper
+```PHP
+$gsfh = $app->make('\Concrete\Core\Form\Service\Widget\GroupSelector');
+
+echo $gsfh->selectGroup($field, $group = null, $noneText = null); //Build the HTML to be placed in a page to choose a group using a select box.
+echo $gsfh->selectGroupWithTree($field, $group = null); //Build the HTML to be placed in a page to choose a group using a tree view.
+
+//\Concrete\src\Form\Service\Widget\GroupSelector.php
 ```
 
 #### Form (rating) helper
