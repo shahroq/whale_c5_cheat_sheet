@@ -5,14 +5,14 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
 **Contributions are welcome via [issues](https://github.com/shahroq/whale_c5_cheat_sheet/issues) and [pull requests](https://github.com/shahroq/whale_c5_cheat_sheet/pulls).**
 
 ## Table of Contents <!-- omit in toc -->
-- [Application ($app)](#application-app)
-  - [$app in a controller](#app-in-a-controller)
-  - [$app in a custom class](#app-in-a-custom-class)
-  - [$app in other places](#app-in-other-places)
+- [Application (`$app`)](#application-app)
+  - [`$app` in a controller](#app-in-a-controller)
+  - [`$app` in a custom class](#app-in-a-custom-class)
+  - [`$app` in other places](#app-in-other-places)
 - [Superglobals](#superglobals)
-  - [$request in a controller](#request-in-a-controller)
-  - [$request in a custom class](#request-in-a-custom-class)
-  - [$request in other places](#request-in-other-places)
+  - [`$request` in a controller](#request-in-a-controller)
+  - [`$request` in a custom class](#request-in-a-custom-class)
+  - [`$request` in other places](#request-in-other-places)
 - [Pages (Collections)](#pages-collections)
   - [A page](#a-page)
     - [Get Current page](#get-current-page)
@@ -21,6 +21,9 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get a page type/template](#get-a-page-typetemplate)
     - [Get a page attribute](#get-a-page-attribute)
     - [Get list of attributes of a page](#get-list-of-attributes-of-a-page)
+    - [Checking if a page is in Edit Mode](#checking-if-a-page-is-in-edit-mode)
+    - [Get all Blocks Objects on a page](#get-all-blocks-objects-on-a-page)
+    - [Get an Area Object on a Page](#get-an-area-object-on-a-page)
   - [List of pages](#list-of-pages)
     - [Get list of pages](#get-list-of-pages)
     - [Get list of pages with pagination](#get-list-of-pages-with-pagination)
@@ -122,7 +125,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Attributes in a set](#attributes-in-a-set)
     - [List of sets](#list-of-sets)
 - [Themes](#themes)
-  - [Page types](#page-types)
+  - [Page types](#page-types-1)
     - [Adding areas in a Page Template](#adding-areas-in-a-page-template)
     - [Embedding Blocks in a Page Template](#embedding-blocks-in-a-page-template)
 - [Blocks](#blocks)
@@ -425,6 +428,27 @@ if (count($attrKeys)) {
         echo $attrName = $key->getAttributeKeyName();
     }
 }
+```
+
+#### Checking if a page is in Edit Mode
+```PHP
+if ($page->isEditMode()) {
+    // ...
+}
+```
+
+#### Get all Blocks Objects on a page
+```PHP
+$blocks = $page->getBlocks(); // all block on a page
+$blocks = $page->getBlocks('Area name'); // all block on an area
+foreach ($blocks as $block) {
+    // ...
+}
+```
+
+#### Get an Area Object on a Page
+```PHP
+$area = $c->getArea('Area name');
 ```
 
 ### List of pages
