@@ -389,11 +389,6 @@ if (is_object($pt)) {
 // Attribute
 $attr = $page->getAttribute('attribute_handle');
 
-// Option List: get options
-foreach ((object) $attr as $option) {
-    $optionID = $option->getSelectAttributeOptionID(); //echo $optionID;
-    $optionValue = $option->getSelectAttributeOptionValue(); //echo $optionValue;
-}
 
 // Image/File
 $attr = $page->getAttribute('thumbnail');
@@ -409,6 +404,18 @@ if ($attr) {
     $ih = $app->make('helper/image');
     $thumbSrc = $ih->getThumbnail($attr, 100, 100)->src; //echo $thumbSrc;
 }
+
+
+// Option List: get option(s):
+// Single option: cast to `string`
+$optionValue = (string) $attr;
+
+// Multiple options: cast to `object` and iterate
+foreach ((object) $attr as $option) {
+    $optionValue = $option->getSelectAttributeOptionValue(); //echo $optionValue;
+    // $optionID = $option->getSelectAttributeOptionID(); //echo $optionID;
+}
+
 
 // Topics
 $topics = $page->getAttribute('attribute_handle');
