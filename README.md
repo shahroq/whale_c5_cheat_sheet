@@ -135,6 +135,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Install a Block Type](#install-a-block-type)
   - [Working with Blocks](#working-with-blocks)
     - [Hard-coding a Block with Custom Template](#hard-coding-a-block-with-custom-template)
+    - [get data of an instance of a Block](#get-data-of-an-instance-of-a-block)
 - [Stacks](#stacks)
 - [Packages](#packages)
   - [A Package](#a-package)
@@ -152,6 +153,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get list of entries in an entity with pagination](#get-list-of-entries-in-an-entity-with-pagination)
     - [Filter a list of entries](#filter-a-list-of-entries)
     - [Sort a list of entries](#sort-a-list-of-entries)
+    - [Create an entry](#create-an-entry)
     - [Update an entry](#update-an-entry)
     - [Delete an entry](#delete-an-entry)
 - [Language](#language)
@@ -1654,9 +1656,42 @@ $bt->controller->displaySubPageLevels = 'all';
 $bt->render('templates/breadcrumb');
 ```
 
+#### get data of an instance of a Block
+```PHP
+//$blockObj = Block::getByID($bID);
+
+// block general data
+$bID = $blockObj->bID; //echo $bID;
+$btHandle = $blockObj->btHandle; //echo $btHandle; 
+$btID = $blockObj->btID; //echo $btID; // block type id
+$bFileName = $blockObj->bFileName; //echo $bFileName; // template name
+
+// block specific data
+// get instance:
+$blockIns = $blockObj->getInstance();
+// get the data based on block type. propertirs of each block type can be identified by looking at the corresponding database table
+
+// html block (`btContentLocal`)
+$content = $blockIns->content; //echo $content;
+
+// content block (`btContentLocal`)
+$content = $blockIns->content; //echo $content;
+
+// image block (`btContentImage`)
+$fID = $blockIns->fID; //echo $fID;
+$fOnstateID = $blockIns->fOnstateID; //echo $fOnstateID;
+$cropImage = $blockIns->cropImage; //echo $cropImage;
+//...
+
+// autonav block (`btNavigation`)
+$orderBy = $blockIns->orderBy; //echo $orderBy;
+$displayPages  = $blockIns->displayPages ; //echo $displayPages ;
+$displayPagesCID = $blockIns->displayPagesCID; //echo $displayPagesCID;
+//...
+```
+
 
 ## Stacks
-
 
 
 ## Packages
@@ -1840,19 +1875,19 @@ $marina = $marina->getEntity();
 ```PHP
 //use Concrete\Core\Express\EntryList;
 $entity = Express::getObjectByHandle('entity_handle');
-$entityList = new EntryList($entity);
-$entities = $entityList->getResults();
+$entryList = new EntryList($entity);
+$entries = $entryList->getResults();
 
 //echo count($entities);
-foreach ($entities as $entity) {
-    echo $entity->getId(); // internal ID
-    echo $entity->getAttributeId();
-    // OR: echo $entity->getAttribute('attribute_id');
-    // OR: echo $entity->getAttributeValueObject('attribute_id');
+foreach ($entries as $entry) {
+    echo $entry->getId(); // internal ID
+    echo $entry->getAttributeId();
+    // OR: echo $entry->getAttribute('attribute_id');
+    // OR: echo $entry->getAttributeValueObject('attribute_id');
 
-    print_r($entity->getDateCreated());
-    //print_r($entity->getDateCreated()->getTimestamp());
-    //print_r($entity->getDateCreated()->format(DateTime::ATOM));
+    print_r($entry->getDateCreated());
+    //print_r($entry->getDateCreated()->getTimestamp());
+    //print_r($entry->getDateCreated()->format(DateTime::ATOM));
 }
 ```
 
@@ -1860,13 +1895,13 @@ foreach ($entities as $entity) {
 ```PHP
 //use Concrete\Core\Express\EntryList;
 $entity = Express::getObjectByHandle('entity_handle');
-$entityList = new EntryList($entity);
-$pagination = $entityList->getPagination();
+$entryList = new EntryList($entity);
+$pagination = $entryList->getPagination();
 $pagination->setMaxPerPage(5);
-$entities = $pagination->getCurrentPageResults();
+$entries = $pagination->getCurrentPageResults();
 
-//echo count($entities);
-foreach ($entities as $entity) {
+//echo count($entries);
+foreach ($entries as $entry) {
     //
 }
 ```
@@ -1875,32 +1910,50 @@ For custom markup check [`here`](https://documentation.concrete5.org/tutorials/s
 
 #### Filter a list of entries
 ```PHP
-$entityList->filterByKeywords($keywords = ''); // not working?
-$entityList->filterByAttributeHandle($keywords = ''); // not working?
+$entryList->filterByKeywords($keywords = ''); // not working?
+$entryList->filterByAttributeHandle($keywords = ''); // not working?
 
 //\concrete\src\Express\EntryList.php
 ```
 
 #### Sort a list of entries
 ```PHP
-$entityList->sortByDisplayOrderAscending();
-$entityList->sortByAttributeHandle('desc'); // by an attribute: asc OR desc
+$entryList->sortByDisplayOrderAscending();
+$entryList->sortByAttributeHandle('desc'); // by an attribute: asc OR desc
 
 //\concrete\src\Express\EntryList.php
 ```
 
+#### Create an entry
+```PHP
+$entry = Express::buildEntry('entity_handle')
+    ->setAttribute('attribute_handle', 'Andy')
+    ->save();
+```
+
 #### Update an entry
 ```PHP
-$entity->setAttribute('attribute_handle', 'Andy'); 
-// OR: $entity->setAttributeHandle('Andy');
+$entry->setAttribute('attribute_handle', 'Andy'); 
+// OR: $entry->setAttributeHandle('Andy');
 
 // if you were to immediately call getAttribute() later in the script, the attribute value in the object might not be updated. To combat this, use the refresh() method in the express Object manager:
-//$entity = Express::refresh($entity);
+//$entry = Express::refresh($entry);
 ```
 
 #### Delete an entry
 ```PHP
-Express::deleteEntry($entity);
+// delete an entity
+Express::deleteEntry($entry);
+
+// delete all entries in an entity
+//use Concrete\Core\Express\EntryList;
+$entity = Express::getObjectByHandle('faq');
+$entryList = new EntryList($entity);
+$entries = $entryList->getResults();
+
+foreach ($entries as $entry) {
+    Express::deleteEntry($entry->getId());
+}
 ```
 
 
