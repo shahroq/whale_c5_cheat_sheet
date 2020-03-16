@@ -18,7 +18,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get Current page](#get-current-page)
     - [Get a page by a unique identifier](#get-a-page-by-a-unique-identifier)
     - [Get a page data](#get-a-page-data)
-    - [Get a page type/template](#get-a-page-typetemplate)
+    - [Get a page template/type/theme](#get-a-page-templatetypetheme)
     - [Get a page attribute](#get-a-page-attribute)
     - [Get list of attributes of a page](#get-list-of-attributes-of-a-page)
     - [Checking if a page is in Edit Mode](#checking-if-a-page-is-in-edit-mode)
@@ -339,14 +339,21 @@ echo $page->getCollectionTypeID();
 echo $page->getCollectionTypeHandle();
 echo $page->getCollectionTypeName();
 
+// page template
+echo $page->getPageTemplateID();
+echo $page->getPageTemplateHandle();
+$pTemplate = $page->getPageTemplateObject(); // for getting `page template` info, check `Get a page template/type/theme`
+
+// page type
 echo $page->getPageTypeID();
 echo $page->getPageTypeHandle();
 echo $page->getPageTypeName();
-echo $page->getPageTypeObject();
+$pType = $page->getPageTypeObject(); // for getting `page type` info, check `Get a page template/type/theme`
 
-echo $page->getPageTemplateID();
-echo $page->getPageTemplateHandle();
-echo $page->getPageTemplateObject();
+// page theme
+echo $page->getCollectionThemeID();
+$pTheme = $page->getCollectionThemeObject(); // for getting `page theme` info, check `Get a page template/type/theme`
+
 
 echo $page->isSystemPage();
 
@@ -367,23 +374,37 @@ if($page->isError()) ...
 //\concrete\src\Page\Page.php
 ```
 
-#### Get a page type/template
+#### Get a page template/type/theme
 ```PHP
+// template -> type -> theme
+
 // Page Template
-$pt = $page->getPageTemplateObject();
-if (is_object($pt)) {
-    $ptID = $pt->getPageTemplateID(); //echo $ptID;
-    $ptName = $pt->getPageTemplateName(); //echo $ptName;
-    $ptHandle = $pt->getPageTemplateHandle(); //echo $ptHandle;
+$pTemplate = $page->getPageTemplateObject();
+if (is_object($pTemplate)) {
+    $ptID = $pTemplate->getPageTemplateID(); //echo $ptID;
+    $ptName = $pTemplate->getPageTemplateName(); //echo $ptName;
+    $ptHandle = $pTemplate->getPageTemplateHandle(); //echo $ptHandle;
 }        
+//\concrete\src\Page\Template.php
 
 // Page Type
-$pt = $page->getPageTypeObject();
-if (is_object($pt)) {
-    $ptID = $pt->getPageTypeID(); //echo $ptID;
-    $ptName = $pt->getPageTypeName(); //echo $ptName;
-    $ptHandle = $pt->getPageTypeHandle(); //echo $ptHandle;
+$pType = $page->getPageTypeObject();
+if (is_object($pType)) {
+    $ptID = $pType->getPageTypeID(); //echo $ptID;
+    $ptName = $pType->getPageTypeName(); //echo $ptName;
+    $ptHandle = $pType->getPageTypeHandle(); //echo $ptHandle;
+    $ptTemplate = $pType->getPageTypePageTemplateObjects();
 }        
+//\concrete\src\Page\Type\Type.php
+
+// Page Theme
+$pTheme = $page->getCollectionThemeObject();
+if (is_object($pTheme)) {
+    $ptID = $pType->getThemeID(); //echo $ptID;
+    $ptName = $pType->getThemeName(); //echo $ptName;
+    $ptHandle = $pType->getThemeHandle()(); //echo $ptHandle;
+} 
+//\concrete\src\Page\Theme\Theme.php
 ```
 
 #### Get a page attribute
@@ -641,10 +662,12 @@ $page->update(
         'cDescription' => 'My new page description', 
         //'cDatePublic' => '2019-01-02 20:21:22',
         //'cDateCreated' => date('Y-m-d H:i:s'),
-        //'pkgID' => 1,
         //'uID' => 1,
         
         //'pTemplateID' => 1,
+        //'ptID' => 13,
+        //'pkgID' => 1,
+
         //'cHandle' => 'new-handle',
         //'cCacheFullPageContent' => false,
         //'cCacheFullPageContentOverrideLifetime' => false,
@@ -653,6 +676,11 @@ $page->update(
 );
 // this should be run afterwards if the handle is changed
 $page->rescanCollectionPath();
+
+// update theme of the page
+$pTheme = \PageTheme::getByID(3);
+$page->setTheme($pTheme);
+$page->update([]); // necessary? 
 ```
 
 #### Delete a page
@@ -903,13 +931,13 @@ check [`here`](#update-a-page)
 
 #### Get a page template
 ```PHP
-$pt = PageTemplate::getByHandle('three_column');
+$pTemplate = PageTemplate::getByHandle('three_column');
 ```
 
 #### Add a page template
 ```PHP
-$pt = PageTemplate::getByHandle('three_column');
-if(! $pt) {
+$pTemplate = PageTemplate::getByHandle('three_column');
+if(!$pTemplate) {
     PageTemplate::add('three_column', t('Three Column'), 'three_column.png', $pkg = null);
 }
 ```
