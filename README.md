@@ -22,8 +22,8 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get a page attribute](#get-a-page-attribute)
     - [Get list of attributes of a page](#get-list-of-attributes-of-a-page)
     - [Checking if a page is in Edit Mode](#checking-if-a-page-is-in-edit-mode)
-    - [Get all Blocks Objects on a page](#get-all-blocks-objects-on-a-page)
-    - [Get an Area Object on a Page](#get-an-area-object-on-a-page)
+    - [Get all Block Objects of a page](#get-all-block-objects-of-a-page)
+    - [Get an Area Object of a Page](#get-an-area-object-of-a-page)
   - [List of pages](#list-of-pages)
     - [Get list of pages](#get-list-of-pages)
     - [Get list of pages with pagination](#get-list-of-pages-with-pagination)
@@ -447,16 +447,16 @@ if ($page->isEditMode()) {
 }
 ```
 
-#### Get all Blocks Objects on a page
+#### Get all Block Objects of a page
 ```PHP
-$blocks = $page->getBlocks(); // all block on a page
-$blocks = $page->getBlocks('Area name'); // all block on an area
+$blocks = $page->getBlocks(); // all blocks on a page
+$blocks = $page->getBlocks('Area name'); // all blocks on an area
 foreach ($blocks as $block) {
     // ...
 }
 ```
 
-#### Get an Area Object on a Page
+#### Get an Area Object of a Page
 ```PHP
 $area = $c->getArea('Area name');
 ```
@@ -1688,6 +1688,13 @@ $orderBy = $blockIns->orderBy; //echo $orderBy;
 $displayPages  = $blockIns->displayPages ; //echo $displayPages ;
 $displayPagesCID = $blockIns->displayPagesCID; //echo $displayPagesCID;
 //...
+
+
+// faq block (`btFaq`, `btFaqEntries`)
+// repeating data sample
+$blockTitle = $blockIns->blockTitle; //echo $blockTitle;
+// get entries: direct query?
+// ...
 ```
 
 
