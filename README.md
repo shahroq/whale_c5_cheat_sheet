@@ -211,6 +211,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [Misc.](#misc)
     - [URL](#url)
     - [Logging](#logging)
+    - [Logging to a new channel](#logging-to-a-new-channel)
     - [Get environment](#get-environment)
     - [Clear site cache](#clear-site-cache)
 
@@ -677,7 +678,7 @@ $page->update(
 // this should be run afterwards if the handle is changed
 $page->rescanCollectionPath();
 
-// update theme of the page
+// update theme of a page
 $pTheme = \PageTheme::getByID(3);
 $page->setTheme($pTheme);
 $page->update([]); // necessary? 
@@ -2958,6 +2959,13 @@ Log::addInfo('This is an informative message.');
 Log::addWarning('Uh oh.');
 Log::addAlert('Red alert!');
 Log::addNotice('A notice error.');
+// see logs at /dashboard/reports/logs
+```
+
+#### Logging to a new channel
+```PHP
+$logger = $this->app->make(LoggerFactory::class)->createLogger('new_channel');
+$logger->addInfo('This is an informative message.');
 // see logs at /dashboard/reports/logs
 ```
 
