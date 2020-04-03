@@ -136,6 +136,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [Working with Blocks](#working-with-blocks)
     - [Hard-coding a Block with Custom Template](#hard-coding-a-block-with-custom-template)
     - [get data of an instance of a Block](#get-data-of-an-instance-of-a-block)
+    - [set data of an instance of a Block](#set-data-of-an-instance-of-a-block)
 - [Stacks](#stacks)
 - [Packages](#packages)
   - [A Package](#a-package)
@@ -1193,16 +1194,20 @@ Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with '
 ```PHP
 $u = $app->make(\Concrete\Core\User\User::class);
 
+// Is the current user logged in?
 if ($u->isRegistered()) {
     print 'User is logged in.';
 }
 
+// Is the current user the root user/super user?
 if ($u->isSuperUser()) {
     print 'Yes, they are SuperUser!';
 }
 
+// Retrieve the user ID of the current user
 print $u->getUserID();
 
+// Get the user's groups
 $groups = $u->getUserGroupObjects(); 
 foreach($groups as $group) {
     print $group->getGroupID();
@@ -1693,7 +1698,9 @@ $bt->render('templates/breadcrumb');
 $bID = $blockObj->bID; //echo $bID;
 $btHandle = $blockObj->btHandle; //echo $btHandle; 
 $btID = $blockObj->btID; //echo $btID; // block type id
-$bFileName = $blockObj->bFileName; //echo $bFileName; // template name
+$bFileName = $blockObj->getBlockFilename(); //echo $bFileName; // template name
+//\concrete\src\Block\Block.php
+
 
 // block specific data
 // get instance:
@@ -1723,6 +1730,23 @@ $displayPagesCID = $blockIns->displayPagesCID; //echo $displayPagesCID;
 // repeating data sample
 $blockTitle = $blockIns->blockTitle; //echo $blockTitle;
 // get entries: direct query?
+// ...
+```
+
+#### set data of an instance of a Block
+```PHP
+//$blockObj = Block::getByID($bID);
+
+$block->setCustomTemplate($template = 'new_template.php'); // set new block template
+
+// block specific data
+// html block (`btContentLocal`)
+// ...
+
+// content block (`btContentLocal`)
+// ...
+
+// image block (`btContentImage`)
 // ...
 ```
 
