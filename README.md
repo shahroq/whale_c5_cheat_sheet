@@ -493,10 +493,13 @@ $pageList = new PageList();
 
 $pages = $pageList->getResults();
 
-//echo count($pages);
 foreach ((array) $pages as $page) {
     echo $page->getCollectionID();
 }
+
+// total number of results
+echo $pageList->getTotalResults();  
+// OR: echo count($pages);
 ```
 
 #### Get list of pages with pagination
