@@ -135,8 +135,8 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Install a Block Type](#install-a-block-type)
   - [Working with Blocks](#working-with-blocks)
     - [Hard-coding a Block with Custom Template](#hard-coding-a-block-with-custom-template)
-    - [get data of an instance of a Block](#get-data-of-an-instance-of-a-block)
-    - [set data of an instance of a Block](#set-data-of-an-instance-of-a-block)
+    - [Get data of an instance of a Block](#get-data-of-an-instance-of-a-block)
+    - [Set data of an instance of a Block](#set-data-of-an-instance-of-a-block)
 - [Stacks](#stacks)
 - [Packages](#packages)
   - [A Package](#a-package)
@@ -474,10 +474,11 @@ if ($page->isEditMode()) {
 ```PHP
 $blocks = $page->getBlocks(); // all blocks on a page
 $blocks = $page->getBlocks('Area name'); // all blocks on an area
-foreach ($blocks as $block) {
+foreach ($blocks as $blockObj) {
     // ...
 }
 ```
+For getting block data [`here`](#Get-data-of-an-instance-of-a-block)
 
 #### Get an Area Object of a Page
 ```PHP
@@ -1693,16 +1694,29 @@ $bt->controller->displaySubPageLevels = 'all';
 $bt->render('templates/breadcrumb');
 ```
 
-#### get data of an instance of a Block
+#### Get data of an instance of a Block
 ```PHP
 //$blockObj = Block::getByID($bID);
 
 // block general data
+//\concrete\src\Block\Block.php
 $bID = $blockObj->bID; //echo $bID;
 $btHandle = $blockObj->btHandle; //echo $btHandle; 
 $btID = $blockObj->btID; //echo $btID; // block type id
-$bFileName = $blockObj->getBlockFilename(); //echo $bFileName; // template name
-//\concrete\src\Block\Block.php
+$areaHandle = $blockObj->getAreaHandle(); // area houses the block
+$blockTypeHandle = $blockObj->getBlockTypeHandle(); // block type handle (html, content, autonav, etc)
+$blockFilename = $blockObj->getBlockFilename(); // template file name
+// design
+$customStyleObj = $blockObj->getCustomStyle(); //get CustomStyle object
+if ($customStyleObj) {
+    $customClass = $customStyleObj->getStyleSet()->getCustomClass(); //print_r($customClass);
+    $customID = $customStyleObj->getStyleSet()->getCustomID(); //print_r($customID);
+    $customElementAttribute = $customStyleObj->getStyleSet()->getCustomElementAttribute(); //print_r($customElementAttribute);
+    
+    $backgroundColor = $customStyleObj->getStyleSet()->getBackgroundColor(); //print_r($backgroundColor);
+    // Other design properties include: 
+    // backgroundColor, backgroundImageFileID, backgroundRepeat, backgroundSize, backgroundPosition, borderColor, borderStyle, borderRadius, baseFontSize, alignment, textColor, linkColor, marginTop, marginBottom, marginLeft, marginRight, paddingTop, paddingBottom, paddingLeft, paddingRight, rotate, boxShadowHorizontal, boxShadowVertical, boxShadowBlur, boxShadowSpread, boxShadowColor, hideOnExtraSmallDevice
+}    
 
 
 // block specific data
@@ -1728,15 +1742,18 @@ $displayPages  = $blockIns->displayPages ; //echo $displayPages ;
 $displayPagesCID = $blockIns->displayPagesCID; //echo $displayPagesCID;
 //...
 
-
-// faq block (`btFaq`, `btFaqEntries`)
 // repeating data sample
+// faq block (`btFaq`, `btFaqEntries`)
 $blockTitle = $blockIns->blockTitle; //echo $blockTitle;
 // get entries: direct query?
 // ...
+
+
+// For getting these data from view replace `$blockObj` with `$this->block`, eg:
+$bID = $this->block->bID; //echo $bID;
 ```
 
-#### set data of an instance of a Block
+#### Set data of an instance of a Block
 ```PHP
 //$blockObj = Block::getByID($bID);
 
