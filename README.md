@@ -205,6 +205,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [User Interface helper](#user-interface-helper)
     - [Image helper](#image-helper)
     - [List of all helper](#list-of-all-helper)
+    - [Create a custom helper](#create-a-custom-helper)
 - [System Operations](#system-operations)
   - [Database](#database-1)
     - [Current database](#current-database)
@@ -2906,6 +2907,32 @@ $ih->outputThumbnail($mixed, $maxWidth, $maxHeight, $alt = null, $return = false
 'Concrete\Core\User\RegistrationServiceInterface' instanceof \Concrete\Core\User\RegistrationService,
 'validator/password' instanceof \Concrete\Core\Validator\ValidatorManager,
 '\Concrete\Core\Validator\ValidatorManagerInterface' instanceof \Concrete\Core\Validator\ValidatorManager,
+```
+
+#### Create a custom helper
+```PHP
+// Create the helper: \application\src\Html\Service\Talk.php
+namespace Application\Html\Service;
+
+class Talk
+{
+    public function greet($phrase = 'Hello')
+    {
+        return $phrase;
+    }
+}
+
+//bind it at: \application\bootstrap\app.php
+$app->bind('helper/talk', function() {
+    return new \Application\Html\Service\Talk();
+});
+
+//add path at: \application\bootstrap\autoload.php
+$classLoader->addPrefix('Application\\Html\\Service', DIR_APPLICATION . '/' . DIRNAME_CLASSES . '/Html/Service');
+
+//use it like this
+$th = Core::make('helper/talk');
+echo $th->greet('hello u');
 ```
 
 ## System Operations
