@@ -216,6 +216,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Logging to a new channel](#logging-to-a-new-channel)
     - [Get environment](#get-environment)
     - [Clear site cache](#clear-site-cache)
+- [Translation](#translation)
 
 
 ## Application (`$app`)
@@ -2932,7 +2933,7 @@ $classLoader->addPrefix('Application\\Html\\Service', DIR_APPLICATION . '/' . DI
 
 //use it like this
 $th = Core::make('helper/talk');
-echo $th->greet('hello u');
+echo $th->greet('Hi there!');
 ```
 
 ## System Operations
@@ -3049,3 +3050,11 @@ $environment = $app->environment(); //echo $environment;
 ```PHP
 $app->clearCaches();
 ```
+
+## Translation
+
+
+
+This cheatsheet is also available in other languages:
+
+- ![jp](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Japan.png) Japanese: [https://github.com/tao-s/whale_c5_cheat_sheet/tree/japanese](https://github.com/tao-s/whale_c5_cheat_sheet/tree/japanese)
