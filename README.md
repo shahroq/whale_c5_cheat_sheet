@@ -210,6 +210,9 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [Database](#database-1)
     - [Current database](#current-database)
     - [Another database](#another-database)
+  - [Asset System](#asset-system)
+    - [Core Assets](#core-assets)
+    - [Registering an Asset](#registering-an-asset)
   - [Misc.](#misc)
     - [URL](#url)
     - [Logging](#logging)
@@ -3018,6 +3021,66 @@ return array(
 
 $dbPricing = $app->make('database')->connection('pricing');
 ```
+
+### Asset System
+
+
+#### Core Assets
+Full list of pre-registered assets and their handles can be found [here](https://documentation.concrete5.org/developers/appendix/asset-list)
+
+#### Registering an Asset
+
+```PHP
+// use \Concrete\Core\Asset\AssetList
+// get Asset List singleton
+$al = AssetList::getInstance();
+$al->register($assetType, $assetHandle, $filename, $args = array(), $pkg = false);
+
+// Registering an asset in a block
+$al->register('css', 'media_elem_handle', 'blocks/audio/mediaelement/mediaelementplayer.min.css');
+$this->requireAsset('css', 'media_elem_handle');
+
+$al->register('javascript', 'media_elem_handle', 'blocks/audio/mediaelement/mediaelement-and-player.min.js');
+$this->requireAsset('javascript', 'media_elem_handle');
+
+// Registering an asset in a package
+$al->register('css', 'media_elem_handle', 'blocks/audio/mediaelement/mediaelementplayer.min.css', array(), 'audio_player');
+$this->requireAsset('css', 'media_elem_handle');
+
+$al->register('javascript', 'media_elem_handle', 'blocks/audio/mediaelement/mediaelement-and-player.min.js', array(), 'audio_player');
+$this->requireAsset('javascript', 'media_elem_handle');
+```
+
+// $assetType
+
+- `css` for CSS style sheets
+- `css-inline` for style elements
+- `css-localized` TBD
+- `javascript` for JavaScript files
+- `javascript-inline` for JavaScript that you would like to output inline into the page
+- `javascript-conditional` TBD
+- `javascript-localized` TBD
+
+// $assetHandle
+
+A handle should be unique across type and handle. This means that if you're registering an asset with the handle "mysite/calendar", you can register one CSS file and one JavaScript file with both that same handle.
+		
+// $filename
+
+The path to filename is relative to one of the following
+- The application/ directory
+- The packages/package_handle/ directory (if a package handle or package object is specified as part of the register() method.)
+- The concrete/ directory
+
+// $args
+
+It is an array of optional parameters. Here are the options, as well as their defaults if not specified.
+- `position` either \Concrete\Core\Asset\Asset::ASSET_POSITION_HEADER or \Concrete\Core\Asset\Asset::ASSET_POSITION_FOOTER. If left blank, it will default to the position specified by the asset type. CSS assets are included in the header of the page, JavaScript assets in the footer.
+- `local` defaults to true. If false, the exact string will be treated as a URL to a non-local asset.
+- `version` defaults to false. If specified, this version will be stored against the asset as the numerical version of the asset.
+- `combine` either true (combine this asset with other assets if asset caching is enabled) or false (do not combine this asset with others). Defaults to -1, which uses the default for the Asset type.
+- `minify` either true (minify this asset before combining, if asset caching is enabled) or false (do not minify this asset). Defaults to -1, which uses the default for the Asset type.
+
 
 ### Misc.
 
