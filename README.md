@@ -2196,6 +2196,8 @@ $default = -1;
 
 
 #### List of all aliases
+`Class aliases have been deprecated and full namespaces should be used`
+
 ```PHP
 //\concrete/config/app.php
 
