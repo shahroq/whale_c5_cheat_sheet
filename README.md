@@ -361,8 +361,9 @@ $pType = $page->getPageTypeObject(); // for getting `page type` info, check `Get
 echo $page->getCollectionThemeID();
 $pTheme = $page->getCollectionThemeObject(); // for getting `page theme` info, check `Get a page template/type/theme`
 
-
-echo $page->isSystemPage();
+// admin/system pages
+echo $page-> isAdminArea(); // Is this a dashboard page?
+echo $page->isSystemPage(); // Returns true if a page is a system page. A system page is either a page that is outside the site tree (has a site tree ID of 0) or a page that is in the site tree, but whose parent starts at 0. That means its a root level page. Why do we need this separate boolean then? Because we need to easily be able to filter all pages by whether they're a system page even if we don't necessarily know where their starting page is.
 
 // get all the page paths of this page
 foreach ($page->getPagePaths() as $path) {
