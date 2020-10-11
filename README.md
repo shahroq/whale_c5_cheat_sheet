@@ -78,6 +78,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Set/Update an attribute to a file](#setupdate-an-attribute-to-a-file)
     - [Clear an attribute of a file](#clear-an-attribute-of-a-file)
     - [Create a file set](#create-a-file-set)
+    - [get a file set info](#get-a-file-set-info)
     - [Add a file to a set](#add-a-file-to-a-set)
     - [Create a file folder](#create-a-file-folder)
     - [Add a file to a folder](#add-a-file-to-a-folder)
@@ -1135,6 +1136,7 @@ if (file_exists($filePath)) {
     $file = $fileVersion->getFile(); //echo get_class($file); //file object
 }	
 ```
+For more info on each method and its possible values check [`HERE`](https://documentation.concrete5.org/developers/working-with-files-and-the-file-manager/importing-new-files).
 
 #### Delete a file
 ```PHP
@@ -1157,6 +1159,13 @@ $file->clearAttribute('attribute_handle');
 #### Create a file set
 ```PHP
 $fileSet = FileSet::createAndGetSet('My File Set', FileSet::TYPE_PUBLIC);
+// if the file with provided name exist, it will return the current file set
+```
+
+#### get a file set info
+```PHP
+$filesetID =  $fileSet->getFileSetID();// echo $filesetID;
+$filesetName =  $fileSet->getFileSetID();// echo $filesetName;
 ```
 
 #### Add a file to a set
