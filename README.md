@@ -1074,17 +1074,17 @@ For custom markup check [`here`](https://documentation.concrete5.org/tutorials/s
 
 #### Filter a file list
 ```PHP
-$FileList->filterByType(\Concrete\Core\File\Type\Type::T_IMAGE); // by type (T_IMAGE, T_TEXT, T_AUDIO, T_DOCUMENT, T_APPLICATION, T_UNKNOWN)
-$FileList->filterByExtension('png'); // by extension
-$FileList->filterByKeywords('foobar'); // by keywords
-$FileList->filterBySize(1024, 2048); // only includes files that are between 1MB and 2MB in Size
-$FileList->filterByAttribute('width', 200, '>='); // only include files where "width" is 200 or greater.
-$FileList->filterByDateAdded($date, $comparison = '='); // by date added
-$FileList->filterByTags($tags); // by tags
+$fileList->filterByType(\Concrete\Core\File\Type\Type::T_IMAGE); // by type (T_IMAGE, T_TEXT, T_AUDIO, T_DOCUMENT, T_APPLICATION, T_UNKNOWN)
+$fileList->filterByExtension('png'); // by extension
+$fileList->filterByKeywords('foobar'); // by keywords
+$fileList->filterBySize(1024, 2048); // only includes files that are between 1MB and 2MB in Size
+$fileList->filterByAttribute('width', 200, '>='); // only include files where "width" is 200 or greater.
+$fileList->filterByDateAdded($date, $comparison = '='); // by date added
+$fileList->filterByTags($tags); // by tags
 
 //SET
-if ($fileSet) $FileList->filterBySet($fileSet); // by set (check 'Get a file set' for how to get a set)
-$FileList->filterByNoSet(); // files in No Sets
+if ($fileSet) $fileList->filterBySet($fileSet); // by set (check 'Get a file set' for how to get a set)
+$fileList->filterByNoSet(); // files in No Sets
 ```
 
 #### Get files inside a folder
@@ -1108,8 +1108,8 @@ foreach ((array) $files as $file) {
 
 #### Sort a file list
 ```PHP
-$FileList->sortByFilenameAscending();
-$FileList->sortByFileSetDisplayOrder();
+$fileList->sortByFilenameAscending();
+$fileList->sortByFileSetDisplayOrder();
 ```
 
 #### Get a file set
