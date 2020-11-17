@@ -2938,15 +2938,15 @@ class Talk
     }
 }
 
-//bind it at: \application\bootstrap\app.php
+// bind it at: \application\bootstrap\app.php
 $app->bind('helper/talk', function() {
     return new \Application\Html\Service\Talk();
 });
 
-//add path at: \application\bootstrap\autoload.php
+// add path at: \application\bootstrap\autoload.php
 $classLoader->addPrefix('Application\\Html\\Service', DIR_APPLICATION . '/' . DIRNAME_CLASSES . '/Html/Service');
 
-//use it like this
+// use it like this
 $th = Core::make('helper/talk');
 echo $th->greet('Hi there!');
 ```
@@ -2963,13 +2963,16 @@ echo $th->greet('Hi there!');
 // database connection
 $db = $app->make(\Concrete\Core\Database\Connection\Connection::class);
 
-//prepare any query
+// debug
+$db->debug = true;
+
+// prepare any query
 $statement = $db->executeQuery('SELECT * FROM `myTable` WHERE `id`>?;', array(0)); 
     
 //echo $statement->rowCount(); // number of SELECTed/UPDATEd/DELETEd rows
 //echo $statement->getSqlQuery(); // prepared SQL //not working
 
-//iterate through rows
+// iterate through rows
 $rows = $statement->fetchAll(); //print_r($rows);
 foreach ($rows as $row) {
     print_r($row);
@@ -2994,11 +2997,11 @@ $statement = $db->executeQuery('INSERT INTO `myTable` (`name`, `url`) VALUES (?,
 //echo $db->lastInsertId(); // last inserted id
 //echo $statement->rowCount(); // number of affected rows
 
-//UPDATE
+// UPDATE
 $statement = $db->executeQuery('UPDATE `myTable` SET name = ? WHERE `id` = ?;', array('new name', 1)); 
 //echo $statement->rowCount(); // number of affected rows
 
-//DELETE
+// DELETE
 $statement = $db->executeQuery('DELETE FROM `myTable` WHERE `id` = ?;', array(1)); 
 //echo $statement->rowCount(); // number of affected rows
 ```
