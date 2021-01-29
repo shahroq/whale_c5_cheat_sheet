@@ -15,7 +15,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [`$request` in other places](#request-in-other-places)
 - [Pages (Collections)](#pages-collections)
   - [A page](#a-page)
-    - [Get Current page](#get-current-page)
+    - [Get the current page](#get-the-current-page)
     - [Get a page by a unique identifier](#get-a-page-by-a-unique-identifier)
     - [Get a page data](#get-a-page-data)
     - [Get a page template/type/theme](#get-a-page-templatetypetheme)
@@ -23,7 +23,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get list of attributes of a page](#get-list-of-attributes-of-a-page)
     - [Checking if a page is in Edit Mode](#checking-if-a-page-is-in-edit-mode)
     - [Get all Block Objects of a page](#get-all-block-objects-of-a-page)
-    - [Get an Area Object of a Page](#get-an-area-object-of-a-page)
+    - [Get an Area Object of a page](#get-an-area-object-of-a-page)
   - [List of pages](#list-of-pages)
     - [Get list of pages](#get-list-of-pages)
     - [Get list of pages with pagination](#get-list-of-pages-with-pagination)
@@ -34,7 +34,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Update a page](#update-a-page)
     - [Delete a page](#delete-a-page)
     - [Move a page](#move-a-page)
-    - [Copy a Page](#copy-a-page)
+    - [Copy a page](#copy-a-page)
     - [Add an extra location URL](#add-an-extra-location-url)
     - [Set/Update an attribute of a page](#setupdate-an-attribute-of-a-page)
     - [Clear an attribute of a page](#clear-an-attribute-of-a-page)
@@ -78,7 +78,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Set/Update an attribute to a file](#setupdate-an-attribute-to-a-file)
     - [Clear an attribute of a file](#clear-an-attribute-of-a-file)
     - [Create a file set](#create-a-file-set)
-    - [get a file set info](#get-a-file-set-info)
+    - [Get a file set info](#get-a-file-set-info)
     - [Add a file to a set](#add-a-file-to-a-set)
     - [Create a file folder](#create-a-file-folder)
     - [Add a file to a folder](#add-a-file-to-a-folder)
@@ -147,8 +147,8 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
 - [Express Entries](#express-entries)
   - [Express Entity](#express-entity)
     - [Create the entity](#create-the-entity)
-    - [Adding Associations to the Object](#adding-associations-to-the-object)
-    - [Create the Form](#create-the-form)
+    - [Adding associations to the object](#adding-associations-to-the-object)
+    - [Create the form](#create-the-form)
     - [Add attributes](#add-attributes)
   - [Express Entry](#express-entry)
     - [Get list of entries in an entity](#get-list-of-entries-in-an-entity)
@@ -313,7 +313,7 @@ $request = $app->make(\Concrete\Core\Http\Request::class);
 ### A page
 
 
-#### Get Current page
+#### Get the current page
 ```PHP
 $page = \Page::getCurrentPage();
 ```
@@ -487,7 +487,7 @@ foreach ($blocks as $blockObj) {
 ```
 For getting block data [`here`](#Get-data-of-an-instance-of-a-block)
 
-#### Get an Area Object of a Page
+#### Get an Area Object of a page
 ```PHP
 $area = $c->getArea('Area name');
 ```
@@ -708,7 +708,7 @@ $moveTo = \Page::getByPath('/archives');
 $page->move($moveTo);
 ```
 
-#### Copy a Page
+#### Copy a page
 ```PHP
 $copyTo = \Page::getByPath('/archives');
 $page->duplicate($copyTo);
@@ -1162,7 +1162,7 @@ $fileSet = FileSet::createAndGetSet('My File Set', FileSet::TYPE_PUBLIC);
 // if the file with provided name exist, it will return the current file set
 ```
 
-#### get a file set info
+#### Get a file set info
 ```PHP
 $filesetID =  $fileSet->getFileSetID();// echo $filesetID;
 $filesetName =  $fileSet->getFileSetID();// echo $filesetName;
@@ -1943,7 +1943,7 @@ if (!is_object($eObj)) {
 ```
 For more info on each method and its possible values check [`HERE`](#Add-an-attribute).
 
-#### Adding Associations to the Object
+#### Adding associations to the object
 ```PHP
 $marina = Express::buildObject('marina', 'marinas', 'Marina', $pkg);
 $boat = Express::buildObject('boat', 'boats', 'Boat', $pkg);
@@ -1954,7 +1954,7 @@ $boat = $builder->save();
 $marina = $marina->getEntity();
 ```
 
-#### Create the Form
+#### Create the form
 ```PHP
 ```
 
