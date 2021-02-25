@@ -13,6 +13,9 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [`$request` in a controller](#request-in-a-controller)
   - [`$request` in a custom class](#request-in-a-custom-class)
   - [`$request` in other places](#request-in-other-places)
+- [Site](#site)
+  - [Attributes](#attributes)
+    - [Get an attribites](#get-an-attribites)
 - [Pages (Collections)](#pages-collections)
   - [A page](#a-page)
     - [Get the current page](#get-the-current-page)
@@ -39,7 +42,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Set/Update an attribute of a page](#setupdate-an-attribute-of-a-page)
     - [Clear an attribute of a page](#clear-an-attribute-of-a-page)
     - [Refresh page cache](#refresh-page-cache)
-  - [Attributes](#attributes)
+  - [Attributes](#attributes-1)
     - [Get an attribute](#get-an-attribute)
     - [Add an attribute](#add-an-attribute)
     - [Delete an attribute](#delete-an-attribute)
@@ -82,7 +85,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Add a file to a set](#add-a-file-to-a-set)
     - [Create a file folder](#create-a-file-folder)
     - [Add a file to a folder](#add-a-file-to-a-folder)
-  - [Attributes](#attributes-1)
+  - [Attributes](#attributes-2)
     - [Get an attribute](#get-an-attribute-1)
     - [Add an attribute](#add-an-attribute-1)
     - [Add an attribute set](#add-an-attribute-set-1)
@@ -106,7 +109,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Delete a user](#delete-a-user)
     - [Set/Update an attribute to a user](#setupdate-an-attribute-to-a-user)
     - [Clear an attribute of a user](#clear-an-attribute-of-a-user)
-  - [Attributes](#attributes-2)
+  - [Attributes](#attributes-3)
     - [Get an attribute](#get-an-attribute-2)
     - [Add an attribute](#add-an-attribute-2)
     - [Add an attribute set](#add-an-attribute-set-2)
@@ -118,7 +121,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Topic Tree operations](#topic-tree-operations)
     - [Get a Category/Node](#get-a-categorynode)
     - [Add a Category/Node](#add-a-categorynode)
-- [Attributes](#attributes-3)
+- [Attributes](#attributes-4)
     - [List of attribute set categories (collection/user/file/site/event)](#list-of-attribute-set-categories-collectionuserfilesiteevent)
     - [List of sets in a category](#list-of-sets-in-a-category)
   - [Attrubute Set](#attrubute-set)
@@ -275,7 +278,7 @@ Direct access to PHP superglobals (that is, `$_REQUEST`, `$_POST`, `$_GET`, `$_S
 - instead of `$_SERVER['key']`: use `$request->server->get('key')`
 - instead of `$_FILES['key']`: use `$request->files->get('key')`
 
-For more options check `\concrete\vendor\symfony\http-foundation\ParameterBag.php` or [`here`](https://symfony.com/doc/current/components/http_foundation.html)
+For more options check `\concrete\vendor\symfony\http-foundation\ParameterBag.php` or [`HERE`](https://symfony.com/doc/current/components/http_foundation.html)
 
 ### `$request` in a controller
 
@@ -305,6 +308,19 @@ public function myMethod()
 ```php
 $request = $app->make(\Concrete\Core\Http\Request::class);
 ```
+
+## Site
+
+
+### Attributes
+
+#### Get an attribites
+```PHP
+$site = Site::getSite();
+$attr = $site->getAttributeValueObject('attr_handle');
+$attrValue = $attr->getValue();
+```
+For more info on each attribute type check [`HERE`](#get-an-attribute)..
 
 
 ## Pages (Collections)
@@ -485,7 +501,7 @@ foreach ($blocks as $blockObj) {
     // ...
 }
 ```
-For getting block data [`here`](#Get-data-of-an-instance-of-a-block)
+For getting block data check [`HERE`](#Get-data-of-an-instance-of-a-block)
 
 #### Get an Area Object of a page
 ```PHP
@@ -534,7 +550,7 @@ echo $pagination->getTotalPages(); // total number of pages
 echo $pagination->hasNextPage(); // to determine whether paging is necessary
 echo $pagination->hasPreviousPage(); //"
 ```
-For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
+For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a page list
 ```PHP
@@ -937,7 +953,7 @@ if (!is_object($newsItem)) {
 ```
 
 #### Update a page type
-check [`here`](#update-a-page)
+check [`HERE`](#update-a-page)
 
 ### Page Templates
 
@@ -1069,8 +1085,8 @@ foreach ((array) $files as $file) {
     echo $file->getFileID().'-'.$file->getFileName().'<br/>';
 }
 ```
-For Pagination buttons & functions check [`here`](#Get-list-of-pages-with-pagination)  
-For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
+For Pagination buttons & functions check [`HERE`](#Get-list-of-pages-with-pagination)  
+For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a file list
 ```PHP
@@ -1308,8 +1324,8 @@ foreach ((array) $users as $user) {
     echo $user->getUserID().'-'.$user->getUserName().'<br/>';
 }
 ```
-For Pagination buttons & functions check [`here`](#Get-list-of-pages-with-pagination)  
-For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
+For Pagination buttons & functions check [`HERE`](#Get-list-of-pages-with-pagination)  
+For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a user list
 ```PHP
@@ -2000,8 +2016,8 @@ foreach ($entries as $entry) {
     //
 }
 ```
-For Pagination buttons & functions check [`here`](#Get-list-of-pages-with-pagination)  
-For custom markup check [`here`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
+For Pagination buttons & functions check [`HERE`](#Get-list-of-pages-with-pagination)  
+For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a list of entries
 ```PHP
@@ -3005,7 +3021,7 @@ $statement = $db->executeQuery('UPDATE `myTable` SET name = ? WHERE `id` = ?;', 
 $statement = $db->executeQuery('DELETE FROM `myTable` WHERE `id` = ?;', array(1)); 
 //echo $statement->rowCount(); // number of affected rows
 ```
-For more check [`here`](https://www.doctrine-project.org/api/dbal/2.5/Doctrine/DBAL/Connection.html)
+For more check [`HERE`](https://www.doctrine-project.org/api/dbal/2.5/Doctrine/DBAL/Connection.html)
 
 #### Another database
 ```PHP
