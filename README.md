@@ -320,7 +320,7 @@ $site = Site::getSite();
 $attr = $site->getAttributeValueObject('attr_handle');
 $attrValue = $attr->getValue();
 ```
-For more info on each attribute type check [`HERE`](#get-an-attribute)..
+For more info on each attribute type check [`HERE`](#get-an-attribute).
 
 
 ## Pages (Collections)
@@ -332,6 +332,9 @@ For more info on each attribute type check [`HERE`](#get-an-attribute)..
 #### Get the current page
 ```PHP
 $page = \Page::getCurrentPage();
+
+// in a page template
+$page = $c;
 ```
 
 #### Get a page by a unique identifier
