@@ -798,6 +798,13 @@ foreach ((object) $attrOptions as $attrOption) {
     $attrOptionID = $attrOption->getSelectAttributeOptionID(); //echo $attrOptionID;
     $attrOptionValue = $attrOption->getSelectAttributeOptionValue(); //echo $attrOptionValue;
 }
+
+// placeholder of a `Text` attribute
+$type = $attr->getAttributeKeySettings();
+if ($type instanceof Concrete\Core\Entity\Attribute\Key\Settings\TextSettings) {
+    $attrPlaceholder = $type->getPlaceholder();
+}
+//\concrete\src\Entity\Attribute\Key\Settings\TextSettings.php
 ```
 
 #### Add an attribute
