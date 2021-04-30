@@ -217,6 +217,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [Asset System](#asset-system)
     - [Core Assets](#core-assets)
     - [Registering an Asset](#registering-an-asset)
+  - [CLI](#cli)
   - [Misc.](#misc)
     - [URL](#url)
     - [Logging](#logging)
@@ -801,7 +802,7 @@ foreach ((object) $attrOptions as $attrOption) {
 
 // placeholder of a `Text` attribute
 $type = $attr->getAttributeKeySettings();
-if ($type instanceof Concrete\Core\Entity\Attribute\Key\Settings\TextSettings) {
+if ($type instanceof \Concrete\Core\Entity\Attribute\Key\Settings\TextSettings) {
     $attrPlaceholder = $type->getPlaceholder();
 }
 //\concrete\src\Entity\Attribute\Key\Settings\TextSettings.php
@@ -3135,6 +3136,23 @@ It is an array of optional parameters. Here are the options, as well as their de
 - `version` defaults to false. If specified, this version will be stored against the asset as the numerical version of the asset.
 - `combine` either true (combine this asset with other assets if asset caching is enabled) or false (do not combine this asset with others). Defaults to -1, which uses the default for the Asset type.
 - `minify` either true (minify this asset before combining, if asset caching is enabled) or false (do not minify this asset). Defaults to -1, which uses the default for the Asset type.
+
+### CLI
+For complete reference check [`HERE`](https://documentation.concrete5.org/developers/framework/console-commands-and-jobs/cli-commands)
+
+- List of all the available CLI commands `concrete/bin/concrete5 list`
+- Install concrete5 with: `c5:install`
+- Reset a concrete5 installation with `c5:reset`
+- Generate IDE symbols with `c5:ide-symbols`
+- Configure concrete5 with `c5:config`
+- Run concrete5 jobs with `c5:job`
+- Clear the concrete5 cache with `c5:clear-cache`
+- Install a concrete5 package with `c5:package-install`
+- Update concrete5 packages with `c5:package-update`
+- Uninstall a concrete5 package with `c5:package-uninstall`
+- Manage 5.6 and 5.7 package translations with `c5:package-translate`
+- Getting information with `c5:info`
+- Upgrading concrete5 with `c5:update`
 
 
 ### Misc.
