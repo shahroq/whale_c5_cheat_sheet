@@ -464,13 +464,16 @@ if ($attr) {
 
 
 // Option List: get option(s):
-// Single option: cast to `string`
-$optionValue = (string) $attr;
 
-// Multiple options: cast to `object` and iterate
+// A: Single option: cast to `string`
+$optionValue = (string) $attr;
+// B: Multiple options: cast to `object` and iterate
 foreach ((object) $attr as $option) {
     $optionValue = $option->getSelectAttributeOptionValue(); //echo $optionValue;
     // $optionID = $option->getSelectAttributeOptionID(); //echo $optionID;
+    
+    // OR 
+    // $optionValue = (string) $option;
 }
 
 
@@ -3105,6 +3108,14 @@ $this->requireAsset('css', 'media_elem_handle');
 
 $al->register('javascript', 'media_elem_handle', 'blocks/audio/mediaelement/mediaelement-and-player.min.js', array(), 'audio_player');
 $this->requireAsset('javascript', 'media_elem_handle');
+
+// Registering an asset for a page
+// get the page first, then:
+$al->register('css', 'media_elem_handle', '../application/../mediaelementplayer.min.css');
+$page->getPageController()->requireAsset('css', 'media_elem_handle');
+
+$al->register('javascript', 'media_elem_handle', '../application/../mediaelement-and-player.min.js');
+$page->getPageController()->requireAsset('javascript', 'media_elem_handle');
 ```
 
 // $assetType
