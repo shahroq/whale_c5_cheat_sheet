@@ -102,6 +102,9 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Get list of users with pagination](#get-list-of-users-with-pagination)
     - [Filter a user list](#filter-a-user-list)
     - [Sort a user list](#sort-a-user-list)
+  - [User Groups](#user-groups)
+    - [Get a group](#get-a-group)
+    - [Get a group data](#get-a-group-data)
   - [User operation](#user-operation)
     - [Add a user](#add-a-user)
     - [Update a user](#update-a-user)
@@ -220,6 +223,7 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
   - [CLI](#cli)
   - [Misc.](#misc)
     - [URL](#url)
+    - [Redirecting](#redirecting)
     - [Logging](#logging)
     - [Logging to a new channel](#logging-to-a-new-channel)
     - [Get environment](#get-environment)
@@ -404,6 +408,12 @@ $parameters = $controller->getParameters();
 
 // check whether a page selected
 if($page->isError()) ...
+
+// check if the page is locale home page
+if($page->isLocaleHomePage()) ...
+
+// get home page 
+$homePage = \Page::getByID(\Page::getHomePageID());
 
 //\concrete\src\Page\Page.php
 ```
@@ -1258,6 +1268,11 @@ if ($u->isSuperUser()) {
     print 'Yes, they are SuperUser!';
 }
 
+// Is the current belongs to a group?
+if ($u->inGroup(Group::getByName('Clients'))) {
+    print 'Yes, they are member of Clients group!';
+}
+
 // Retrieve the user ID of the current user
 print $u->getUserID();
 
@@ -1435,6 +1450,28 @@ $userList->sortBy('u.uDateAdded', 'asc'); // by date added asc
 
 $userList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + attribute_handle
 ```
+
+### User Groups
+
+
+#### Get a group
+```PHP
+$group = Group::getByID(1);
+$group = Group::getByName('Guest');
+```
+
+#### Get a group data
+```PHP
+$groupID = $group->getGroupID();
+$groupName = $group->getGroupName();
+
+$groupMembers = $group->getGroupMembers();
+$groupMemberIDs = $group->getGroupMemberIDs();
+$groupMemberNum = $group->getGroupMembersNum();
+
+//\concrete\src\User\Group\Group.php
+```
+
 
 ### User operation
 
@@ -3171,6 +3208,21 @@ For complete reference check [`HERE`](https://documentation.concrete5.org/develo
 #### URL
 ```PHP
 $url = URL::to('/path/to/somewhere'); //http://ursite/index.php/path/to/somewhere
+```
+
+#### Redirecting
+```PHP
+$response = new RedirectResponse(\URL::to('/login'), $status, $headers);
+// list of status code: \concrete\vendor\symfony\http-foundation\Response.php
+
+// redirect to homepage of the current language
+$response = new RedirectResponse(\Page::getByID(\Page::getHomePageID())->getCollectionLink(), Response::HTTP_TEMPORARY_REDIRECT);
+
+// redirect to login page
+$response = new RedirectResponse(\URL::to('/login'), $status = Response::HTTP_TEMPORARY_REDIRECT);
+
+$response->send();
+exit;
 ```
 
 #### Logging
