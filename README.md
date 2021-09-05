@@ -493,6 +493,10 @@ foreach ((object) $topics as $topic) {
     echo $topic->getTreeNodeID(); 
     echo $topic->getTreeNodeName(); 
 }    
+
+// Date
+$date = $page->getAttribute('attribute_handle'); // return php DateTime object
+echo $date->format('Y-m-d H:i:s'); // to string
 ```
 
 #### Get list of attributes of a page
@@ -779,6 +783,10 @@ foreach ($treeNodeIDs as $treeNodeID) {
   $topicsValue->getSelectedTopics()->add($topicsValueNode);
 }
 $page->setAttribute('attribute_handle', $topicsValue);
+
+// date
+$page->setAttribute('attribute_handle', new \DateTime()); // current date
+$page->setAttribute('attribute_handle', new \DateTime('1990-01-12')); // custom date date
 ```
 
 #### Clear an attribute of a page
