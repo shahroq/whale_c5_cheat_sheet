@@ -166,7 +166,9 @@ This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
     - [Delete an entry](#delete-an-entry)
 - [Language](#language)
     - [Get active locale](#get-active-locale)
+    - [Get default locale](#get-default-locale)
     - [Get all added locales](#get-all-added-locales)
+    - [Set active locale manually](#set-active-locale-manually)
 - [Constants](#constants)
     - [Get all constants](#get-all-constants)
 - [Configs](#configs)
@@ -2146,6 +2148,13 @@ $activeLocale = \Localization::activeLocale();
 echo $activeLocale; // `en_US`
 ```
 
+#### Get default locale
+```PHP
+$site = $->app->make('site')->getSite();
+$defaultLocale = $site->getDefaultLocale();
+$defaultLocaleCode = $defaultLocale->getLocale(); // echo $defaultLocaleCode; // `en_US`
+```
+
 #### Get all added locales
 ```PHP
 $app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
@@ -2170,6 +2179,15 @@ foreach ($locales as $locale) {
     echo $flag->getLocaleFlagIcon($locale);
 }
 ```
+
+#### Set active locale manually
+```PHP
+// use Concrete\Core\Localization\Localization;
+$loc = Localization::getInstance();
+$loc->setActiveContext(Localization::CONTEXT_SITE);
+$loc->setContextLocale(Localization::CONTEXT_SITE, 'es_ES');
+```
+
 
 ## Constants
 
