@@ -1,237 +1,237 @@
 # [concrete5](https://www.concrete5.org) Cheat Sheet V8+
 
-This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code. 
+This is a collection of concrete5 cheat sheets, based on the C5 V8+ source code.
 
 **Contributions are welcome via [issues](https://github.com/shahroq/whale_c5_cheat_sheet/issues) and [pull requests](https://github.com/shahroq/whale_c5_cheat_sheet/pulls).**
 
 ## Table of Contents <!-- omit in toc -->
-- [Application (`$app`)](#application-app)
-  - [`$app` in a controller](#app-in-a-controller)
-  - [`$app` in a custom class](#app-in-a-custom-class)
-  - [`$app` in other places](#app-in-other-places)
-- [Superglobals](#superglobals)
-  - [`$request` in a controller](#request-in-a-controller)
-  - [`$request` in a custom class](#request-in-a-custom-class)
-  - [`$request` in other places](#request-in-other-places)
-- [Site](#site)
-  - [Attributes](#attributes)
-    - [Get an attribites](#get-an-attribites)
-- [Pages (Collections)](#pages-collections)
-  - [A page](#a-page)
-    - [Get the current page](#get-the-current-page)
-    - [Get a page by a unique identifier](#get-a-page-by-a-unique-identifier)
-    - [Get a page data](#get-a-page-data)
-    - [Get a page template/type/theme](#get-a-page-templatetypetheme)
-    - [Get a page attribute](#get-a-page-attribute)
-    - [Get list of attributes of a page](#get-list-of-attributes-of-a-page)
-    - [Checking if a page is in Edit Mode](#checking-if-a-page-is-in-edit-mode)
-    - [Get all Block Objects of a page](#get-all-block-objects-of-a-page)
-    - [Get an Area Object of a page](#get-an-area-object-of-a-page)
-  - [List of pages](#list-of-pages)
-    - [Get list of pages](#get-list-of-pages)
-    - [Get list of pages with pagination](#get-list-of-pages-with-pagination)
-    - [Filter a page list](#filter-a-page-list)
-    - [Sort a page list](#sort-a-page-list)
-  - [Page operations](#page-operations)
-    - [Add a page](#add-a-page)
-    - [Update a page](#update-a-page)
-    - [Delete a page](#delete-a-page)
-    - [Move a page](#move-a-page)
-    - [Copy a page](#copy-a-page)
-    - [Add an extra location URL](#add-an-extra-location-url)
-    - [Set/Update an attribute of a page](#setupdate-an-attribute-of-a-page)
-    - [Clear an attribute of a page](#clear-an-attribute-of-a-page)
-    - [Refresh page cache](#refresh-page-cache)
-  - [Attributes](#attributes-1)
-    - [Get an attribute](#get-an-attribute)
-    - [Add an attribute](#add-an-attribute)
-    - [Delete an attribute](#delete-an-attribute)
-    - [Get all attribute keys](#get-all-attribute-keys)
-  - [Attribute Sets](#attribute-sets)
-    - [Get an attribute set](#get-an-attribute-set)
-    - [Get an attribute set data](#get-an-attribute-set-data)
-    - [Add an attribute set](#add-an-attribute-set)
-  - [Page Types](#page-types)
-    - [Get a page type](#get-a-page-type)
-    - [Add a page type](#add-a-page-type)
-    - [Update a page type](#update-a-page-type)
-  - [Page Templates](#page-templates)
-    - [Get a page template](#get-a-page-template)
-    - [Add a page template](#add-a-page-template)
-  - [Single Page](#single-page)
-    - [Get a single page](#get-a-single-page)
-    - [Add a single page](#add-a-single-page)
-- [Files](#files)
-  - [A Files](#a-files)
-    - [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
-    - [Get a file data](#get-a-file-data)
-    - [Get a file attribute](#get-a-file-attribute)
-    - [Get list of attributes of a file](#get-list-of-attributes-of-a-file)
-  - [List of files](#list-of-files)
-    - [Get list of files](#get-list-of-files)
-    - [Get list of files with pagination](#get-list-of-files-with-pagination)
-    - [Filter a file list](#filter-a-file-list)
-    - [Get files inside a folder](#get-files-inside-a-folder)
-    - [Sort a file list](#sort-a-file-list)
-    - [Get a file set](#get-a-file-set)
-    - [Get a file folder](#get-a-file-folder)
-  - [File Operation](#file-operation)
-    - [Importing a file](#importing-a-file)
-    - [Delete a file](#delete-a-file)
-    - [Set/Update an attribute to a file](#setupdate-an-attribute-to-a-file)
-    - [Clear an attribute of a file](#clear-an-attribute-of-a-file)
-    - [Create a file set](#create-a-file-set)
-    - [Get a file set info](#get-a-file-set-info)
-    - [Add a file to a set](#add-a-file-to-a-set)
-    - [Create a file folder](#create-a-file-folder)
-    - [Add a file to a folder](#add-a-file-to-a-folder)
-  - [Attributes](#attributes-2)
-    - [Get an attribute](#get-an-attribute-1)
-    - [Add an attribute](#add-an-attribute-1)
-    - [Add an attribute set](#add-an-attribute-set-1)
-- [Users](#users)
-  - [A User](#a-user)
-    - [Get/Check current user](#getcheck-current-user)
-    - [Get a user by a unique identifier](#get-a-user-by-a-unique-identifier)
-    - [Get a user data](#get-a-user-data)
-    - [Get user info object](#get-user-info-object)
-    - [Get user info data](#get-user-info-data)
-    - [Get a user (info) attributes](#get-a-user-info-attributes)
-  - [List of users](#list-of-users)
-    - [Get list of users](#get-list-of-users)
-    - [Get list of users with pagination](#get-list-of-users-with-pagination)
-    - [Filter a user list](#filter-a-user-list)
-    - [Sort a user list](#sort-a-user-list)
-  - [User Groups](#user-groups)
-    - [Get a group](#get-a-group)
-    - [Get a group data](#get-a-group-data)
-  - [User operation](#user-operation)
-    - [Add a user](#add-a-user)
-    - [Update a user](#update-a-user)
-    - [Activate/Deactivate a user](#activatedeactivate-a-user)
-    - [Delete a user](#delete-a-user)
-    - [Set/Update an attribute to a user](#setupdate-an-attribute-to-a-user)
-    - [Clear an attribute of a user](#clear-an-attribute-of-a-user)
-  - [Attributes](#attributes-3)
-    - [Get an attribute](#get-an-attribute-2)
-    - [Add an attribute](#add-an-attribute-2)
-    - [Add an attribute set](#add-an-attribute-set-2)
-- [Topics](#topics)
-    - [Schema](#schema)
-    - [Get a Topic Tree](#get-a-topic-tree)
-    - [List of Topic Trees](#list-of-topic-trees)
-    - [Get children (Categories, Nodes) of a Topic Tree](#get-children-categories-nodes-of-a-topic-tree)
-    - [Topic Tree operations](#topic-tree-operations)
-    - [Get a Category/Node](#get-a-categorynode)
-    - [Add a Category/Node](#add-a-categorynode)
-- [Attributes](#attributes-4)
-    - [List of attribute set categories (collection/user/file/site/event)](#list-of-attribute-set-categories-collectionuserfilesiteevent)
-    - [List of sets in a category](#list-of-sets-in-a-category)
-  - [Attrubute Set](#attrubute-set)
-    - [A set](#a-set)
-    - [Attributes in a set](#attributes-in-a-set)
-    - [List of sets](#list-of-sets)
-- [Themes](#themes)
-  - [Page types](#page-types-1)
-    - [Adding areas in a Page Template](#adding-areas-in-a-page-template)
-    - [Embedding Blocks in a Page Template](#embedding-blocks-in-a-page-template)
-- [Blocks](#blocks)
-  - [A Block Type](#a-block-type)
-    - [Get a Block Type](#get-a-block-type)
-    - [Get a Block Type data](#get-a-block-type-data)
-    - [Install a Block Type](#install-a-block-type)
-  - [Working with Blocks](#working-with-blocks)
-    - [Hard-coding a Block with Custom Template](#hard-coding-a-block-with-custom-template)
-    - [Get data of an instance of a Block](#get-data-of-an-instance-of-a-block)
-    - [Set data of an instance of a Block](#set-data-of-an-instance-of-a-block)
-- [Stacks](#stacks)
-- [Packages](#packages)
-  - [A Package](#a-package)
-    - [Get a package](#get-a-package)
-    - [Get a package data](#get-a-package-data)
-    - [Check dependencies](#check-dependencies)
-- [Express Entries](#express-entries)
-  - [Express Entity](#express-entity)
-    - [Create the entity](#create-the-entity)
-    - [Adding associations to the object](#adding-associations-to-the-object)
-    - [Create the form](#create-the-form)
-    - [Add attributes](#add-attributes)
-  - [Express Entry](#express-entry)
-    - [Get list of entries in an entity](#get-list-of-entries-in-an-entity)
-    - [Get list of entries in an entity with pagination](#get-list-of-entries-in-an-entity-with-pagination)
-    - [Filter a list of entries](#filter-a-list-of-entries)
-    - [Sort a list of entries](#sort-a-list-of-entries)
-    - [Create an entry](#create-an-entry)
-    - [Update an entry](#update-an-entry)
-    - [Delete an entry](#delete-an-entry)
-- [Language](#language)
-    - [Get active locale](#get-active-locale)
-    - [Get default locale](#get-default-locale)
-    - [Get all added locales](#get-all-added-locales)
-    - [Set active locale manually](#set-active-locale-manually)
-- [Constants](#constants)
-    - [Get all constants](#get-all-constants)
-- [Configs](#configs)
-  - [Basics](#basics)
-    - [Key](#key)
-    - [Value](#value)
-  - [Different places for storing data](#different-places-for-storing-data)
-    - [Database](#database)
-    - [FileSystem](#filesystem)
-  - [Different ways to read and write config values](#different-ways-to-read-and-write-config-values)
-    - [1: Using a Package object](#1-using-a-package-object)
-    - [2: Using a service provider](#2-using-a-service-provider)
-    - [3: Using Config](#3-using-config)
-- [Aliases](#aliases)
-    - [List of all aliases](#list-of-all-aliases)
-- [Helpers](#helpers)
-    - [General](#general)
-    - [Number helper](#number-helper)
-    - [Text helper](#text-helper)
-    - [URL helper](#url-helper)
-    - [Array helper](#array-helper)
-    - [Arrays validation helper](#arrays-validation-helper)
-    - [Numbers validation helper](#numbers-validation-helper)
-    - [Strings validation helper](#strings-validation-helper)
-    - [JSON helper](#json-helper)
-    - [Ajax helper](#ajax-helper)
-    - [HTML helper](#html-helper)
-    - [Navigation helper](#navigation-helper)
-    - [Date helper](#date-helper)
-    - [Form helper](#form-helper)
-    - [Form (editor/richtext editor/Redactor) helper](#form-editorrichtext-editorredactor-helper)
-    - [Form (color picker) helper](#form-color-picker-helper)
-    - [Form (date/time) helper](#form-datetime-helper)
-    - [Form (page selector) helper](#form-page-selector-helper)
-    - [Form (user selector) helper](#form-user-selector-helper)
-    - [Form (group selector) helper](#form-group-selector-helper)
-    - [Form (rating) helper](#form-rating-helper)
-    - [Form (attribute) helper](#form-attribute-helper)
-    - [Form (typography) helper](#form-typography-helper)
-    - [Concrete URL helper](#concrete-url-helper)
-    - [Asset library (file manager) helper](#asset-library-file-manager-helper)
-    - [Validation error helper](#validation-error-helper)
-    - [User Interface helper](#user-interface-helper)
-    - [Image helper](#image-helper)
-    - [List of all helper](#list-of-all-helper)
-    - [Create a custom helper](#create-a-custom-helper)
-- [System Operations](#system-operations)
-  - [Database](#database-1)
-    - [Current database](#current-database)
-    - [Another database](#another-database)
-  - [Asset System](#asset-system)
-    - [Core Assets](#core-assets)
-    - [Registering an Asset](#registering-an-asset)
-  - [CLI](#cli)
-  - [Misc.](#misc)
-    - [URL](#url)
-    - [Redirecting](#redirecting)
-    - [Logging](#logging)
-    - [Logging to a new channel](#logging-to-a-new-channel)
-    - [Get environment](#get-environment)
-    - [Clear site cache](#clear-site-cache)
-- [Translation](#translation)
 
+-   [Application (`$app`)](#application-app)
+    -   [`$app` in a controller](#app-in-a-controller)
+    -   [`$app` in a custom class](#app-in-a-custom-class)
+    -   [`$app` in other places](#app-in-other-places)
+-   [Superglobals](#superglobals)
+    -   [`$request` in a controller](#request-in-a-controller)
+    -   [`$request` in a custom class](#request-in-a-custom-class)
+    -   [`$request` in other places](#request-in-other-places)
+-   [Site](#site)
+    -   [Attributes](#attributes)
+        -   [Get an attribites](#get-an-attribites)
+-   [Pages (Collections)](#pages-collections)
+    -   [A page](#a-page)
+        -   [Get the current page](#get-the-current-page)
+        -   [Get a page by a unique identifier](#get-a-page-by-a-unique-identifier)
+        -   [Get a page data](#get-a-page-data)
+        -   [Get a page template/type/theme](#get-a-page-templatetypetheme)
+        -   [Get a page attribute](#get-a-page-attribute)
+        -   [Get list of attributes of a page](#get-list-of-attributes-of-a-page)
+        -   [Checking if a page is in Edit Mode](#checking-if-a-page-is-in-edit-mode)
+        -   [Get all Block Objects of a page](#get-all-block-objects-of-a-page)
+        -   [Get an Area Object of a page](#get-an-area-object-of-a-page)
+    -   [List of pages](#list-of-pages)
+        -   [Get list of pages](#get-list-of-pages)
+        -   [Get list of pages with pagination](#get-list-of-pages-with-pagination)
+        -   [Filter a page list](#filter-a-page-list)
+        -   [Sort a page list](#sort-a-page-list)
+    -   [Page operations](#page-operations)
+        -   [Add a page](#add-a-page)
+        -   [Update a page](#update-a-page)
+        -   [Delete a page](#delete-a-page)
+        -   [Move a page](#move-a-page)
+        -   [Copy a page](#copy-a-page)
+        -   [Add an extra location URL](#add-an-extra-location-url)
+        -   [Set/Update an attribute of a page](#setupdate-an-attribute-of-a-page)
+        -   [Clear an attribute of a page](#clear-an-attribute-of-a-page)
+        -   [Refresh page cache](#refresh-page-cache)
+    -   [Attributes](#attributes-1)
+        -   [Get an attribute](#get-an-attribute)
+        -   [Add an attribute](#add-an-attribute)
+        -   [Delete an attribute](#delete-an-attribute)
+        -   [Get all attribute keys](#get-all-attribute-keys)
+    -   [Attribute Sets](#attribute-sets)
+        -   [Get an attribute set](#get-an-attribute-set)
+        -   [Get an attribute set data](#get-an-attribute-set-data)
+        -   [Add an attribute set](#add-an-attribute-set)
+    -   [Page Types](#page-types)
+        -   [Get a page type](#get-a-page-type)
+        -   [Add a page type](#add-a-page-type)
+        -   [Update a page type](#update-a-page-type)
+    -   [Page Templates](#page-templates)
+        -   [Get a page template](#get-a-page-template)
+        -   [Add a page template](#add-a-page-template)
+    -   [Single Page](#single-page)
+        -   [Get a single page](#get-a-single-page)
+        -   [Add a single page](#add-a-single-page)
+-   [Files](#files)
+    -   [A Files](#a-files)
+        -   [Get a file by a unique identifier](#get-a-file-by-a-unique-identifier)
+        -   [Get a file data](#get-a-file-data)
+        -   [Get a file attribute](#get-a-file-attribute)
+        -   [Get list of attributes of a file](#get-list-of-attributes-of-a-file)
+    -   [List of files](#list-of-files)
+        -   [Get list of files](#get-list-of-files)
+        -   [Get list of files with pagination](#get-list-of-files-with-pagination)
+        -   [Filter a file list](#filter-a-file-list)
+        -   [Get files inside a folder](#get-files-inside-a-folder)
+        -   [Sort a file list](#sort-a-file-list)
+        -   [Get a file set](#get-a-file-set)
+        -   [Get a file folder](#get-a-file-folder)
+    -   [File Operation](#file-operation)
+        -   [Importing a file](#importing-a-file)
+        -   [Delete a file](#delete-a-file)
+        -   [Set/Update an attribute to a file](#setupdate-an-attribute-to-a-file)
+        -   [Clear an attribute of a file](#clear-an-attribute-of-a-file)
+        -   [Create a file set](#create-a-file-set)
+        -   [Get a file set info](#get-a-file-set-info)
+        -   [Add a file to a set](#add-a-file-to-a-set)
+        -   [Create a file folder](#create-a-file-folder)
+        -   [Add a file to a folder](#add-a-file-to-a-folder)
+    -   [Attributes](#attributes-2)
+        -   [Get an attribute](#get-an-attribute-1)
+        -   [Add an attribute](#add-an-attribute-1)
+        -   [Add an attribute set](#add-an-attribute-set-1)
+-   [Users](#users)
+    -   [A User](#a-user)
+        -   [Get/Check current user](#getcheck-current-user)
+        -   [Get a user by a unique identifier](#get-a-user-by-a-unique-identifier)
+        -   [Get a user data](#get-a-user-data)
+        -   [Get user info object](#get-user-info-object)
+        -   [Get user info data](#get-user-info-data)
+        -   [Get a user (info) attributes](#get-a-user-info-attributes)
+    -   [List of users](#list-of-users)
+        -   [Get list of users](#get-list-of-users)
+        -   [Get list of users with pagination](#get-list-of-users-with-pagination)
+        -   [Filter a user list](#filter-a-user-list)
+        -   [Sort a user list](#sort-a-user-list)
+    -   [User Groups](#user-groups)
+        -   [Get a group](#get-a-group)
+        -   [Get a group data](#get-a-group-data)
+    -   [User operation](#user-operation)
+        -   [Add a user](#add-a-user)
+        -   [Update a user](#update-a-user)
+        -   [Activate/Deactivate a user](#activatedeactivate-a-user)
+        -   [Delete a user](#delete-a-user)
+        -   [Set/Update an attribute to a user](#setupdate-an-attribute-to-a-user)
+        -   [Clear an attribute of a user](#clear-an-attribute-of-a-user)
+    -   [Attributes](#attributes-3)
+        -   [Get an attribute](#get-an-attribute-2)
+        -   [Add an attribute](#add-an-attribute-2)
+        -   [Add an attribute set](#add-an-attribute-set-2)
+-   [Topics](#topics)
+    -   [Schema](#schema)
+    -   [Get a Topic Tree](#get-a-topic-tree)
+    -   [List of Topic Trees](#list-of-topic-trees)
+    -   [Get children (Categories, Nodes) of a Topic Tree](#get-children-categories-nodes-of-a-topic-tree)
+    -   [Topic Tree operations](#topic-tree-operations)
+    -   [Get a Category/Node](#get-a-categorynode)
+    -   [Add a Category/Node](#add-a-categorynode)
+-   [Attributes](#attributes-4)
+    -   [List of attribute set categories (collection/user/file/site/event)](#list-of-attribute-set-categories-collectionuserfilesiteevent)
+    -   [List of sets in a category](#list-of-sets-in-a-category)
+    -   [Attrubute Set](#attrubute-set)
+        -   [A set](#a-set)
+        -   [Attributes in a set](#attributes-in-a-set)
+        -   [List of sets](#list-of-sets)
+-   [Themes](#themes)
+    -   [Page types](#page-types-1)
+        -   [Adding areas in a Page Template](#adding-areas-in-a-page-template)
+        -   [Embedding Blocks in a Page Template](#embedding-blocks-in-a-page-template)
+-   [Blocks](#blocks)
+    -   [A Block Type](#a-block-type)
+        -   [Get a Block Type](#get-a-block-type)
+        -   [Get a Block Type data](#get-a-block-type-data)
+        -   [Install a Block Type](#install-a-block-type)
+    -   [Working with Blocks](#working-with-blocks)
+        -   [Hard-coding a Block with Custom Template](#hard-coding-a-block-with-custom-template)
+        -   [Get data of an instance of a Block](#get-data-of-an-instance-of-a-block)
+        -   [Set data of an instance of a Block](#set-data-of-an-instance-of-a-block)
+-   [Stacks](#stacks)
+-   [Packages](#packages)
+    -   [A Package](#a-package)
+        -   [Get a package](#get-a-package)
+        -   [Get a package data](#get-a-package-data)
+        -   [Check dependencies](#check-dependencies)
+-   [Express Entries](#express-entries)
+    -   [Express Entity](#express-entity)
+        -   [Create the entity](#create-the-entity)
+        -   [Adding associations to the object](#adding-associations-to-the-object)
+        -   [Create the form](#create-the-form)
+        -   [Add attributes](#add-attributes)
+    -   [Express Entry](#express-entry)
+        -   [Get list of entries in an entity](#get-list-of-entries-in-an-entity)
+        -   [Get list of entries in an entity with pagination](#get-list-of-entries-in-an-entity-with-pagination)
+        -   [Filter a list of entries](#filter-a-list-of-entries)
+        -   [Sort a list of entries](#sort-a-list-of-entries)
+        -   [Create an entry](#create-an-entry)
+        -   [Update an entry](#update-an-entry)
+        -   [Delete an entry](#delete-an-entry)
+-   [Language](#language)
+    -   [Get active locale](#get-active-locale)
+    -   [Get default locale](#get-default-locale)
+    -   [Get all added locales](#get-all-added-locales)
+    -   [Set active locale manually](#set-active-locale-manually)
+-   [Constants](#constants)
+    -   [Get all constants](#get-all-constants)
+-   [Configs](#configs)
+    -   [Basics](#basics)
+        -   [Key](#key)
+        -   [Value](#value)
+    -   [Different places for storing data](#different-places-for-storing-data)
+        -   [Database](#database)
+        -   [FileSystem](#filesystem)
+    -   [Different ways to read and write config values](#different-ways-to-read-and-write-config-values)
+        -   [1: Using a Package object](#1-using-a-package-object)
+        -   [2: Using a service provider](#2-using-a-service-provider)
+        -   [3: Using Config](#3-using-config)
+-   [Aliases](#aliases)
+    -   [List of all aliases](#list-of-all-aliases)
+-   [Helpers](#helpers)
+    -   [General](#general)
+    -   [Number helper](#number-helper)
+    -   [Text helper](#text-helper)
+    -   [URL helper](#url-helper)
+    -   [Array helper](#array-helper)
+    -   [Arrays validation helper](#arrays-validation-helper)
+    -   [Numbers validation helper](#numbers-validation-helper)
+    -   [Strings validation helper](#strings-validation-helper)
+    -   [JSON helper](#json-helper)
+    -   [Ajax helper](#ajax-helper)
+    -   [HTML helper](#html-helper)
+    -   [Navigation helper](#navigation-helper)
+    -   [Date helper](#date-helper)
+    -   [Form helper](#form-helper)
+    -   [Form (editor/richtext editor/Redactor) helper](#form-editorrichtext-editorredactor-helper)
+    -   [Form (color picker) helper](#form-color-picker-helper)
+    -   [Form (date/time) helper](#form-datetime-helper)
+    -   [Form (page selector) helper](#form-page-selector-helper)
+    -   [Form (user selector) helper](#form-user-selector-helper)
+    -   [Form (group selector) helper](#form-group-selector-helper)
+    -   [Form (rating) helper](#form-rating-helper)
+    -   [Form (attribute) helper](#form-attribute-helper)
+    -   [Form (typography) helper](#form-typography-helper)
+    -   [Concrete URL helper](#concrete-url-helper)
+    -   [Asset library (file manager) helper](#asset-library-file-manager-helper)
+    -   [Validation error helper](#validation-error-helper)
+    -   [User Interface helper](#user-interface-helper)
+    -   [Image helper](#image-helper)
+    -   [List of all helper](#list-of-all-helper)
+    -   [Create a custom helper](#create-a-custom-helper)
+-   [System Operations](#system-operations)
+    -   [Database](#database-1)
+        -   [Current database](#current-database)
+        -   [Another database](#another-database)
+    -   [Asset System](#asset-system)
+        -   [Core Assets](#core-assets)
+        -   [Registering an Asset](#registering-an-asset)
+    -   [CLI](#cli)
+    -   [Misc.](#misc)
+        -   [URL](#url)
+        -   [Redirecting](#redirecting)
+        -   [Logging](#logging)
+        -   [Logging to a new channel](#logging-to-a-new-channel)
+        -   [Get environment](#get-environment)
+        -   [Clear site cache](#clear-site-cache)
+-   [Translation](#translation)
 
 ## Application (`$app`)
 
@@ -255,7 +255,8 @@ public function myMethod()
     $app = $this->app;
 }
 ```
-(create instances of custom classes with `$app->make(\ClassName::class)`) 
+
+(create instances of custom classes with `$app->make(\ClassName::class)`)
 
 ### `$app` in other places
 
@@ -264,6 +265,7 @@ $app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
 ```
 
 Since concrete5 version 8.5.2, you can also use the `app()` global function:
+
 ```php
 $app = app();
 ```
@@ -279,11 +281,11 @@ $token = app('token');
 
 Direct access to PHP superglobals (that is, `$_REQUEST`, `$_POST`, `$_GET`, `$_SERVER`, `$_FILES`) should be avoided: concrete5 have a nicer way to work with them with the `$request` instance.
 
-- instead of `$_GET['key']`: use `$request->query->get('key', $default = null)`
-- instead of `$_POST['key']`: use `$request->request->get('key', $default = null)`
-- instead of `$_REQUEST['key']`: use `$request->get('key', $default = null)`
-- instead of `$_SERVER['key']`: use `$request->server->get('key')`
-- instead of `$_FILES['key']`: use `$request->files->get('key')`
+-   instead of `$_GET['key']`: use `$request->query->get('key', $default = null)`
+-   instead of `$_POST['key']`: use `$request->request->get('key', $default = null)`
+-   instead of `$_REQUEST['key']`: use `$request->get('key', $default = null)`
+-   instead of `$_SERVER['key']`: use `$request->server->get('key')`
+-   instead of `$_FILES['key']`: use `$request->files->get('key')`
 
 For more options check `\concrete\vendor\symfony\http-foundation\ParameterBag.php` or [`HERE`](https://symfony.com/doc/current/components/http_foundation.html)
 
@@ -307,8 +309,8 @@ public function myMethod()
     $request = $this->request;
 }
 ```
-(create instances of custom classes with `$app->make(\ClassName::class)`) 
 
+(create instances of custom classes with `$app->make(\ClassName::class)`)
 
 ### `$request` in other places
 
@@ -318,25 +320,24 @@ $request = $app->make(\Concrete\Core\Http\Request::class);
 
 ## Site
 
-
 ### Attributes
 
 #### Get an attribites
+
 ```PHP
 $site = Site::getSite();
 $attr = $site->getAttributeValueObject('attr_handle');
 $attrValue = $attr->getValue();
 ```
-For more info on each attribute type check [`HERE`](#get-an-attribute).
 
+For more info on each attribute type check [`HERE`](#get-an-attribute).
 
 ## Pages (Collections)
 
-
 ### A page
 
-
 #### Get the current page
+
 ```PHP
 $page = \Page::getCurrentPage();
 
@@ -345,12 +346,14 @@ $page = $c;
 ```
 
 #### Get a page by a unique identifier
+
 ```PHP
 $page = \Page::getByID(1); // by ID
 $page = \Page::getByPath('/path/to/page'); // by path
 ```
 
 #### Get a page data
+
 ```PHP
 echo $page->getCollectionID();
 echo $page->getCollectionName();
@@ -414,13 +417,14 @@ if($page->isError()) ...
 // check if the page is locale home page
 if($page->isLocaleHomePage()) ...
 
-// get home page 
+// get home page
 $homePage = \Page::getByID(\Page::getHomePageID());
 
 //\concrete\src\Page\Page.php
 ```
 
 #### Get a page template/type/theme
+
 ```PHP
 // template -> type -> theme
 
@@ -430,7 +434,7 @@ if (is_object($pTemplate)) {
     $ptID = $pTemplate->getPageTemplateID(); //echo $ptID;
     $ptName = $pTemplate->getPageTemplateName(); //echo $ptName;
     $ptHandle = $pTemplate->getPageTemplateHandle(); //echo $ptHandle;
-}        
+}
 //\concrete\src\Page\Template.php
 
 // Page Type
@@ -440,7 +444,7 @@ if (is_object($pType)) {
     $ptName = $pType->getPageTypeName(); //echo $ptName;
     $ptHandle = $pType->getPageTypeHandle(); //echo $ptHandle;
     $ptTemplate = $pType->getPageTypePageTemplateObjects();
-}        
+}
 //\concrete\src\Page\Type\Type.php
 
 // Page Theme
@@ -449,11 +453,12 @@ if (is_object($pTheme)) {
     $ptID = $pType->getThemeID(); //echo $ptID;
     $ptName = $pType->getThemeName(); //echo $ptName;
     $ptHandle = $pType->getThemeHandle()(); //echo $ptHandle;
-} 
+}
 //\concrete\src\Page\Theme\Theme.php
 ```
 
 #### Get a page attribute
+
 ```PHP
 // Attribute
 $attr = $page->getAttribute('attribute_handle');
@@ -483,8 +488,8 @@ $optionValue = (string) $attr;
 foreach ((object) $attr as $option) {
     $optionValue = $option->getSelectAttributeOptionValue(); //echo $optionValue;
     // $optionID = $option->getSelectAttributeOptionID(); //echo $optionID;
-    
-    // OR 
+
+    // OR
     // $optionValue = (string) $option;
 }
 
@@ -492,9 +497,9 @@ foreach ((object) $attr as $option) {
 // Topics
 $topics = $page->getAttribute('attribute_handle');
 foreach ((object) $topics as $topic) {
-    echo $topic->getTreeNodeID(); 
-    echo $topic->getTreeNodeName(); 
-}    
+    echo $topic->getTreeNodeID();
+    echo $topic->getTreeNodeName();
+}
 
 // Date
 $date = $page->getAttribute('attribute_handle'); // return php DateTime object
@@ -502,6 +507,7 @@ echo $date->format('Y-m-d H:i:s'); // to string
 ```
 
 #### Get list of attributes of a page
+
 ```PHP
 // get a list of the attribute keys for which the page has values
 $attrKeys = $page->getSetCollectionAttributes();
@@ -515,6 +521,7 @@ if (count($attrKeys)) {
 ```
 
 #### Checking if a page is in Edit Mode
+
 ```PHP
 if ($page->isEditMode()) {
     // ...
@@ -522,6 +529,7 @@ if ($page->isEditMode()) {
 ```
 
 #### Get all Block Objects of a page
+
 ```PHP
 $blocks = $page->getBlocks(); // all blocks on a page
 $blocks = $page->getBlocks('Area name'); // all blocks on an area
@@ -529,17 +537,19 @@ foreach ($blocks as $blockObj) {
     // ...
 }
 ```
+
 For getting block data check [`HERE`](#Get-data-of-an-instance-of-a-block)
 
 #### Get an Area Object of a page
+
 ```PHP
 $area = $c->getArea('Area name');
 ```
 
 ### List of pages
 
-
 #### Get list of pages
+
 ```PHP
 $pageList = new PageList();
 
@@ -550,11 +560,12 @@ foreach ((array) $pages as $page) {
 }
 
 // total number of results
-echo $pageList->getTotalResults();  
+echo $pageList->getTotalResults();
 // OR: echo count($pages);
 ```
 
 #### Get list of pages with pagination
+
 ```PHP
 $pageList = new PageList();
 
@@ -578,9 +589,11 @@ echo $pagination->getTotalPages(); // total number of pages
 echo $pagination->hasNextPage(); // to determine whether paging is necessary
 echo $pagination->hasPreviousPage(); //"
 ```
+
 For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a page list
+
 ```PHP
 $pageList->filter(false, 'p.cID IN ($cID1, $cID2)'); // by cIDs
 // OR: $pageList->getQueryObject()->where('p.cID != 1');
@@ -638,7 +651,7 @@ $pageList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start), '>
 $pageList->filterByAttribute('attribute_handle', $value1);
 
 // for filter based on multiple options: it seems not working properly for array with multiple options. use manual method instead.
-$pageList->filterByAttribute('attribute_handle', array($value1, $value2)); 
+$pageList->filterByAttribute('attribute_handle', array($value1, $value2));
 
 // have either $value1 OR $value2 value
 $pageList->getQueryObject()->where("ak_attribute_handle LIKE '%\n" . $value1 . "\n%'");
@@ -668,6 +681,7 @@ $pageList->filterByAttribute('attribute_handle', array(1));
 ```
 
 #### Sort a page list
+
 ```PHP
 $pageList->sortByRelevance()
 
@@ -689,15 +703,15 @@ $pageList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + at
 
 ### Page operations
 
-
 #### Add a page
+
 ```PHP
 //$parentPage = \Page::getByID(1);
 $parentPage = \Page::getByPath('/blog');
-$pageType = \PageType::getByHandle('blog_entry'); // dashboard/pages/types 
+$pageType = \PageType::getByHandle('blog_entry'); // dashboard/pages/types
 $pageTemplate = \PageTemplate::getByHandle('blog_entry'); // dashboard/pages/templates
 $page = $parentPage->add(
-    $pageType, 
+    $pageType,
     array(
         'cName' => 'Hello All!',
         'cDescription' => 'Just a quick blog post.',
@@ -712,15 +726,16 @@ $page = $parentPage->add(
 ```
 
 #### Update a page
+
 ```PHP
 $page->update(
     array(
         'cName' => 'My new page name',
-        'cDescription' => 'My new page description', 
+        'cDescription' => 'My new page description',
         //'cDatePublic' => '2019-01-02 20:21:22',
         //'cDateCreated' => date('Y-m-d H:i:s'),
         //'uID' => 1,
-        
+
         //'pTemplateID' => 1,
         //'ptID' => 13,
         //'pkgID' => 1,
@@ -729,7 +744,7 @@ $page->update(
         //'cCacheFullPageContent' => false,
         //'cCacheFullPageContentOverrideLifetime' => false,
         //'cCacheFullPageContentLifetimeCustom' => false,
-    )    
+    )
 );
 // this should be run afterwards if the handle is changed
 $page->rescanCollectionPath();
@@ -737,28 +752,32 @@ $page->rescanCollectionPath();
 // update theme of a page
 $pTheme = \PageTheme::getByID(3);
 $page->setTheme($pTheme);
-$page->update([]); // necessary? 
+$page->update([]); // necessary?
 ```
 
 #### Delete a page
+
 ```PHP
 $page->delete(); // delete it immediately
 $page->moveToTrash(); // move to trash
 ```
 
 #### Move a page
+
 ```PHP
 $moveTo = \Page::getByPath('/archives');
 $page->move($moveTo);
 ```
 
 #### Copy a page
+
 ```PHP
 $copyTo = \Page::getByPath('/archives');
 $page->duplicate($copyTo);
 ```
 
 #### Add an extra location URL
+
 ```PHP
 //$page = \Page::getByID(1);
 $page = \Page::getByPath('/blog');
@@ -766,6 +785,7 @@ $page->addAdditionalPagePath('/blog-path-alternative');
 ```
 
 #### Set/Update an attribute of a page
+
 ```PHP
 $page = \Page::getByID(1); // by ID
 $page->setAttribute('attribute_handle', 'value');
@@ -792,12 +812,14 @@ $page->setAttribute('attribute_handle', new \DateTime('1990-01-12')); // custom 
 ```
 
 #### Clear an attribute of a page
+
 ```PHP
 $page = \Page::getByID(1); // by ID
 $page->clearAttribute('attribute_handle');
 ```
 
 #### Refresh page cache
+
 ```PHP
 $page = \Page::getByID(1); // by ID
 $page->refreshCache();
@@ -805,8 +827,8 @@ $page->refreshCache();
 
 ### Attributes
 
-
 #### Get an attribute
+
 ```PHP
 $attr = CollectionAttributeKey::getByID(1); // by ID
 $attr = CollectionAttributeKey::getByHandle('attr_handle'); // by handle
@@ -832,32 +854,33 @@ if ($type instanceof \Concrete\Core\Entity\Attribute\Key\Settings\TextSettings) 
 ```
 
 #### Add an attribute
+
 ```PHP
 //use Concrete\Core\Attribute\Type as AttributeType;
 //use Concrete\Attribute\Select\Option as SelectAttributeTypeOption;
 
 $attr = CollectionAttributeKey::getByHandle('attr_handle'); // by handle
 if (!is_object($attr)) {
-    $type = AttributeType::getByHandle('text'); 
+    $type = AttributeType::getByHandle('text');
     //$type = AttributeType::getByHandle('textarea');
-    //$type = AttributeType::getByHandle('boolean'); // Checkbox 
-    //$type = AttributeType::getByHandle('date_time'); 
+    //$type = AttributeType::getByHandle('boolean'); // Checkbox
+    //$type = AttributeType::getByHandle('date_time');
     //$type = AttributeType::getByHandle('image_file');
-    //$type = AttributeType::getByHandle('number'); 
+    //$type = AttributeType::getByHandle('number');
     //$type = AttributeType::getByHandle('select'); // Option List
     //$type = AttributeType::getByHandle('telephone'); // Phone Number
-    //$type = AttributeType::getByHandle('url'); 
-    //$type = AttributeType::getByHandle('email'); 
-    //$type = AttributeType::getByHandle('rating'); 
-    //$type = AttributeType::getByHandle('topics'); 
+    //$type = AttributeType::getByHandle('url');
+    //$type = AttributeType::getByHandle('email');
+    //$type = AttributeType::getByHandle('rating');
+    //$type = AttributeType::getByHandle('topics');
     //$type = AttributeType::getByHandle('express'); // Express Entity
-    //$type = AttributeType::getByHandle('calendar'); 
-    //$type = AttributeType::getByHandle('calendar_event'); 
-    //$type = AttributeType::getByHandle('page_selector'); 
+    //$type = AttributeType::getByHandle('calendar');
+    //$type = AttributeType::getByHandle('calendar_event');
+    //$type = AttributeType::getByHandle('page_selector');
     //$type = AttributeType::getByHandle('address'); // NOT available for collections
     //$type = AttributeType::getByHandle('social_links'); // NOT available for collections
 
-    $args = array ( 
+    $args = array (
         'akHandle' => 'attr_handle',
         'akName'=> t('Attribute Name'),
         //'asID' => $asID, // attribute set ID: check 'Get a set/Create a set' on how to get $asID
@@ -904,7 +927,7 @@ if (!is_object($attr)) {
         /** address attribute (table: `atAddressSettings`) */
         //'akDefaultCountry ' => '', // Available Countries
         //'akHasCustomCountries ' => '', // Default Country
-        //'customCountries ' => '', 
+        //'customCountries ' => '',
         //'akGeolocateCountry ' => '', // Suggest the Country from the user IP address: true, false
     );
     $attr = CollectionAttributeKey::add($type, $args, $pkg = null);
@@ -916,6 +939,7 @@ if (!is_object($attr)) {
 ```
 
 #### Delete an attribute
+
 ```PHP
 ...
 
@@ -924,6 +948,7 @@ if (!is_object($attr)) {
 ```
 
 #### Get all attribute keys
+
 ```PHP
 $pageCategory = $this->app->make(\Concrete\Core\Attribute\Category\PageCategory::class);
 $attributes = $pageCategory->getList();
@@ -937,14 +962,15 @@ foreach ($attributes as $attr) {
 
 ### Attribute Sets
 
-
 #### Get an attribute set
+
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
 $as = AttributeSet::getByHandle('my_set');
 ```
 
 #### Get an attribute set data
+
 ```PHP
 $asID = $as->getAttributeSetID(); //echo $asID;
 $asHandle = $as->getAttributeSetHandle(); //echo $asHandle;
@@ -952,24 +978,25 @@ $asName = $as->getAttributeSetName(); //echo $asName;
 ```
 
 #### Add an attribute set
+
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
 
 $akc = AttributeKeyCategory::getByHandle('collection');
 $akc->setAllowAttributeSets(AttributeKeyCategory::ASET_ALLOW_SINGLE);
-$as = $akc->addSet('my_set', t('My Set'), $pkg = null, $locked = null); 
+$as = $akc->addSet('my_set', t('My Set'), $pkg = null, $locked = null);
 ```
-
 
 ### Page Types
 
-
 #### Get a page type
+
 ```PHP
 $newsItem = PageType::getByHandle('news_item');
 ```
 
 #### Add a page type
+
 ```PHP
 // get a page template
 $leftSide = PageTemplate::getByHandle('left_sidebar');
@@ -992,17 +1019,19 @@ if (!is_object($newsItem)) {
 ```
 
 #### Update a page type
+
 check [`HERE`](#update-a-page)
 
 ### Page Templates
 
-
 #### Get a page template
+
 ```PHP
 $pTemplate = PageTemplate::getByHandle('three_column');
 ```
 
 #### Add a page template
+
 ```PHP
 $pTemplate = PageTemplate::getByHandle('three_column');
 if(!$pTemplate) {
@@ -1010,41 +1039,39 @@ if(!$pTemplate) {
 }
 ```
 
-
 ### Single Page
 
-
 #### Get a single page
+
 ```PHP
 $sp = Page::getByPath('/dashboard/pages/my_page');
 ```
 
 #### Add a single page
+
 ```PHP
 $sp = Page::getByPath('/dashboard/pages/my_page');
 if (! is_object($sp) || $sp->isError()) {
     $sp = SinglePage::add('/dashboard/pages/my_page', $pkg = null, $moveToRoot = false);
     $sp->update(array(
-        'cName'=>'My Page', 
+        'cName'=>'My Page',
         'cDescription'=>'My Page Description'
     ));
 }
 ```
 
-
 ## Files
-
-
 
 ### A Files
 
-
 #### Get a file by a unique identifier
+
 ```PHP
 $file = \File::getByID(1); // by ID
 ```
 
 #### Get a file data
+
 ```PHP
 echo $file->getFileID(); // file ID
 echo $file->getFileName(); // file name
@@ -1076,11 +1103,13 @@ $fileVersion = $file->getApprovedVersion();
 ```
 
 #### Get a file attribute
+
 ```PHP
 echo $file->getAttribute('width');
 ```
 
 #### Get list of attributes of a file
+
 ```PHP
 // first get the approved version of the file
 $version = $file->getApprovedVersion();
@@ -1089,7 +1118,7 @@ $attrValues = $version->getAttributes();
 if (count($attrValues)) {
     foreach ($attrValues as $value) {
         $key = $value->getAttributeKey();
-        
+
         echo $attrHandle = $key->getAttributeKeyHandle();
         echo $attrName = $key->getAttributeKeyName();
     }
@@ -1098,8 +1127,8 @@ if (count($attrValues)) {
 
 ### List of files
 
-
 #### Get list of files
+
 ```PHP
 $fileList = new FileList();
 
@@ -1112,6 +1141,7 @@ foreach ((array) $files as $file) {
 ```
 
 #### Get list of files with pagination
+
 ```PHP
 $fileList = new FileList();
 
@@ -1124,10 +1154,12 @@ foreach ((array) $files as $file) {
     echo $file->getFileID().'-'.$file->getFileName().'<br/>';
 }
 ```
+
 For Pagination buttons & functions check [`HERE`](#Get-list-of-pages-with-pagination)  
 For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a file list
+
 ```PHP
 $fileList->filterByType(\Concrete\Core\File\Type\Type::T_IMAGE); // by type (T_IMAGE, T_TEXT, T_AUDIO, T_DOCUMENT, T_APPLICATION, T_UNKNOWN)
 $fileList->filterByExtension('png'); // by extension
@@ -1143,16 +1175,17 @@ $fileList->filterByNoSet(); // files in No Sets
 ```
 
 #### Get files inside a folder
+
 ```PHP
 //use Concrete\Core\Tree\Node\Type\FileFolder;
 //use Concrete\Core\File\FolderItemList;
 
 $fileFolder = FileFolder::getNodeByName('Folder Name');
 $fileList = new FolderItemList();
-if ($fileFolder) { 
+if ($fileFolder) {
     $fileList->filterByParentFolder($fileFolder);
     $files = $fileList->getResults();
-}	
+}
 
 //echo count($files);
 foreach ((array) $files as $file) {
@@ -1162,18 +1195,21 @@ foreach ((array) $files as $file) {
 ```
 
 #### Sort a file list
+
 ```PHP
 $fileList->sortByFilenameAscending();
 $fileList->sortByFileSetDisplayOrder();
 ```
 
 #### Get a file set
+
 ```PHP
 $fileSet = FileSet::getByID(1); // by ID
 $fileSet = FileSet::getByName('File Set Name'); // name
 ```
 
 #### Get a file folder
+
 ```PHP
 $folder = Node::getByID($folderID); // by ID
 $folder = Node::getNodeByName('My Folder'); // by name, not working
@@ -1181,90 +1217,100 @@ $folder = Node::getNodeByName('My Folder'); // by name, not working
 
 ### File Operation
 
-
 #### Importing a file
+
 ```PHP
 $filePath = 'path/to/file/filename.jpg';
 if (file_exists($filePath)) {
     $importer = new \Concrete\Core\File\Importer();
     $fileVersion = $importer->import($filePath, false); //echo get_class($fileVersion); //file version object
     $file = $fileVersion->getFile(); //echo get_class($file); //file object
-}	
+}
 ```
+
 For more info on each method and its possible values check [`HERE`](https://documentation.concrete5.org/developers/working-with-files-and-the-file-manager/importing-new-files).
 
 #### Delete a file
+
 ```PHP
 $file = File::getByID(1);
 $file->delete();
 ```
 
 #### Set/Update an attribute to a file
+
 ```PHP
 $file = File::getByID(1);
 $file->setAttribute('attribute_handle', 'value');
 ```
 
 #### Clear an attribute of a file
+
 ```PHP
 $file = File::getByID(1);
 $file->clearAttribute('attribute_handle');
 ```
 
 #### Create a file set
+
 ```PHP
 $fileSet = FileSet::createAndGetSet('My File Set', FileSet::TYPE_PUBLIC);
 // if the file with provided name exist, it will return the current file set
 ```
 
 #### Get a file set info
+
 ```PHP
 $filesetID =  $fileSet->getFileSetID();// echo $filesetID;
 $filesetName =  $fileSet->getFileSetID();// echo $filesetName;
 ```
 
 #### Add a file to a set
-```PHP    
+
+```PHP
 $file = \File::getByID(1); // by ID
 $fileSet->addFileToSet($file);
 ```
 
 #### Create a file folder
+
 ```PHP
 //use Concrete\Core\File\Filesystem;
 
 $filesystem = new Filesystem();
 $folder = $filesystem->getRootFolder();
 $folderName = 'My Folder - '.time();
-$folder = $filesystem->addFolder($folder, $folderName);	
+$folder = $filesystem->addFolder($folder, $folderName);
 ```
 
 #### Add a file to a folder
-```PHP    
+
+```PHP
 $file = \File::getByID(1); // by ID
 $fileNode = $file->getFileNodeObject();
-if (is_object($fileNode)) $fileNode->move($folder);    
+if (is_object($fileNode)) $fileNode->move($folder);
 ```
 
 ### Attributes
 
-
 #### Get an attribute
+
 Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'File'.
 
 #### Add an attribute
+
 Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'File'.
 
 #### Add an attribute set
+
 Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'File'.
 
 ## Users
 
-
-
 ### A User
 
 #### Get/Check current user
+
 ```PHP
 $u = $app->make(\Concrete\Core\User\User::class);
 
@@ -1287,7 +1333,7 @@ if ($u->inGroup(Group::getByName('Clients'))) {
 print $u->getUserID();
 
 // Get the user's groups
-$groups = $u->getUserGroupObjects(); 
+$groups = $u->getUserGroupObjects();
 foreach($groups as $group) {
     print $group->getGroupID();
     print $group->getGroupName();
@@ -1295,14 +1341,14 @@ foreach($groups as $group) {
 ```
 
 #### Get a user by a unique identifier
+
 ```PHP
 $user = User::getByUserID(1); // by ID
 //User::getByUserID(3, true); //now user 3 is logged in.
 ```
 
-
-
 #### Get a user data
+
 ```PHP
 $userGroups = $user->getUserGroups(); //print_r($userGroups);
 $userIsActive = $user->isActive(); //print_r($userIsActive);
@@ -1315,6 +1361,7 @@ $userTimezone = $user->getUserTimezone(); //print_r($userTimezone);
 ```
 
 #### Get user info object
+
 ```PHP
 $ui = UserInfo::getByID(1); // by ID
 $ui = UserInfo::getByUserName('admin'); // by username
@@ -1322,6 +1369,7 @@ $ui = UserInfo::getByEmail('jane@concrete5.org'); // by email
 ```
 
 #### Get user info data
+
 ```PHP
 $uiIsActive = $ui->isActive(); //echo $uiIsActive;
 $uiUserName = $ui->getUserName(); //echo $uiUserName;
@@ -1336,14 +1384,15 @@ $uiAvatar = $ui->getUserAvatar(); //echo $uiAvatar->getPath();
 ```
 
 #### Get a user (info) attributes
+
 ```PHP
 $uiAttr = $ui->getAttribute('attribute_handle'); //echo $uiAttr;
 ```
 
 ### List of users
 
-
 #### Get list of users
+
 ```PHP
 $userList = new UserList();
 
@@ -1356,6 +1405,7 @@ foreach ((array) $users as $user) {
 ```
 
 #### Get list of users with pagination
+
 ```PHP
 $userList = new UserList();
 
@@ -1368,10 +1418,12 @@ foreach ((array) $users as $user) {
     echo $user->getUserID().'-'.$user->getUserName().'<br/>';
 }
 ```
+
 For Pagination buttons & functions check [`HERE`](#Get-list-of-pages-with-pagination)  
 For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a user list
+
 ```PHP
 $userList->filter(false, 'u.uID IN ($uID1, $uID2)'); // by uIDs
 $userList->filterByUsername('foobar'); // by username
@@ -1385,7 +1437,7 @@ $userList->filterByIsActive($isActive);
 $userList->filterByIsValidated($isValidated);
 
 // by group
-$userList->filterByGroup('Administrators'); 
+$userList->filterByGroup('Administrators');
 // OR send the group object
 $group = \Group::getByName('Administrators');
 $userList->filterByGroup($group);
@@ -1424,7 +1476,7 @@ $userList->filterByAttribute('attribute_handle', date('Y-m-d H:i:s', $start), '>
 $userList->filterByAttribute('attribute_handle', $value1);
 
 // for filtering based on multiple options: It seems not working properly for array with multiple options. use manual method instead.
-$userList->filterByAttribute('attribute_handle', array($value1, $value2)); 
+$userList->filterByAttribute('attribute_handle', array($value1, $value2));
 
 // have either $value1 OR $value2 value
 $userList->getQueryObject()->where("ak_attribute_handle LIKE '%\n".$value1."\n%'");
@@ -1449,6 +1501,7 @@ $userList->filterByAttribute('attribute_handle', array($topicCategory1));
 ```
 
 #### Sort a user list
+
 ```PHP
 $userList->sortByUserID(); // by ID asc
 $userList->sortByUserName(); // by username asc
@@ -1463,14 +1516,15 @@ $userList->sortBy('ak_attribute_handle', 'desc'); // by an attribute: 'ak_' + at
 
 ### User Groups
 
-
 #### Get a group
+
 ```PHP
 $group = Group::getByID(1);
 $group = Group::getByName('Guest');
 ```
 
 #### Get a group data
+
 ```PHP
 $groupID = $group->getGroupID();
 $groupName = $group->getGroupName();
@@ -1482,15 +1536,14 @@ $groupMemberNum = $group->getGroupMembersNum();
 //\concrete\src\User\Group\Group.php
 ```
 
-
 ### User operation
 
-
 #### Add a user
+
 ```PHP
 $ui = \UserInfo::add(array(
     'uName' => 'andrew',
-    'uEmail' => 'andrew@concrete5.org', 
+    'uEmail' => 'andrew@concrete5.org',
     'uPassword' => 'kittens',
     //'uDefaultLanguage' => '', // an ISO language code for the user's default language
     //'uIsValidated' => '', // whether the user is validated. 1 for validated, 0 for definitely unvalidated, and -1 for unknown (which is the default on sites that don't employ user validation
@@ -1498,6 +1551,7 @@ $ui = \UserInfo::add(array(
 ```
 
 #### Update a user
+
 ```PHP
 $ui = \UserInfo::getByID(10);
 if ($ui) {
@@ -1517,22 +1571,24 @@ if ($ui) {
 $ui = \UserInfo::getByID(10);
 if ($ui) {
     $ui->update(array(
-        'uPassword' => 'newpass', 
+        'uPassword' => 'newpass',
         'uPasswordConfirm' => 'newpass']
     ));
 }
 ```
 
 #### Activate/Deactivate a user
+
 ```PHP
 $ui = \UserInfo::getByID(20);
 if ($ui) {
     $ui->deactivate();
     $ui->activate();
-}    
+}
 ```
 
 #### Delete a user
+
 ```PHP
 $ui = \UserInfo::getByID(10);
 if ($ui) {
@@ -1541,43 +1597,47 @@ if ($ui) {
 ```
 
 #### Set/Update an attribute to a user
+
 ```PHP
 $ui = UserInfo::getByID(1); // by ID
 if ($ui) {
     $ui->setAttribute('attribute_handle', 'value');
-}    
+}
 ```
 
 #### Clear an attribute of a user
+
 ```PHP
 $ui = UserInfo::getByID(1); // by ID
 if ($ui) {
     $ui->clearAttribute('attribute_handle');
-}    
+}
 ```
 
 ### Attributes
 
-
 #### Get an attribute
+
 Same as [`Collections`](#get-an-attribute). Just replace 'Collection' with 'User'.
 
 #### Add an attribute
+
 Same as [`Collections`](#add-an-attribute). Just replace 'Collection' with 'User'.
 
 #### Add an attribute set
+
 Same as [`Collections`](#add-an-attribute-set). Just replace 'Collection' with 'User'.
 
 ## Topics
 
-
-
 #### Schema
-- Topic Tree
-    - Category
-        - Topic (Node)
 
-#### Get a Topic Tree 
+-   Topic Tree
+    -   Category
+        -   Topic (Node)
+
+#### Get a Topic Tree
+
 ```PHP
 //use \Concrete\Core\Tree\Type\Topic as TopicTree;
 
@@ -1588,6 +1648,7 @@ if ($topicTree) echo $topicTree->getTreeName();
 ```
 
 #### List of Topic Trees
+
 ```PHP
 //use \Concrete\Core\Tree\Type\Topic as TopicTree;
 
@@ -1601,20 +1662,22 @@ foreach ($topicTrees as $key => $topicTree) {
 ```
 
 #### Get children (Categories, Nodes) of a Topic Tree
+
 ```PHP
 //use \Concrete\Core\Tree\Type\Topic as TopicTree;
 
 $root = $topicTree->getRootTreeNodeObject();
 $root->populateChildren();
-$topics = $root->getChildNodes(); 
+$topics = $root->getChildNodes();
 // iterate
 foreach ((object) $topics as $topic) {
-    echo $topic->getTreeNodeID(); 
-    echo $topic->getTreeNodeName(); 
+    echo $topic->getTreeNodeID();
+    echo $topic->getTreeNodeName();
 }
 ```
 
 #### Topic Tree operations
+
 ```PHP
 //use \Concrete\Core\Tree\Type\Topic as TopicTree;
 
@@ -1626,19 +1689,23 @@ $topicTree->setTopicTreeName('New Topic Tree Name');
 ```
 
 #### Get a Category/Node
+
 ```PHP
-//use \Concrete\Core\Tree\Node\Node as TreeNode;
+//use \Concrete\Core\Tree\Node\Type\Category as TreeNodeCategory;
 
 // Category
-$topicCategory = TreeNode::getByID($catID);
-$topicCategory = TreeNode::getNodeByName($catName); // not working (error)
+$topicCategory = TreeNodeCategory::getByID($catID);
+$topicCategory = TreeNodeCategory::getNodeByName($catName);
+
+//use \Concrete\Core\Tree\Node\Type\Topic as TreeNodeTopic;
 
 // Topic (Node)
-$topicNode = TreeNode::getByID($nodeID);
-$topicNode = TreeNode::getNodeByName($nodeName); // not working (error)
+$topicNode = TreeNodeTopic::getByID($nodeID);
+$topicNode = TreeNodeTopic::getNodeByName($nodeName);
 ```
 
 #### Add a Category/Node
+
 ```PHP
 //use Concrete\Core\Tree\Type\Topic as TopicTree;
 //use Concrete\Core\Tree\Node\Node as TreeNode;
@@ -1664,12 +1731,11 @@ $topicCategory->add('New Category below seected $topicCategory', $topicCategory)
 
 ## Attributes
 
-
-
 #### List of attribute set categories (collection/user/file/site/event)
+
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
-$categories = AttributeKeyCategory::getList();		
+$categories = AttributeKeyCategory::getList();
 foreach ((array) $categories as $category) {
     $categoryID = $category->getAttributeKeyCategoryID(); //echo $categoryID;
     $categoryHandle = $category->getAttributeKeyCategoryHandle(); //echo $categoryHandle;
@@ -1677,9 +1743,10 @@ foreach ((array) $categories as $category) {
 ```
 
 #### List of sets in a category
+
 ```PHP
 //use Concrete\Core\Attribute\Key\Category as AttributeKeyCategory;
-$categoryID = 1; 
+$categoryID = 1;
 $category = AttributeKeyCategory::getByID($categoryID);
 if (is_object($category)) {
     $sets = $category->getController()->getSetManager()->getAttributeSets();
@@ -1688,19 +1755,20 @@ if (is_object($category)) {
         $setHandle = $set->getAttributeSetHandle(); //echo $setHandle;
         $setName = $set->getAttributeSetDisplayName(); //echo $setName;
     }
-}	
+}
 ```
 
 ### Attrubute Set
 
-
 #### A set
+
 ```PHP
 $as = AttributeSet::getByID('attribute_set_id'); // by ID
 $as = AttributeSet::getByHandle('attribute_set_handle'); // by handle
 ```
 
 #### Attributes in a set
+
 ```PHP
 $attrs = $as->getAttributeKeys();
 foreach($attrs as $attr) {
@@ -1711,17 +1779,17 @@ foreach($attrs as $attr) {
 ```
 
 #### List of sets
+
 ```PHP
+
 ```
 
 ## Themes
 
-
-
 ### Page types
 
-
 #### Adding areas in a Page Template
+
 ```PHP
 // regular area
 $a = new Area("Main");
@@ -1739,6 +1807,7 @@ $a->display();
 ```
 
 #### Embedding Blocks in a Page Template
+
 ```PHP
 $bt = BlockType::getByHandle('block_handle');
 $bt->controller->field1 = 'field1';
@@ -1746,22 +1815,19 @@ $bt->render(); //render default template: view.php
 //$bt->render('templates/my_template'); //render specific template: my_template.php
 ```
 
-
-
 ## Blocks
-
-
 
 ### A Block Type
 
-
 #### Get a Block Type
+
 ```PHP
 $bt = BlockType::getByHandle('my_block');
 //$bt = BlockType::getByID(1);
 ```
 
 #### Get a Block Type data
+
 ```PHP
 echo $bt->getBlockTypeID();
 echo $bt->getBlockTypeName();
@@ -1769,6 +1835,7 @@ echo $bt->getBlockTypeDescription();
 ```
 
 #### Install a Block Type
+
 ```PHP
 $bt = BlockType::getByHandle('my_block');
 if (!is_object($bt)) {
@@ -1778,8 +1845,8 @@ if (!is_object($bt)) {
 
 ### Working with Blocks
 
-
 #### Hard-coding a Block with Custom Template
+
 ```PHP
 $bt = BlockType::getByHandle('block_type_handle'); // block_type_handle: autonav, tag, ...
 $bt->controller->block_attribute_handle = 'some_attribute'; // block attribute handles can be retrieved by looking at the related table in database (e.g.: btNavigation, btTags)
@@ -1796,13 +1863,14 @@ $bt->render('templates/breadcrumb');
 ```
 
 #### Get data of an instance of a Block
+
 ```PHP
 //$blockObj = Block::getByID($bID);
 
 // block general data
 //\concrete\src\Block\Block.php
 $bID = $blockObj->bID; //echo $bID;
-$btHandle = $blockObj->btHandle; //echo $btHandle; 
+$btHandle = $blockObj->btHandle; //echo $btHandle;
 $btID = $blockObj->btID; //echo $btID; // block type id
 $areaHandle = $blockObj->getAreaHandle(); // area houses the block
 $blockTypeHandle = $blockObj->getBlockTypeHandle(); // block type handle (html, content, autonav, etc)
@@ -1813,11 +1881,11 @@ if ($customStyleObj) {
     $customClass = $customStyleObj->getStyleSet()->getCustomClass(); //print_r($customClass);
     $customID = $customStyleObj->getStyleSet()->getCustomID(); //print_r($customID);
     $customElementAttribute = $customStyleObj->getStyleSet()->getCustomElementAttribute(); //print_r($customElementAttribute);
-    
+
     $backgroundColor = $customStyleObj->getStyleSet()->getBackgroundColor(); //print_r($backgroundColor);
-    // Other design properties include: 
+    // Other design properties include:
     // backgroundColor, backgroundImageFileID, backgroundRepeat, backgroundSize, backgroundPosition, borderColor, borderStyle, borderRadius, baseFontSize, alignment, textColor, linkColor, marginTop, marginBottom, marginLeft, marginRight, paddingTop, paddingBottom, paddingLeft, paddingRight, rotate, boxShadowHorizontal, boxShadowVertical, boxShadowBlur, boxShadowSpread, boxShadowColor, hideOnExtraSmallDevice
-}    
+}
 
 
 // block specific data
@@ -1855,6 +1923,7 @@ $bID = $this->block->bID; //echo $bID;
 ```
 
 #### Set data of an instance of a Block
+
 ```PHP
 //$blockObj = Block::getByID($bID);
 
@@ -1871,23 +1940,21 @@ $block->setCustomTemplate($template = 'new_template.php'); // set new block temp
 // ...
 ```
 
-
 ## Stacks
-
 
 ## Packages
 
-
 ### A Package
 
-
 #### Get a package
+
 ```PHP
 $pkg = Package::getByHandle('theme_pixel');
 //$pkg = Package::getByID(1);
 ```
 
 #### Get a package data
+
 ```PHP
 echo $pkg->getPackageID();
 echo $pkg->getPackageHandle();
@@ -1895,10 +1962,11 @@ echo $pkg->getPackageName();
 echo $pkg->getPackageDescription();
 echo $pkg->getPackageVersion();
 echo $pkg->getPackagePath();
-print_r($pkg->getPackageDependencies()); 
+print_r($pkg->getPackageDependencies());
 ```
 
 #### Check dependencies
+
 ```PHP
 $pkg_dependency  = Package::getByHandle('handle_dependency');
 if (!is_object($pkg_dependency)){
@@ -1908,23 +1976,21 @@ if (!is_object($pkg_dependency)){
 
 ## Express Entries
 
-
-
 ### Express Entity
 
-
 #### Create the entity
+
 ```PHP
 $eObj = Express::getObjectByHandle('marina');
 if (!is_object($eObj)) {
-    
+
     $eObj = Express::buildObject('marina', 'marinas', 'Marina', $pkg = null);
 
     /** general checkboxes (HELP WANTED) */
     //use Concrete\Core\Entity\Attribute\Key\Key;
-    //'Content included in search index' checkbox 
+    //'Content included in search index' checkbox
     //akIsSearchableIndexed --> setIsAttributeKeyContentIndexed()
-    //'Field available in advanced search' checkbox 
+    //'Field available in advanced search' checkbox
     //akIsSearchable--> setIsAttributeKeySearchable()
 
     /** settings */
@@ -1951,7 +2017,7 @@ if (!is_object($eObj)) {
     $settings->setTextCustomFormat('Y-m-d H:i:s');
     $settings->setTimeResolution(60);
     $eObj->addAttribute('date_time', 'Establishment', 'marina_establishment', $settings);
-    
+
     // image_file
     $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\ImageFileSettings();
     $settings->setModeToFileManager(); // OR $settings->setModeToHtmlInput();
@@ -1959,7 +2025,7 @@ if (!is_object($eObj)) {
 
     // number
     $eObj->addAttribute('number', 'Size', 'marina_size');
-    
+
     // select
     $eObj->addAttribute('select', 'Facilities', 'marina_facilities', $settings);
     $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\SelectSettings();
@@ -1968,47 +2034,47 @@ if (!is_object($eObj)) {
     $settings->setHideNoneOption(false);
     $settings->setAllowOtherValues(false);
     $settings->setDisplayOrder('display_asc');
-    
+
     // address
     $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\AddressSettings();
     $settings->setCustomCountries(array('US','UK'));
     $settings->setHasCustomCountries(true);
     $settings->setDefaultCountry('UK');
     $eObj->addAttribute('address', 'Address', 'marina_address', $settings);
-    
+
     // telephone
     $eObj->addAttribute('telephone', 'Telephone', 'marina_telephone');
-    
+
     // url
     $eObj->addAttribute('url', 'Website', 'marina_website');
-    
+
     // email
     $eObj->addAttribute('email', 'Email', 'marina_email');
-    
+
     // rating
     $eObj->addAttribute('rating', 'Rating', 'marina_rating');
-    
+
     // topics
     $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\TopicsSettings();
     $settings->setTopicTreeID($topicTreeID);
     $settings->setParentNodeID($topicParentNodeID);
     $settings->setAllowMultipleValues(true);
     $eObj->addAttribute('topics', 'District', 'marina_district', $settings);
-    
+
     // social_links
     $eObj->addAttribute('social_links', 'twitter', 'marina_twitter');
-    
+
     // express
     $settings = new \Concrete\Core\Entity\Attribute\Key\Settings\ExpressSettings();
     $settings->setEntity($entityID);
     $eObj->addAttribute('express', 'Personnels', 'marina_personnels');
-    
+
     // calendar
     $eObj->addAttribute('calendar', 'Calendar', 'marina_calendar');
-    
+
     // calendar_event
     $eObj->addAttribute('calendar_event', 'Event', 'marina_event');
-    
+
     // page_selector
     $eObj->addAttribute('page_selector', 'Info Page', 'marina_info_page');
 
@@ -2027,9 +2093,11 @@ if (!is_object($eObj)) {
 
 }
 ```
+
 For more info on each method and its possible values check [`HERE`](#Add-an-attribute).
 
 #### Adding associations to the object
+
 ```PHP
 $marina = Express::buildObject('marina', 'marinas', 'Marina', $pkg);
 $boat = Express::buildObject('boat', 'boats', 'Boat', $pkg);
@@ -2041,18 +2109,21 @@ $marina = $marina->getEntity();
 ```
 
 #### Create the form
+
 ```PHP
+
 ```
 
 #### Add attributes
+
 ```PHP
+
 ```
 
 ### Express Entry
 
-
-
 #### Get list of entries in an entity
+
 ```PHP
 //use Concrete\Core\Express\EntryList;
 $entity = Express::getObjectByHandle('entity_handle');
@@ -2073,6 +2144,7 @@ foreach ($entries as $entry) {
 ```
 
 #### Get list of entries in an entity with pagination
+
 ```PHP
 //use Concrete\Core\Express\EntryList;
 $entity = Express::getObjectByHandle('entity_handle');
@@ -2086,10 +2158,12 @@ foreach ($entries as $entry) {
     //
 }
 ```
+
 For Pagination buttons & functions check [`HERE`](#Get-list-of-pages-with-pagination)  
 For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/styling-the-pagination-5-7)
 
 #### Filter a list of entries
+
 ```PHP
 $entryList->filterByKeywords($keywords = ''); // not working?
 $entryList->filterByAttributeHandle($keywords = ''); // not working?
@@ -2098,6 +2172,7 @@ $entryList->filterByAttributeHandle($keywords = ''); // not working?
 ```
 
 #### Sort a list of entries
+
 ```PHP
 $entryList->sortByDisplayOrderAscending();
 $entryList->sortByAttributeHandle('desc'); // by an attribute: asc OR desc
@@ -2106,6 +2181,7 @@ $entryList->sortByAttributeHandle('desc'); // by an attribute: asc OR desc
 ```
 
 #### Create an entry
+
 ```PHP
 $entry = Express::buildEntry('entity_handle')
     ->setAttribute('attribute_handle', 'Andy')
@@ -2113,8 +2189,9 @@ $entry = Express::buildEntry('entity_handle')
 ```
 
 #### Update an entry
+
 ```PHP
-$entry->setAttribute('attribute_handle', 'Andy'); 
+$entry->setAttribute('attribute_handle', 'Andy');
 // OR: $entry->setAttributeHandle('Andy');
 
 // if you were to immediately call getAttribute() later in the script, the attribute value in the object might not be updated. To combat this, use the refresh() method in the express Object manager:
@@ -2122,6 +2199,7 @@ $entry->setAttribute('attribute_handle', 'Andy');
 ```
 
 #### Delete an entry
+
 ```PHP
 // delete an entity
 Express::deleteEntry($entry);
@@ -2137,18 +2215,17 @@ foreach ($entries as $entry) {
 }
 ```
 
-
 ## Language
 
-
-
 #### Get active locale
+
 ```PHP
 $activeLocale = \Localization::activeLocale();
 echo $activeLocale; // `en_US`
 ```
 
 #### Get default locale
+
 ```PHP
 $site = $->app->make('site')->getSite();
 $defaultLocale = $site->getDefaultLocale();
@@ -2156,6 +2233,7 @@ $defaultLocaleCode = $defaultLocale->getLocale(); // echo $defaultLocaleCode; //
 ```
 
 #### Get all added locales
+
 ```PHP
 $app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
 $site = $app->make('site')->getActiveSiteForEditing();
@@ -2163,10 +2241,10 @@ $flag = $app->make(Concrete\Core\Multilingual\Service\UserInterface\Flag::class)
 
 $locales = $site->getLocales(); //echo count($locales);
 foreach ($locales as $locale) {
-    echo $locale->getLocaleID(); 
+    echo $locale->getLocaleID();
     echo $locale->getLanguageText(); // `English`, `Spanish`
     echo $locale->getLocale(); // `en_US`, `es_ES`
-    
+
     // get home page of each locale
     $localeSiteTree = $locale->getSiteTree();
     $home = $localeSiteTree === null ? null : $localeSiteTree->getSiteHomePageObject();
@@ -2181,6 +2259,7 @@ foreach ($locales as $locale) {
 ```
 
 #### Set active locale manually
+
 ```PHP
 // use Concrete\Core\Localization\Localization;
 $loc = Localization::getInstance();
@@ -2188,44 +2267,44 @@ $loc->setActiveContext(Localization::CONTEXT_SITE);
 $loc->setContextLocale(Localization::CONTEXT_SITE, 'es_ES');
 ```
 
-
 ## Constants
 
-
-
 #### Get all constants
+
 ```PHP
 print_r(get_defined_constants($categorize = true));
 ```
 
 ## Configs
 
-
-
 ### Basics
 
-
 #### Key
+
 ```PHP
 configNamespace::configGroup.configItem
 ```
+
 #### Value
+
 ```PHP
 configValue
 ```
 
 ### Different places for storing data
 
-
 #### Database
-Databse Table: *`Config`*
+
+Databse Table: _`Config`_
 
 | configNamespace | configGroup | configItem  | configValue |
 | --------------- | ----------- | ----------- | ----------- |
 | my_package      | front_end   | show_header | 1           |
 
 #### FileSystem
-File: *`application\config\generated_overrides\configNamespace\configGroup.php`*
+
+File: _`application\config\generated_overrides\configNamespace\configGroup.php`_
+
 ```PHP
 return array(
     'configItem' => true,
@@ -2236,8 +2315,8 @@ return array(
 
 ### Different ways to read and write config values
 
-
 #### 1: Using a Package object
+
 ```PHP
 $pkg = \Package::getByHandle('my_package');
 
@@ -2270,6 +2349,7 @@ $hasShowHeader = $pkg->getFileConfig()->has('front_end.show_header');
 ```
 
 #### 2: Using a service provider
+
 ```PHP
 $key = 'configNamespace::configGroup.configItem';
 $value = '5';
@@ -2293,6 +2373,7 @@ $configFile->has($key);
 ```
 
 #### 3: Using Config
+
 ```PHP
 $key = 'configNamespace::configGroup.configItem';
 $value = '5';
@@ -2308,9 +2389,8 @@ $default = -1;
 
 ## Aliases
 
-
-
 #### List of all aliases
+
 `Class aliases have been deprecated and full namespaces should be used`
 
 ```PHP
@@ -2392,9 +2472,8 @@ $default = -1;
 
 ## Helpers
 
-
-
 #### General
+
 ```PHP
 //\concrete\bootstrap\helpers.php
 
@@ -2427,6 +2506,7 @@ output_vars(array $get_defined_vars, $valueOfThis = null, $return = false);
 ```
 
 #### Number helper
+
 ```PHP
 $nh = $app->make('helper/number');
 
@@ -2443,6 +2523,7 @@ $nh->getBytes($val); // Nice and elegant function for converting memory. Thanks 
 ```
 
 #### Text helper
+
 ```PHP
 $th = $app->make('helper/text');
 
@@ -2480,6 +2561,7 @@ $th->appendXML(\SimpleXMLElement $root, \SimpleXMLElement $new); // Appends a Si
 ```
 
 #### URL helper
+
 ```PHP
 $uh = $app->make('helper/url');
 
@@ -2492,6 +2574,7 @@ $uh->shortenURL($strURL); //Shortens a given url with the tiny url api.
 ```
 
 #### Array helper
+
 ```PHP
 $ah = $app->make('helper/array');
 
@@ -2505,6 +2588,7 @@ $ah->subset($a, $b); //Returns whether $a is a proper subset of $b.
 ```
 
 #### Arrays validation helper
+
 ```PHP
 $avh = $app->make('helper/validation/arrays');
 
@@ -2514,6 +2598,7 @@ $avh->containsString($needle, $haystack = array(), $recurse = true); //Returns t
 ```
 
 #### Numbers validation helper
+
 ```PHP
 $nvh = $app->make('helper/validation/numbers');
 
@@ -2524,6 +2609,7 @@ $nvh->number($data, $min = null, $max = null); //Tests whether the passed item i
 ```
 
 #### Strings validation helper
+
 ```PHP
 $svh = $app->make('helper/validation/strings');
 
@@ -2542,6 +2628,7 @@ $svh->containsSymbol($str); //Returns 0 if there are no symbols in the string, o
 ```
 
 #### JSON helper
+
 ```PHP
 $jh = $app->make('helper/json');
 
@@ -2552,6 +2639,7 @@ $jh->encode($mixed); //Encodes a data structure into a JSON string.
 ```
 
 #### Ajax helper
+
 ```PHP
 $ah = $app->make('helper/json');
 
@@ -2563,6 +2651,7 @@ $ah->sendError($error); //Sends an error to the client and ends the execution.
 ```
 
 #### HTML helper
+
 ```PHP
 $hh = $app->make('helper/html');
 
@@ -2574,6 +2663,7 @@ $hh->noFollowHref($input); //Takes in a string, and adds rel="nofollow" to any a
 ```
 
 #### Navigation helper
+
 ```PHP
 $nh = $app->make('helper/navigation');
 
@@ -2586,8 +2676,9 @@ $nh->getLogInOutLink(); //
 ```
 
 #### Date helper
+
 ```PHP
-$dh = $app->make('helper/date'); 
+$dh = $app->make('helper/date');
 //$dh = $app->make('date');
 
 $dh->toDB($value = 'now', $fromTimezone = 'system'); //Convert any date/time representation to a string that can be used in DB queries.
@@ -2630,6 +2721,7 @@ $dh->dateTimeFormatLocal($datetime, $mask); //@deprecated
 ```
 
 #### Form helper
+
 ```PHP
 $form = $app->make('helper/form'); // no need to initiate
 
@@ -2663,7 +2755,8 @@ echo $form->parseMiscFields($defaultClass, $attributes); // Create an HTML fragm
 //\concrete\src\Form\Service\Form.php
 ```
 
-#### Form (editor/richtext editor/Redactor) helper 
+#### Form (editor/richtext editor/Redactor) helper
+
 ```PHP
 $editor = Core::make('editor');
 //$editor->setAllowSitemap(false); //disable SiteMap
@@ -2681,6 +2774,7 @@ echo $editor->outputStandardEditor('notes', $notes);
 ```
 
 #### Form (color picker) helper
+
 ```PHP
 $cpfh = $app->make('helper/form/color');
 
@@ -2691,6 +2785,7 @@ echo $cpfh->output($inputName, $value = null, $options = array()); // Creates fo
 ```
 
 #### Form (date/time) helper
+
 ```PHP
 $dtfh = $app->make('helper/form/date_time');
 
@@ -2703,6 +2798,7 @@ echo $dtfh->selectNearestValue(array $values, $wantedValue); // Choose an array 
 ```
 
 #### Form (page selector) helper
+
 ```PHP
 $psfh = $app->make('helper/form/page_selector');
 
@@ -2715,6 +2811,7 @@ echo $psfh->selectFromSitemap($field, $page = null, $startingPoint = 'HOME_CID',
 ```
 
 #### Form (user selector) helper
+
 ```PHP
 $usfh = $app->make('helper/form/user_selector');
 
@@ -2726,6 +2823,7 @@ echo $usfh->selectMultipleUsers($fieldName, $users = []); //Build the HTML to be
 ```
 
 #### Form (group selector) helper
+
 ```PHP
 $gsfh = $app->make('\Concrete\Core\Form\Service\Widget\GroupSelector');
 
@@ -2736,6 +2834,7 @@ echo $gsfh->selectGroupWithTree($field, $group = null); //Build the HTML to be p
 ```
 
 #### Form (rating) helper
+
 ```PHP
 $rfh = $app->make('helper/form/rating');
 
@@ -2745,6 +2844,7 @@ echo $rfh->rating($prefix, $value = null, $includeJS = true);
 ```
 
 #### Form (attribute) helper
+
 ```PHP
 $afh = $app->make('helper/form/attribute');
 
@@ -2771,6 +2871,7 @@ echo $afh->display($key);
 ```
 
 #### Form (typography) helper
+
 ```PHP
 $tfh = $app->make('helper/form/typography');
 // OR
@@ -2782,6 +2883,7 @@ echo $tfh->output($inputName, $value = array(), $options = array()); // Creates 
 ```
 
 #### Concrete URL helper
+
 ```PHP
 $cuh = $app->make('helper/concrete/urls');
 
@@ -2797,6 +2899,7 @@ $cuh->getBlockTypeToolsURL($bt); // @deprecated: Gets a full URL to a block's to
 ```
 
 #### Asset library (file manager) helper
+
 ```PHP
 $alh = $app->make('helper/concrete/asset_library');
 // OR
@@ -2815,6 +2918,7 @@ $alh->fileOfType($type, $inputID, $inputName, $chooseText, $preselectedFile = nu
 ```
 
 #### Validation error helper
+
 ```PHP
 $errors = $app->make('error');
 // OR
@@ -2833,6 +2937,7 @@ $errors->createResponse($errorCode = JsonResponse::HTTP_BAD_REQUEST); // Create 
 ```
 
 #### User Interface helper
+
 ```PHP
 $uih = $app->make('helper/concrete/ui')
 
@@ -2859,6 +2964,7 @@ $uih->notify($arguments); //
 ```
 
 #### Image helper
+
 ```PHP
 $ih = $app->make('helper/image');
 
@@ -2881,6 +2987,7 @@ $ih->outputThumbnail($mixed, $maxWidth, $maxHeight, $alt = null, $return = false
 ```
 
 #### List of all helper
+
 ```PHP
 'app' instanceof Concrete\Core\Application\Application,
 'Concrete\Core\Application\Application' instanceof Concrete\Core\Application\Application,
@@ -3035,6 +3142,7 @@ $ih->outputThumbnail($mixed, $maxWidth, $maxHeight, $alt = null, $return = false
 ```
 
 #### Create a custom helper
+
 ```PHP
 // Create the helper: \application\src\Html\Service\Talk.php
 namespace Application\Html\Service;
@@ -3062,12 +3170,10 @@ echo $th->greet('Hi there!');
 
 ## System Operations
 
-
-
 ### Database
 
-
 #### Current database
+
 ```PHP
 // database connection
 $db = $app->make(\Concrete\Core\Database\Connection\Connection::class);
@@ -3076,8 +3182,8 @@ $db = $app->make(\Concrete\Core\Database\Connection\Connection::class);
 $db->debug = true;
 
 // prepare any query
-$statement = $db->executeQuery('SELECT * FROM `myTable` WHERE `id`>?;', array(0)); 
-    
+$statement = $db->executeQuery('SELECT * FROM `myTable` WHERE `id`>?;', array(0));
+
 //echo $statement->rowCount(); // number of SELECTed/UPDATEd/DELETEd rows
 //echo $statement->getSqlQuery(); // prepared SQL //not working
 
@@ -3089,7 +3195,7 @@ foreach ($rows as $row) {
 // OR:
 while ($row = $statement->fetch()) {
     //print_r($row);
-}	
+}
 
 // Prepares and executes an SQL query and returns the FIRST row of the result as an associative array.
 $row = $db->fetchAssoc('SELECT * FROM `myTable` WHERE `id` = ?;', array(1)); //print_r($row);
@@ -3102,21 +3208,23 @@ $column = $db->fetchColumn('SELECT `name` FROM `myTable` WHERE id = ?;', array($
 
 
 // INSERT
-$statement = $db->executeQuery('INSERT INTO `myTable` (`name`, `url`) VALUES (?, ?);', array('Name 1', 'URL 1')); 
+$statement = $db->executeQuery('INSERT INTO `myTable` (`name`, `url`) VALUES (?, ?);', array('Name 1', 'URL 1'));
 //echo $db->lastInsertId(); // last inserted id
 //echo $statement->rowCount(); // number of affected rows
 
 // UPDATE
-$statement = $db->executeQuery('UPDATE `myTable` SET name = ? WHERE `id` = ?;', array('new name', 1)); 
+$statement = $db->executeQuery('UPDATE `myTable` SET name = ? WHERE `id` = ?;', array('new name', 1));
 //echo $statement->rowCount(); // number of affected rows
 
 // DELETE
-$statement = $db->executeQuery('DELETE FROM `myTable` WHERE `id` = ?;', array(1)); 
+$statement = $db->executeQuery('DELETE FROM `myTable` WHERE `id` = ?;', array(1));
 //echo $statement->rowCount(); // number of affected rows
 ```
+
 For more check [`HERE`](https://www.doctrine-project.org/api/dbal/2.5/Doctrine/DBAL/Connection.html)
 
 #### Another database
+
 ```PHP
 // new database connection info in /appilication/config/database.php
 return array(
@@ -3146,8 +3254,8 @@ $dbPricing = $app->make('database')->connection('pricing');
 
 ### Asset System
 
-
 #### Core Assets
+
 Full list of pre-registered assets and their handles can be found [here](https://documentation.concrete5.org/developers/appendix/asset-list)
 
 #### Registering an Asset
@@ -3183,60 +3291,63 @@ $page->getPageController()->requireAsset('javascript', 'media_elem_handle');
 
 // $assetType
 
-- `css` for CSS style sheets
-- `css-inline` for style elements
-- `css-localized` TBD
-- `javascript` for JavaScript files
-- `javascript-inline` for JavaScript that you would like to output inline into the page
-- `javascript-conditional` TBD
-- `javascript-localized` TBD
+-   `css` for CSS style sheets
+-   `css-inline` for style elements
+-   `css-localized` TBD
+-   `javascript` for JavaScript files
+-   `javascript-inline` for JavaScript that you would like to output inline into the page
+-   `javascript-conditional` TBD
+-   `javascript-localized` TBD
 
 // $assetHandle
 
 A handle should be unique across type and handle. This means that if you're registering an asset with the handle "mysite/calendar", you can register one CSS file and one JavaScript file with both that same handle.
-		
 // $filename
 
 The path to filename is relative to one of the following
-- The application/ directory
-- The packages/package_handle/ directory (if a package handle or package object is specified as part of the register() method.)
-- The concrete/ directory
+
+-   The application/ directory
+-   The packages/package_handle/ directory (if a package handle or package object is specified as part of the register() method.)
+-   The concrete/ directory
 
 // $args
 
 It is an array of optional parameters. Here are the options, as well as their defaults if not specified.
-- `position` either \Concrete\Core\Asset\Asset::ASSET_POSITION_HEADER or \Concrete\Core\Asset\Asset::ASSET_POSITION_FOOTER. If left blank, it will default to the position specified by the asset type. CSS assets are included in the header of the page, JavaScript assets in the footer.
-- `local` defaults to true. If false, the exact string will be treated as a URL to a non-local asset.
-- `version` defaults to false. If specified, this version will be stored against the asset as the numerical version of the asset.
-- `combine` either true (combine this asset with other assets if asset caching is enabled) or false (do not combine this asset with others). Defaults to -1, which uses the default for the Asset type.
-- `minify` either true (minify this asset before combining, if asset caching is enabled) or false (do not minify this asset). Defaults to -1, which uses the default for the Asset type.
+
+-   `position` either \Concrete\Core\Asset\Asset::ASSET_POSITION_HEADER or \Concrete\Core\Asset\Asset::ASSET_POSITION_FOOTER. If left blank, it will default to the position specified by the asset type. CSS assets are included in the header of the page, JavaScript assets in the footer.
+-   `local` defaults to true. If false, the exact string will be treated as a URL to a non-local asset.
+-   `version` defaults to false. If specified, this version will be stored against the asset as the numerical version of the asset.
+-   `combine` either true (combine this asset with other assets if asset caching is enabled) or false (do not combine this asset with others). Defaults to -1, which uses the default for the Asset type.
+-   `minify` either true (minify this asset before combining, if asset caching is enabled) or false (do not minify this asset). Defaults to -1, which uses the default for the Asset type.
 
 ### CLI
+
 For complete reference check [`HERE`](https://documentation.concrete5.org/developers/framework/console-commands-and-jobs/cli-commands)
 
-- List of all the available CLI commands `concrete/bin/concrete5 list`
-- Install concrete5 with: `c5:install`
-- Reset a concrete5 installation with `c5:reset`
-- Generate IDE symbols with `c5:ide-symbols`
-- Configure concrete5 with `c5:config`
-- Run concrete5 jobs with `c5:job`
-- Clear the concrete5 cache with `c5:clear-cache`
-- Install a concrete5 package with `c5:package-install`
-- Update concrete5 packages with `c5:package-update`
-- Uninstall a concrete5 package with `c5:package-uninstall`
-- Manage 5.6 and 5.7 package translations with `c5:package-translate`
-- Getting information with `c5:info`
-- Upgrading concrete5 with `c5:update`
-
+-   List of all the available CLI commands `concrete/bin/concrete5 list`
+-   Install concrete5 with: `c5:install`
+-   Reset a concrete5 installation with `c5:reset`
+-   Generate IDE symbols with `c5:ide-symbols`
+-   Configure concrete5 with `c5:config`
+-   Run concrete5 jobs with `c5:job`
+-   Clear the concrete5 cache with `c5:clear-cache`
+-   Install a concrete5 package with `c5:package-install`
+-   Update concrete5 packages with `c5:package-update`
+-   Uninstall a concrete5 package with `c5:package-uninstall`
+-   Manage 5.6 and 5.7 package translations with `c5:package-translate`
+-   Getting information with `c5:info`
+-   Upgrading concrete5 with `c5:update`
 
 ### Misc.
 
 #### URL
+
 ```PHP
 $url = URL::to('/path/to/somewhere'); //http://ursite/index.php/path/to/somewhere
 ```
 
 #### Redirecting
+
 ```PHP
 $response = new RedirectResponse(\URL::to('/login'), $status, $headers);
 // list of status code: \concrete\vendor\symfony\http-foundation\Response.php
@@ -3252,6 +3363,7 @@ exit;
 ```
 
 #### Logging
+
 ```PHP
 //use Log;
 Log::addInfo('This is an informative message.');
@@ -3262,6 +3374,7 @@ Log::addNotice('A notice error.');
 ```
 
 #### Logging to a new channel
+
 ```PHP
 $logger = $this->app->make(LoggerFactory::class)->createLogger('new_channel');
 $logger->addInfo('This is an informative message.');
@@ -3269,19 +3382,19 @@ $logger->addInfo('This is an informative message.');
 ```
 
 #### Get environment
+
 ```PHP
 $environment = $app->environment(); //echo $environment;
 ```
 
 #### Clear site cache
+
 ```PHP
 $app->clearCaches();
 ```
 
 ## Translation
 
-
-
 This cheatsheet is also available in other languages:
 
-- ![jp](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Japan.png) Japanese: [https://github.com/tao-s/whale_c5_cheat_sheet/tree/japanese](https://github.com/tao-s/whale_c5_cheat_sheet/tree/japanese)
+-   ![jp](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Japan.png) Japanese: [https://github.com/tao-s/whale_c5_cheat_sheet/tree/japanese](https://github.com/tao-s/whale_c5_cheat_sheet/tree/japanese)
