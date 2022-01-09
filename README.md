@@ -1627,15 +1627,17 @@ $topicTree->setTopicTreeName('New Topic Tree Name');
 
 #### Get a Category/Node
 ```PHP
-//use \Concrete\Core\Tree\Node\Node as TreeNode;
+//use \Concrete\Core\Tree\Node\Type\Category as TreeNodeCategory;
 
 // Category
-$topicCategory = TreeNode::getByID($catID);
-$topicCategory = TreeNode::getNodeByName($catName); // not working (error)
+$topicCategory = TreeNodeCategory::getByID($catID);
+$topicCategory = TreeNodeCategory::getNodeByName($catName);
+
+//use \Concrete\Core\Tree\Node\Type\Topic as TreeNodeTopic;
 
 // Topic (Node)
-$topicNode = TreeNode::getByID($nodeID);
-$topicNode = TreeNode::getNodeByName($nodeName); // not working (error)
+$topicNode = TreeNodeTopic::getByID($nodeID);
+$topicNode = TreeNodeTopic::getNodeByName($nodeName);
 ```
 
 #### Add a Category/Node
