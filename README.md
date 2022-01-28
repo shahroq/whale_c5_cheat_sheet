@@ -2151,11 +2151,14 @@ echo $activeLocale; // `en_US`
 ```
 
 #### Get default locale
+
 ```PHP
-$site = $->app->make('site')->getSite();
+// first get $app
+$site = $app->make('site')->getSite();
 $defaultLocale = $site->getDefaultLocale();
 $defaultLocaleCode = $defaultLocale->getLocale(); // echo $defaultLocaleCode; // `en_US`
 ```
+For getting app check [`HERE`](#application-app).
 
 #### Get all added locales
 ```PHP
