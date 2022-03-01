@@ -385,8 +385,8 @@ echo $page->getPageTypeName();
 $pType = $page->getPageTypeObject(); // for getting `page type` info, check `Get a page template/type/theme``
 
 // child pages
-echo $page->getCollectionChildren(); // Get immediate children of the this page
-echo $page->getCollectionChildrenArray(); // Get the list of child page IDs, sorted by their display order
+$pChildren = $page->getCollectionChildren(); // Get immediate children of the this page
+$pChildrenId = $page->getCollectionChildrenArray(); // Get the list of child page IDs, sorted by their display order
 echo $page->getNumChildren(); // Get the number of child pages
 
 // page theme
