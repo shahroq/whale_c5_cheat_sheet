@@ -2093,8 +2093,12 @@ For custom markup check [`HERE`](https://documentation.concrete5.org/tutorials/s
 
 #### Filter a list of entries
 ```PHP
-$entryList->filterByKeywords($keywords = ''); // not working?
-$entryList->filterByAttributeHandle($keywords = ''); // not working?
+$entryList->filterByKeywords($keywords = ''); // not working? because if value is null, it needs `keyword` IS NULL check and not `keyword` = '', it works although if $keyword = 'something'
+$entryList->filterByAttributeHandle($keywords = ''); // not working? because if value is null, it needs `keyword` IS NULL check and not `keyword` = '', it works although if $keyword = 'something'
+$entryList->filterByAttribute($handle = 'attribute_handle', $value = null, $comparison = 'IS'); // when filtering on value = null
+$entryList->filterByAttribute($handle = 'attribute_handle', $value = 'something'); // when filtering on value = "something"
+$entryList->filterByAttributeHandle($value = 'something'); // when filtering on value = "something", won't work if $value = null
+
 
 //\concrete\src\Express\EntryList.php
 ```
