@@ -500,6 +500,24 @@ foreach ((object) $topics as $topic) {
 // Date
 $date = $page->getAttribute('attribute_handle'); // return php DateTime object
 echo $date->format('Y-m-d H:i:s'); // to string
+
+/*
+Address
+https://documentation.concretecms.org/api/9.2.8/Concrete/Core/Entity/Attribute/Value/Value/AddressValue.html
+https://github.com/concretecms/concretecms/issues/7943
+*/
+$location = $c->getAttribute('attribute_handle');
+// print formatted address
+echo $location;
+
+// get address values separately
+$address1 = $location->getAddress1();
+$address2 = $location->getAddress2();
+$city = $location->getCity();
+$country = $location->getCountry();
+$state = $location->getStateProvince();
+$postalCode = $location->getPostalCode();
+echo $address1, $address2, $city, $country, $state, $postalCode;
 ```
 
 #### Get list of attributes of a page
