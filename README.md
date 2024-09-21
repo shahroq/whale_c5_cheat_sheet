@@ -1,6 +1,6 @@
 # [Concrete CMS](https://www.concretecms.com) Cheat Sheet V9+
 
-This is a collection of ConcreteCMS cheat sheets, based on the V8+ source code. 
+This is a collection of ConcreteCMS cheat sheets, based on the V9+ source code. 
 
 **Contributions are welcome via [issues](https://github.com/shahroq/whale_c5_cheat_sheet/issues) and [pull requests](https://github.com/shahroq/whale_c5_cheat_sheet/pulls).**
 
